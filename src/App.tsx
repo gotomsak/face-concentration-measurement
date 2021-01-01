@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Switch, Route } from "react-router";
+import TopPage from "./pages/TopPage";
+import RecordingPage from "./pages/RecordingPage";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <React.Fragment>
+                <Switch>
+                    <Route exact path="/" component={TopPage}></Route>
+                    <Route path="/Recording" component={RecordingPage}></Route>
+                </Switch>
+            </React.Fragment>
+        </div>
+    );
 }
 
 export default App;
