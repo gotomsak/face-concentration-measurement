@@ -23,6 +23,10 @@ const RecordingPage: React.FC = () => {
             type: "tetuolab",
         },
     ]);
+    // const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+    const [webSocket, setWebSocket] = useState<WebSocket>(
+        new WebSocket("wss://fc.gotomsak.work")
+    );
     const [typeParam, setTypeParam] = useState("");
 
     const useStyles = makeStyles({
@@ -42,6 +46,9 @@ const RecordingPage: React.FC = () => {
         tID: {
             width: 200,
             height: 50,
+            display: "flex",
+            WebkitJustifyContent: "center",
+            alignItems: "center",
         },
     });
     const MyButton = styled(Button)({
@@ -51,12 +58,28 @@ const RecordingPage: React.FC = () => {
         color: "primary",
         fontWeight: 800,
     });
+
+    const webSocketInit = () => {
+        webSocket!.onmessage = (event) => {
+            console.log(event.data);
+            setWebSocketData(event);
+        };
+        webSocket!.onclose = (event) => {
+            console.log("simeta");
+        };
+
+        webSocket!.onopen = (event) => {
+            console.log("seikou1");
+        };
+        webSocket!.onerror = (e) => {};
+        webSocket!.send("../data/images/" + typeParam + "/" + id);
+    };
+
     const createID = () => {
-        const id: any = getSaveImagesID({ type: typeParam });
+        getSaveImagesID({ type: typeParam }).then((res) => {
+            setID(res.data.id);
+        });
         console.log(typeParam);
-        if (typeof id == "number") {
-            setID(id);
-        }
     };
     const setWebSocketData = (e: any) => {
         const jsonData = JSON.parse(e.data);
@@ -99,11 +122,14 @@ const RecordingPage: React.FC = () => {
                 setWebSocketData={setWebSocketData}
                 method1={method1}
                 method2={method2}
+                webSocket={webSocket}
+                webSocketInit={webSocketInit}
             ></WebCameraComponent>
 
             <p>
                 <div className={classes.fID}>
                     <MyButton onClick={createID}>id発行</MyButton>
+                    {/* <TextField value={id} variant="outlined" /> */}
                     <div className={classes.tID}>{id}</div>
                     <Autocomplete
                         id="combo-box-demo"

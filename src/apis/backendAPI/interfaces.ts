@@ -8,3 +8,7 @@ export interface SaveConcentrationPost {
 export interface GetSaveImagesIDGet{
     type: string
 }
+
+export interface GetSaveImagesIDRes{
+    id: number
+}
