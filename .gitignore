@@ -27,5 +27,5 @@ yarn-error.log*
 .env.production
 .eslintcache
 emsdk
-opencv
+/opencv
 build_js

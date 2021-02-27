@@ -4,29 +4,30 @@ import { makeStyles, styled, Button, TextField } from "@material-ui/core";
 import ConcentrationViewComponent from "../components/ConcentrationViewComponent";
 import { getSaveImagesID } from "../apis/backendAPI/getSaveImagesID";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
+import { OpenCvProvider, useOpenCv } from "opencv-react";
 import { type } from "os";
+import * as faceapi from "face-api.js";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
     const [stop, setStop] = useState(false);
-    const [blobData, setBlobData] = useState();
+    // const [blobData, setBlobData] = useState();
     const [id, setID] = useState<number | string>("idを発行してください");
     // const [webSocketData, setWebSocketData] = useState();
-    const [method1, setMethod1] = useState(true);
-    const [method2, setMethod2] = useState(false);
+    const [method, setMethod] = useState(true);
     const [imagePath, setImagePath] = useState("");
     const [concData, setConcData] = useState([]);
     const [concData2, setConcData2] = useState([]);
+
     const [typeParams, setTypeParams] = useState([
         {
             type: "tetuolab",
         },
     ]);
     // const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
-    const [webSocket, setWebSocket] = useState<WebSocket>(
-        new WebSocket("wss://fc.gotomsak.work")
-    );
+    // const [webSocket, setWebSocket] = useState<WebSocket>(
+    //     new WebSocket("wss://fc.gotomsak.work")
+    // );
     const [typeParam, setTypeParam] = useState("");
 
     const useStyles = makeStyles({
@@ -58,22 +59,6 @@ const RecordingPage: React.FC = () => {
         color: "primary",
         fontWeight: 800,
     });
-
-    const webSocketInit = () => {
-        webSocket!.onmessage = (event) => {
-            console.log(event.data);
-            setWebSocketData(event);
-        };
-        webSocket!.onclose = (event) => {
-            console.log("simeta");
-        };
-
-        webSocket!.onopen = (event) => {
-            console.log("seikou1");
-        };
-        webSocket!.onerror = (e) => {};
-        webSocket!.send("../data/images/" + typeParam + "/" + id);
-    };
 
     const createID = () => {
         getSaveImagesID({ type: typeParam }).then((res) => {
@@ -118,12 +103,7 @@ const RecordingPage: React.FC = () => {
             <WebCameraComponent
                 start={start}
                 stop={stop}
-                setBlobData={setBlobData}
-                setWebSocketData={setWebSocketData}
-                method1={method1}
-                method2={method2}
-                webSocket={webSocket}
-                webSocketInit={webSocketInit}
+                method={method}
             ></WebCameraComponent>
 
             <p>
