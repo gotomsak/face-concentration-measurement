@@ -17,17 +17,13 @@ const RecordingPage: React.FC = () => {
     const [method, setMethod] = useState(true);
     const [imagePath, setImagePath] = useState("");
     const [concData, setConcData] = useState([]);
-    const [concData2, setConcData2] = useState([]);
 
     const [typeParams, setTypeParams] = useState([
         {
             type: "tetuolab",
         },
     ]);
-    // const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
-    // const [webSocket, setWebSocket] = useState<WebSocket>(
-    //     new WebSocket("wss://fc.gotomsak.work")
-    // );
+
     const [typeParam, setTypeParam] = useState("");
 
     const useStyles = makeStyles({
@@ -139,7 +135,6 @@ const RecordingPage: React.FC = () => {
             <div>
                 <ConcentrationViewComponent
                     concData1={concData}
-                    concData2={concData2}
                 ></ConcentrationViewComponent>
             </div>
         </div>
