@@ -7,6 +7,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { OpenCvProvider, useOpenCv } from "opencv-react";
 import { type } from "os";
 import * as faceapi from "face-api.js";
+import store from "..";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -54,6 +55,9 @@ const RecordingPage: React.FC = () => {
         background: "rgb(38.6%, 88.8%, 100%)",
         color: "primary",
         fontWeight: 800,
+    });
+    store.subscribe(() => {
+        setConcData(store.getState().concReducer);
     });
 
     const createID = () => {

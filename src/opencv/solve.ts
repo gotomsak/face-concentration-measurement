@@ -31,9 +31,9 @@ export function solve(
     cv: any
 ) {
     const rows = detectPoints.length / 3;
-    console.log(cv)
+
     const modelPoints = cv.matFromArray(rows, 3, cv.CV_64FC1, detectPoints);
-    console.log(modelPoints)
+
     // camera matrix
     const size = {
         width: 640,
@@ -45,7 +45,7 @@ export function solve(
         ...[0, size.width, center[1]],
         ...[0, 0, 1],
     ]);
-    console.log(cameraMatrix.data64F)
+
     // image matrix
     const imagePoints = cv.Mat.zeros(rows, 2, cv.CV_64FC1);
     const distCoeffs = cv.Mat.zeros(4, 1, cv.CV_64FC1);
@@ -63,12 +63,10 @@ export function solve(
         leftOutline,
         rightOutline,
     ].map((v, i) => {
-
         imagePoints.data64F[cnt] = v["x"];
-        imagePoints.data64F[cnt+1] = v["y"];
-        cnt += 2
+        imagePoints.data64F[cnt + 1] = v["y"];
+        cnt += 2;
     });
-    console.log(imagePoints)
 
     // 移動ベクトルと回転ベクトルの初期値を与えることで推測速度の向上をはかる
     tvec.data64F[0] = -100;
@@ -97,12 +95,6 @@ export function solve(
         tvec,
         true
     );
-    console.log(modelPoints.data64F)
-    console.log(imagePoints.data64F)
-    console.log(cameraMatrix.data64F)
-    console.log(distCoeffs.data64F)
-    console.log(rvec.data64F)
-    console.log(tvec.data64F)
 
     return {
         success,

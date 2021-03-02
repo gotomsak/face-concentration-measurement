@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { OpenCvProvider, useOpenCv } from "opencv-react";
 // import * as faceapi from "face-api.js";
 import { getWeight, headpose } from "../opencv/headpose";
@@ -32,20 +32,24 @@ const ConcentrationEstimateComponent: React.FC<{
     const [sectionFacePoint, setSectionFacePoint] = useState<any>([]);
     const [sectionAngle, setSectionAngle] = useState<any>([]);
 
-    const [maxSectionBlink, setMaxSectionBlink] = useState(0);
-    const [minSectionBlink, setMinSectionBlink] = useState(0);
-    const [maxSectionFacePoint, setMaxSectionFacePoint] = useState(0);
-    const [minSectionFacePoint, setMinSectionFacePoint] = useState(0);
-    const [maxSectionYaw, setMaxSectionYaw] = useState(0);
-    const [maxSectionPitch, setMaxSectionPitch] = useState(0);
-    const [maxSectionRoll, setMaxSectionRoll] = useState(0);
+    // const [maxSectionBlink, setMaxSectionBlink] = useState(0);
+    // const [minSectionBlink, setMinSectionBlink] = useState(0);
+    // const [maxSectionYaw, setMaxSectionYaw] = useState(0);
+    // const [maxSectionPitch, setMaxSectionPitch] = useState(0);
+    // const [maxSectionRoll, setMaxSectionRoll] = useState(0);
     const [msSeparation, setMsSeparation] = useState(5000);
     const [separationNum, setSeparationNum] = useState(5);
+    const maxSectionFacePointRef = useRef(0);
+    const minSectionFacePointRef = useRef(0);
+    const maxSectionBlinkRef = useRef(0);
+    const minSectionBlinkRef = useRef(0);
+    const maxSectionYawRef = useRef(0);
+    const maxSectionPitchRef = useRef(0);
+    const maxSectionRollRef = useRef(0);
 
     useEffect(() => {
         if (cv) {
             cv.then((res: any) => {
-                console.log(res);
                 setCvnew(res);
             });
         }
@@ -56,13 +60,12 @@ const ConcentrationEstimateComponent: React.FC<{
             setInterval(() => {
                 detect(faceapi, video, canvas1, canvas2, cvnew).then((res) => {
                     if (res === undefined) {
-                        console.log(res);
-                        sectionFacePoint.push(maxSectionFacePoint);
-                        sectionBlink.push(maxSectionBlink);
+                        sectionFacePoint.push(maxSectionFacePointRef.current);
+                        sectionBlink.push(maxSectionBlinkRef.current);
                         sectionAngle.push({
-                            yaw: maxSectionYaw,
-                            pitch: maxSectionPitch,
-                            roll: maxSectionRoll,
+                            yaw: maxSectionYawRef.current,
+                            pitch: maxSectionPitchRef.current,
+                            roll: maxSectionRollRef.current,
                         });
                     } else {
                         PreprocessingData(res, oldData);
@@ -76,23 +79,26 @@ const ConcentrationEstimateComponent: React.FC<{
 
     const ConcentrationCalculation = () => {
         if (sectionFacePoint.length >= separationNum) {
-            console.log(sectionFacePoint);
             const PointSum = sectionFacePoint.reduce(
                 (sum: any, value: any) => sum + value,
                 0
             );
 
-            if (minSectionFacePoint > PointSum || minSectionFacePoint === 0)
-                setMinSectionFacePoint(PointSum);
-            if (maxSectionFacePoint < PointSum)
-                setMaxSectionFacePoint(PointSum);
+            if (
+                minSectionFacePointRef.current > PointSum ||
+                minSectionFacePointRef.current === 0
+            )
+                minSectionFacePointRef.current = PointSum;
+            if (maxSectionFacePointRef.current < PointSum)
+                maxSectionFacePointRef.current = PointSum;
 
             const BlinkSum = sectionBlink.reduce(
                 (sum: any, value: any) => sum + (value == true ? 1 : 0),
                 0
             );
-            if (minSectionBlink > BlinkSum) setMinSectionBlink(BlinkSum);
-            if (maxSectionBlink < BlinkSum) setMaxSectionBlink(BlinkSum);
+            // if (minSectionBlinkRef.current > BlinkSum) setMinSectionBlink(BlinkSum);
+            if (maxSectionBlinkRef.current < BlinkSum)
+                maxSectionBlinkRef.current = BlinkSum;
 
             let yawSum = 0;
             let pitchSum = 0;
@@ -102,19 +108,23 @@ const ConcentrationEstimateComponent: React.FC<{
                 pitchSum += value.pitch;
                 rollSum += value.roll;
             });
-            if (maxSectionYaw < yawSum) setMaxSectionYaw(yawSum);
-            if (maxSectionPitch < pitchSum) setMaxSectionPitch(pitchSum);
-            if (maxSectionRoll < rollSum) setMaxSectionRoll(rollSum);
+            if (maxSectionYawRef.current < yawSum)
+                maxSectionYawRef.current = yawSum;
+            if (maxSectionPitchRef.current < pitchSum)
+                maxSectionPitchRef.current = pitchSum;
+            if (maxSectionRollRef.current < rollSum)
+                maxSectionRollRef.current = rollSum;
 
             const c1 = getConcentration(
                 BlinkSum,
-                maxSectionBlink,
-                minSectionBlink
+                maxSectionBlinkRef.current,
+                minSectionBlinkRef.current
             );
+
             const c2 = getConcentration(
                 PointSum,
-                maxSectionFacePoint,
-                minSectionFacePoint
+                maxSectionFacePointRef.current,
+                minSectionFacePointRef.current
             );
 
             const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
@@ -139,9 +149,8 @@ const ConcentrationEstimateComponent: React.FC<{
                     newData.facePoint[i]
                 );
             }
+            console.log(AllPointSum);
             sectionFacePoint.push(AllPointSum);
-            console.log(newData.ear.left);
-            console.log(newData.ear.right);
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,

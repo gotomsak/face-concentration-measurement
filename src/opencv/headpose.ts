@@ -120,10 +120,6 @@ export function headpose(
         eulerAngles
     );
     // 顔の角度情報
-
-    console.log(eulerAngles.data64F[1]);
-    console.log(eulerAngles.data64F[0]);
-    console.log(eulerAngles.data64F[2]);
     return {
         yaw: eulerAngles.data64F[1],
         pitch: eulerAngles.data64F[0],
@@ -140,12 +136,12 @@ export const getWeight = (
     const pitchThreshold = 12.5;
     const yawThreshold = 20;
     const rollThreshold = 15;
-    return (
+    return Math.abs(
         1 -
-        (Math.abs(yaw / (yawThreshold * separationNum)) +
-            Math.abs(Math.abs(pitch) - 170 * separationNum) /
-                (pitchThreshold * separationNum) +
-            Math.abs(roll / (rollThreshold * separationNum))) /
-            3
+            (Math.abs(yaw / (yawThreshold * separationNum)) +
+                Math.abs(Math.abs(pitch) - 170 * separationNum) /
+                    (pitchThreshold * separationNum) +
+                Math.abs(roll / (rollThreshold * separationNum))) /
+                3
     );
 };
