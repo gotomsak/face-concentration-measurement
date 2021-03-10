@@ -57,7 +57,6 @@ const WebCameraComponent: React.FC<{
             height: "100%",
         },
         canvas1: {
-            // transform: "scaleZ(-1)",
             zIndex: 1,
             position: "absolute",
         },

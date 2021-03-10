@@ -4,10 +4,12 @@ import { makeStyles, styled, Button, TextField } from "@material-ui/core";
 import ConcentrationViewComponent from "../components/ConcentrationViewComponent";
 import { getSaveImagesID } from "../apis/backendAPI/getSaveImagesID";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ChartViewComponent from "../components/ChartViewComponent";
 import { OpenCvProvider, useOpenCv } from "opencv-react";
-import { type } from "os";
+
 import * as faceapi from "face-api.js";
 import store from "..";
+import { Conc } from "../reducers/concReducer";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -17,7 +19,6 @@ const RecordingPage: React.FC = () => {
     // const [webSocketData, setWebSocketData] = useState();
     const [method, setMethod] = useState(true);
     const [imagePath, setImagePath] = useState("");
-    const [concData, setConcData] = useState([]);
 
     const [typeParams, setTypeParams] = useState([
         {
@@ -57,7 +58,8 @@ const RecordingPage: React.FC = () => {
         fontWeight: 800,
     });
     store.subscribe(() => {
-        setConcData(store.getState().concReducer);
+        // console.log(store.getState().concReducer["c3"]);
+        // setConcData(store.getState().concReducer);
     });
 
     const createID = () => {
@@ -69,7 +71,7 @@ const RecordingPage: React.FC = () => {
     const setWebSocketData = (e: any) => {
         const jsonData = JSON.parse(e.data);
         console.log(jsonData);
-        setConcData((concData) => concData.concat(jsonData));
+        // setConcData((concData) => concData.concat(jsonData));
         setImagePath(jsonData["face_image_path"]);
     };
     const classes = useStyles();
@@ -136,11 +138,14 @@ const RecordingPage: React.FC = () => {
                     <div className={classes.tID}></div>
                 </div>
             </p>
-            <div>
+
+            <ChartViewComponent></ChartViewComponent>
+
+            {/* <div>
                 <ConcentrationViewComponent
                     concData1={concData}
                 ></ConcentrationViewComponent>
-            </div>
+            </div> */}
         </div>
     );
 };

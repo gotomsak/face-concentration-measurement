@@ -32,12 +32,7 @@ const ConcentrationEstimateComponent: React.FC<{
     const [sectionFacePoint, setSectionFacePoint] = useState<any>([]);
     const [sectionAngle, setSectionAngle] = useState<any>([]);
 
-    // const [maxSectionBlink, setMaxSectionBlink] = useState(0);
-    // const [minSectionBlink, setMinSectionBlink] = useState(0);
-    // const [maxSectionYaw, setMaxSectionYaw] = useState(0);
-    // const [maxSectionPitch, setMaxSectionPitch] = useState(0);
-    // const [maxSectionRoll, setMaxSectionRoll] = useState(0);
-    const [msSeparation, setMsSeparation] = useState(5000);
+    const [msSeparation, setMsSeparation] = useState(1000);
     const [separationNum, setSeparationNum] = useState(5);
     const maxSectionFacePointRef = useRef(0);
     const minSectionFacePointRef = useRef(0);
@@ -129,10 +124,11 @@ const ConcentrationEstimateComponent: React.FC<{
 
             const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
             const c3 = getConcentrationSynthesis(c1, c2, w);
+            const date = new Date();
 
             dispatch({
                 type: "concSet",
-                conc: { c1: c1, c2: c2, w: w, c3: c3 },
+                conc: { c1: c1, c2: c2, w: w, c3: c3, date: date },
             });
             console.log(store.getState().concReducer);
             sectionFacePoint.shift();
@@ -149,7 +145,7 @@ const ConcentrationEstimateComponent: React.FC<{
                     newData.facePoint[i]
                 );
             }
-            console.log(AllPointSum);
+            // console.log(AllPointSum);
             sectionFacePoint.push(AllPointSum);
             const blinkBool = blinkCount(
                 newData.ear.left,
