@@ -1,10 +1,20 @@
 export interface SaveConcentrationPost {
     type: string;
-    id: number;
+    id: string;
     measurement: string;
-    concentration_data: any[]
+    concentration: any[];
 }
 
-export interface GetSaveImagesIDGet{
-    type: string
+export interface GetIDGet {
+    type: string;
+    measurement: string;
+    concentration: any[];
+}
+
+export interface GetSaveImagesIDGet {
+    type: string;
+}
+
+export interface GetSaveImagesIDRes {
+    id: string;
 }

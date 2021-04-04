@@ -4,26 +4,42 @@ import { makeStyles, styled, Button, TextField } from "@material-ui/core";
 import ConcentrationViewComponent from "../components/ConcentrationViewComponent";
 import { getSaveImagesID } from "../apis/backendAPI/getSaveImagesID";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ChartViewComponent from "../components/ChartViewComponent";
+import { OpenCvProvider, useOpenCv } from "opencv-react";
 
-import { type } from "os";
+import * as faceapi from "face-api.js";
+import store from "..";
+import { Conc } from "../reducers/concReducer";
+import { saveConcentration } from "../apis/backendAPI/saveConcentration";
+import { getID } from "../apis/backendAPI/getID";
+import FormControl from "@material-ui/core/FormControl";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import Tooltip from "@material-ui/core/Tooltip";
+import CopyToClipBoard from "react-copy-to-clipboard";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
     const [stop, setStop] = useState(false);
-    const [blobData, setBlobData] = useState();
-    const [id, setID] = useState<number | string>("idを発行してください");
+    const [openTip, setOpenTip] = useState<boolean>(false);
+    // const [blobData, setBlobData] = useState();
+    const [id, setID] = useState<string>("idを発行してください");
     // const [webSocketData, setWebSocketData] = useState();
-    const [method1, setMethod1] = useState(true);
-    const [method2, setMethod2] = useState(false);
-    const [imagePath, setImagePath] = useState("");
-    const [concData, setConcData] = useState([]);
-    const [concData2, setConcData2] = useState([]);
-    const [typeParams, setTypeParams] = useState([
+    const [method, setMethod] = useState(true);
+    const [measurements, setMeasurements] = useState([
         {
-            type: "tetuolab",
+            type: "other",
+        },
+        {
+            type: "tetsuoSys",
         },
     ]);
-    const [typeParam, setTypeParam] = useState("");
+    const [measurement, setMeasurement] = useState("");
+    const [imagePath, setImagePath] = useState("");
+
+    const [typeParam, setTypeParam] = useState("gotoSys");
 
     const useStyles = makeStyles({
         root: {
@@ -35,13 +51,18 @@ const RecordingPage: React.FC = () => {
         },
         fID: {
             display: "flex",
+            // flexDirection: "row",
             justifyContent: "center",
             textAlign: "center",
             width: "100%",
         },
         tID: {
-            width: 200,
+            display: "flex",
+            width: "50%",
             height: 50,
+            justifyContent: "space-evenly",
+            // WebkitJustifyContent: "center",
+            alignItems: "center",
         },
     });
     const MyButton = styled(Button)({
@@ -51,19 +72,39 @@ const RecordingPage: React.FC = () => {
         color: "primary",
         fontWeight: 800,
     });
-    const createID = () => {
-        const id: any = getSaveImagesID({ type: typeParam });
-        console.log(typeParam);
-        if (typeof id == "number") {
-            setID(id);
+
+    useEffect(() => {
+        if (stop === true) {
+            // saveConcentration({
+            //     type: typeParam,
+            //     measurement: measurement,
+            //     id: id,
+            //     concentration: [store.getState().concReducer],
+            // }).then((res: any) => {
+            //     console.log(res);
+            // });
+            setStart(false);
         }
+    }, [stop]);
+
+    const handleCloseTip = (): void => {
+        setOpenTip(false);
     };
-    const setWebSocketData = (e: any) => {
-        const jsonData = JSON.parse(e.data);
-        console.log(jsonData);
-        setConcData((concData) => concData.concat(jsonData));
-        setImagePath(jsonData["face_image_path"]);
+    const handleClickButton = (): void => {
+        setOpenTip(true);
     };
+
+    const createID = () => {
+        getID({
+            type: typeParam,
+            measurement: measurement,
+            concentration: [],
+        }).then((res) => {
+            setID(res.data.id);
+        });
+        console.log(typeParam);
+    };
+
     const classes = useStyles();
     const recordButton = () => {
         if (start === false) {
@@ -90,52 +131,108 @@ const RecordingPage: React.FC = () => {
             );
         }
     };
+
+    const sendConcentration = () => {
+        if (stop === true) {
+            saveConcentration({
+                type: typeParam,
+                measurement: measurement,
+                id: id,
+                concentration: [store.getState().concReducer],
+            }).then((res: any) => {
+                console.log(res);
+            });
+            setStart(false);
+            setStop(false);
+        }
+    };
+
+    const sendButtonVisible = () => {
+        if (stop === true) {
+            return <MyButton onClick={sendConcentration}>集中度送信</MyButton>;
+        }
+        return;
+    };
+
     return (
         <div className={classes.root}>
             <WebCameraComponent
                 start={start}
                 stop={stop}
-                setBlobData={setBlobData}
-                setWebSocketData={setWebSocketData}
-                method1={method1}
-                method2={method2}
+                method={method}
             ></WebCameraComponent>
 
             <p>
                 <div className={classes.fID}>
-                    <MyButton onClick={createID}>id発行</MyButton>
-                    <div className={classes.tID}>{id}</div>
-                    <Autocomplete
-                        id="combo-box-demo"
-                        options={typeParams}
-                        getOptionLabel={(option) => option.type}
-                        style={{ width: 300 }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="システムの選択"
-                                variant="outlined"
+                    <div className={classes.tID}>
+                        <MyButton onClick={createID}>id発行</MyButton>
+                        <FormControl variant="outlined">
+                            <OutlinedInput
+                                type="text"
+                                value={id}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <Tooltip
+                                            arrow
+                                            open={openTip}
+                                            onClose={handleCloseTip}
+                                            disableHoverListener
+                                            placement="top"
+                                            title="Copied!"
+                                        >
+                                            <CopyToClipBoard text={id}>
+                                                <IconButton
+                                                    disabled={id === ""}
+                                                    onClick={handleClickButton}
+                                                >
+                                                    <AssignmentIcon />
+                                                </IconButton>
+                                            </CopyToClipBoard>
+                                        </Tooltip>
+                                    </InputAdornment>
+                                }
                             />
-                        )}
-                        onInputChange={(e, value) => {
-                            console.log(value);
-                            setTypeParam(value);
-                        }}
-                    />
+                        </FormControl>
+                        {/* <TextField value={id} variant="outlined" /> */}
+                        {/* <div className={classes.tID}>{id}</div> */}
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={measurements}
+                            getOptionLabel={(option) => option.type}
+                            style={{ width: 300 }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="システムの選択"
+                                    variant="outlined"
+                                />
+                            )}
+                            onInputChange={(e, value) => {
+                                console.log(value);
+                                setMeasurement(value);
+                            }}
+                        />
+                    </div>
                 </div>
             </p>
             <p>
                 <div className={classes.fID}>
-                    {recordButton()}
-                    <div className={classes.tID}></div>
+                    <div className={classes.tID}>
+                        {" "}
+                        {recordButton()}
+                        {sendButtonVisible()}
+                    </div>
+                    
                 </div>
             </p>
-            <div>
+
+            {/* <ChartViewComponent></ChartViewComponent> */}
+
+            {/* <div>
                 <ConcentrationViewComponent
                     concData1={concData}
-                    concData2={concData2}
                 ></ConcentrationViewComponent>
-            </div>
+            </div> */}
         </div>
     );
 };
