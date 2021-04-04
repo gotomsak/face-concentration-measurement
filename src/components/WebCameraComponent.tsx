@@ -90,11 +90,17 @@ const WebCameraComponent: React.FC<{
             webCameraInit().then((stream) => {
                 video!.srcObject = stream!;
                 setStreamState(stream!);
-                setRecorder(
-                    new MediaRecorder(stream!, {
-                        mimeType: "video/webm",
-                    })
-                );
+                setRecorder(() => {
+                    try {
+                        return new MediaRecorder(stream!, {
+                            mimeType: "video/webm",
+                        });
+                    } catch (err) {
+                        return new MediaRecorder(stream!, {
+                            mimeType: "video/mp4",
+                        });
+                    }
+                });
             });
         }
     }, [check]);
@@ -160,6 +166,7 @@ const WebCameraComponent: React.FC<{
                     ref={videoRef}
                     id="video"
                     autoPlay
+                    playsInline
                     className={classes.video}
                 ></video>
                 <canvas
