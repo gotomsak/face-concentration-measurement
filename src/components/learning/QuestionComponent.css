@@ -1,0 +1,16 @@
+.QuestionContainer {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+
+    height: auto;
+}
+.QuestionText {
+    /* display: flex; */
+    min-width: 100%;
+    text-align: left;
+    border: solid 1px black;
+}
+.QuestionImg {
+    /* justify-content: space-evenly; */
+}

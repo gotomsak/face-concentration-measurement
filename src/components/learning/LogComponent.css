@@ -1,0 +1,10 @@
+.LogContainer {
+    height: 50px;
+    margin: 50px;
+}
+textarea {
+    min-height: 250px;
+
+    min-width: 50%;
+    font-size: 20px;
+}

@@ -19,14 +19,15 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import Tooltip from "@material-ui/core/Tooltip";
 import CopyToClipBoard from "react-copy-to-clipboard";
+import { RecordingPageStyle, RecordingPageButton } from "../Styles";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
     const [stop, setStop] = useState(false);
     const [openTip, setOpenTip] = useState<boolean>(false);
-    // const [blobData, setBlobData] = useState();
+
     const [id, setID] = useState<string>("idを発行してください");
-    // const [webSocketData, setWebSocketData] = useState();
+
     const [method, setMethod] = useState(true);
     const [measurements, setMeasurements] = useState([
         {
@@ -40,38 +41,6 @@ const RecordingPage: React.FC = () => {
     const [imagePath, setImagePath] = useState("");
 
     const [typeParam, setTypeParam] = useState("gotoSys");
-
-    const useStyles = makeStyles({
-        root: {
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "center",
-            width: "100%",
-            height: "100%",
-        },
-        fID: {
-            display: "flex",
-            // flexDirection: "row",
-            justifyContent: "center",
-            textAlign: "center",
-            width: "100%",
-        },
-        tID: {
-            display: "flex",
-            width: "50%",
-            height: 50,
-            justifyContent: "space-evenly",
-            // WebkitJustifyContent: "center",
-            alignItems: "center",
-        },
-    });
-    const MyButton = styled(Button)({
-        height: 50,
-        width: 100,
-        background: "rgb(38.6%, 88.8%, 100%)",
-        color: "primary",
-        fontWeight: 800,
-    });
 
     useEffect(() => {
         if (stop === true) {
@@ -98,6 +67,7 @@ const RecordingPage: React.FC = () => {
         getID({
             type: typeParam,
             measurement: measurement,
+            user_id: Number(localStorage.getItem("user_id")),
             concentration: [],
         }).then((res) => {
             setID(res.data.id);
@@ -105,29 +75,29 @@ const RecordingPage: React.FC = () => {
         console.log(typeParam);
     };
 
-    const classes = useStyles();
+    const classes = RecordingPageStyle();
     const recordButton = () => {
         if (start === false) {
             return (
-                <MyButton
+                <RecordingPageButton
                     onClick={() => {
                         setStart(true);
                         setStop(false);
                     }}
                 >
                     開始
-                </MyButton>
+                </RecordingPageButton>
             );
         } else {
             return (
-                <MyButton
+                <RecordingPageButton
                     onClick={() => {
                         setStart(false);
                         setStop(true);
                     }}
                 >
                     停止
-                </MyButton>
+                </RecordingPageButton>
             );
         }
     };
@@ -137,6 +107,7 @@ const RecordingPage: React.FC = () => {
             saveConcentration({
                 type: typeParam,
                 measurement: measurement,
+                user_id: Number(localStorage.getItem("user_id")),
                 id: id,
                 concentration: [store.getState().concReducer],
             }).then((res: any) => {
@@ -149,7 +120,11 @@ const RecordingPage: React.FC = () => {
 
     const sendButtonVisible = () => {
         if (stop === true) {
-            return <MyButton onClick={sendConcentration}>集中度送信</MyButton>;
+            return (
+                <RecordingPageButton onClick={sendConcentration}>
+                    集中度送信
+                </RecordingPageButton>
+            );
         }
         return;
     };
@@ -165,7 +140,9 @@ const RecordingPage: React.FC = () => {
             <p>
                 <div className={classes.fID}>
                     <div className={classes.tID}>
-                        <MyButton onClick={createID}>id発行</MyButton>
+                        <RecordingPageButton onClick={createID}>
+                            id発行
+                        </RecordingPageButton>
                         <FormControl variant="outlined">
                             <OutlinedInput
                                 type="text"

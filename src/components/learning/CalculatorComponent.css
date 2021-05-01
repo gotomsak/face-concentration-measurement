@@ -1,0 +1,24 @@
+.CalculatorContainer div input {
+    width: 50px;
+    height: 50px;
+}
+.CalculatorContainer input {
+    width: 200px;
+    height: 20px;
+    font-size: 20px;
+    padding: none;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; /* Firefox */
+    -webkit-box-sizing: border-box; /* Chrome, Safari */
+}
+.CalculatorContainer input.clear {
+    width: 70px;
+}
+.CalculatorGrid {
+    display: grid;
+    grid-template-columns: 50px 50px 50px 50px;
+    /* grid-template-columns: repeat(3, 1fr); */
+}
+.CalculatorContainer {
+    margin: 50px;
+}
