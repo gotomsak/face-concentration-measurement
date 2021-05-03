@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MathWorkPageStyle } from "../../Styles";
-import ReadyViewComponent from "../../utils/ReadyViewComponent";
+import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
 import WebCameraComponent from "../../components/WebCameraComponent";
 function MathWorkPage() {
     const [startCheck, setStartCheck] = useState(false);
@@ -23,6 +23,18 @@ function MathWorkPage() {
             setStartCheck(true);
         }
     };
+
+    const readyViewText = () => {
+        return (
+            <div>
+                <h1>準備は良いですか？</h1>
+                <h2>良ければスタートボタンを押してください</h2>
+                <h3>10問おきに継続，終了を選べます</h3>
+                <h3>終了後アンケートにお答えください</h3>
+            </div>
+        );
+    };
+
     return (
         <div className={classes.root}>
             <h1>MathWorkPage</h1>
@@ -30,6 +42,7 @@ function MathWorkPage() {
                 cameraState={cameraState}
                 changeMethod={changeMethod}
                 startCheckButton={startCheckButton}
+                readyViewText={readyViewText()}
             ></ReadyViewComponent>
 
             <WebCameraComponent

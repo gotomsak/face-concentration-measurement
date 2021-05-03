@@ -5,13 +5,12 @@ const ReadyViewComponent: React.FC<{
     cameraState: any;
     changeMethod: any;
     startCheckButton: any;
-}> = ({ cameraState, changeMethod, startCheckButton }) => {
+    readyViewText: any;
+}> = ({ cameraState, changeMethod, startCheckButton, readyViewText }) => {
     return (
         <div className="ReadyViewContainer">
-            <h1>準備は良いですか？</h1>
-            <h2>良ければスタートボタンを押してください</h2>
-            <h3>10問おきに継続，終了を選べます</h3>
-            <h3>終了後アンケートにお答えください</h3>
+            {readyViewText()}
+
             <FormControlLabel
                 control={
                     <Checkbox

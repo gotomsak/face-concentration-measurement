@@ -12,7 +12,7 @@ import "./LearningPage.css";
 import { useHistory } from "react-router";
 import GymQuestionViewComponent from "../../components/learning/GymQuestionViewComponent";
 import { getQuestionIds } from "../../apis/backendAPI/learning/getQuestionIds";
-import FinishViewComponent from "../../components/learning/FinishViewComponent";
+import FinishViewComponent from "../../components/utils/FinishViewComponent";
 import { checkAnswerSection } from "../../apis/backendAPI/learning/checkAnswerSection";
 // import { pync } from "../apis/pyncAPI";
 import store from "../..";

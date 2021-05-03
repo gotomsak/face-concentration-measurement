@@ -2,23 +2,23 @@ import { Button } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { start } from "repl";
 import FinishViewComponent from "../../components/utils/FinishViewComponent";
-import MaxFrequencyComponent from "../../components/learning/MaxFrequencyComponent";
-import MinFrequencyComponent from "../../components/learning/MinFrequencyComponent";
+import MaxFrequencyComponent from "../../components/frequency/MaxFrequencyComponent";
+import MinFrequencyComponent from "../../components/frequency/MinFrequencyComponent";
 import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
 import WebCameraComponent from "../../components/WebCameraComponent";
 import { useHistory } from "react-router";
 import userEvent from "@testing-library/user-event";
-import { BtoF } from "../../apis/backendAPI/learning/interfaces";
-import { initMaxFrequency } from "../../apis/backendAPI/learning/initMaxFrequency";
-import { initMinFrequency } from "../../apis/backendAPI/learning/initMinFrequency";
+import { BtoF } from "../../apis/backendAPI/frequency/interfaces";
+import { initMaxFrequency } from "../../apis/backendAPI/frequency/initMaxFrequency";
+import { initMinFrequency } from "../../apis/backendAPI/frequency/initMinFrequency";
 import {
     InitMaxFrequency,
     InitMinFrequency,
-} from "../../apis/backendAPI/learning/interfaces";
+} from "../../apis/backendAPI/frequency/interfaces";
 
 function FrequencyPage() {
     const [startCheck, setStartCheck] = useState(false);
-
+    const [cameraState, setCameraState] = useState(false);
     // データが取り終わった時のステート
     const [finishCheck, setFinishCheck] = useState(false);
 
@@ -30,6 +30,8 @@ function FrequencyPage() {
     const [maxSend, setMaxSend] = useState(false);
     const [minSend, setMinSend] = useState(false);
     const [ready, setReady] = useState(false);
+    const [cameraStart, setCameraStart] = useState(false);
+    const [cameraStop, setCameraStop] = useState(false);
     const history = useHistory();
     const [webSocketData, setWebSocketData] = useState<BtoF>({
         blink: 0,
@@ -92,14 +94,6 @@ function FrequencyPage() {
             min_face_move_number: webSocketData["face_move"],
         };
     };
-    const webSocketDataAdd = (e: any) => {
-        const jsonData = JSON.parse(e.data);
-        const blinkCount: number = jsonData["blink"] ? 1 : 0;
-        setWebSocketData({
-            blink: webSocketData.blink + blinkCount,
-            face_move: webSocketData.face_move + jsonData["face_move"],
-        });
-    };
 
     const recordSelect = (e: any) => {
         if (e.currentTarget.value == "max") setStartCheck(true);
@@ -107,11 +101,7 @@ function FrequencyPage() {
         if (e.currentTarget.value == "min") setStartCheck(true);
         setMinRecord(true);
     };
-    const webSocketSendData = () => {
-        return {
-            type: "frequency",
-        };
-    };
+
     const readyViewText = () => {
         return (
             <div>
@@ -124,6 +114,13 @@ function FrequencyPage() {
             </div>
         );
     };
+
+    const changeMethod = (e: any) => {
+        if (e.target.name == "camera") {
+            setCameraState(e.target.checked);
+        }
+    };
+
     const renderRecord = () => {
         if (maxRecord) {
             return (
@@ -140,6 +137,15 @@ function FrequencyPage() {
             );
         }
     };
+    const startCheckButton = (e: any) => {
+        console.log(e.currentTarget.value);
+        if (e.currentTarget.value == 1) {
+            if (cameraState === true) {
+                setCameraStart(true);
+            }
+            setStartCheck(true);
+        }
+    };
     return (
         <div className="FrequencyPageContainer">
             {startCheck ? (
@@ -149,20 +155,17 @@ function FrequencyPage() {
                     setFinishFlag={setFinishFlag}
                 ></FinishViewComponent>
             ) : (
-                <h1>準備中</h1>
-                // <ReadyViewComponent
-
-                // ></ReadyViewComponent>
+                <ReadyViewComponent
+                    cameraState={cameraState}
+                    changeMethod={changeMethod}
+                    startCheckButton={startCheckButton}
+                    readyViewText={readyViewText()}
+                ></ReadyViewComponent>
             )}
             <WebCameraComponent
                 start={startCheck}
                 stop={finishCheck}
-                // setBlobData={setBlobData}
-                // setWebSocketData={webSocketDataAdd}
-                // setWebSocketData2={null}
                 method={false}
-                // method2={false}
-                // sendData={webSocketSendData}
             ></WebCameraComponent>
         </div>
     );

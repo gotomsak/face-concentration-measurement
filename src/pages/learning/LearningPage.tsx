@@ -18,7 +18,7 @@ import {
 import { useHistory } from "react-router";
 import QuestionViewComponent from "../../components/learning/QuestionViewComponent";
 import { getQuestionIds } from "../../apis/backendAPI/learning/getQuestionIds";
-import FinishViewComponent from "../../components/learning/FinishViewComponent";
+import FinishViewComponent from "../../components/utils/FinishViewComponent";
 import { checkAnswerSection } from "../../apis/backendAPI/learning/checkAnswerSection";
 
 import store from "../..";
@@ -28,7 +28,7 @@ import WebCameraComponent from "../../components/WebCameraComponent";
 // import { BtoFtoC } from "../apis/backendAPI/interfaces";
 import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import ConcentrationViewComponent from "../../components/learning/ConcentrationViewComponent";
-import ReadyViewComponent from "../../utils/ReadyViewComponent";
+import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
 
 function LearningPage() {
     const history = useHistory();
@@ -40,6 +40,7 @@ function LearningPage() {
     const [next, setNext] = useState(false);
 
     const [cameraState, setCameraState] = useState(false);
+    const [cameraStart, setCameraStart] = useState(false);
     const [cameraStop, setCameraStop] = useState(false);
     // 問題が10問とき終わったときのstate
     const [finish, setFinish] = useState(false);
@@ -49,7 +50,6 @@ function LearningPage() {
     const [qCount, setQCount] = useState(0);
 
     const [concData, setConcData] = useState([]);
-    const [cameraStart, setCameraStart] = useState(false);
 
     useEffect(() => {
         setStartTime(getNowTimeString());
@@ -135,6 +135,17 @@ function LearningPage() {
         }
     };
 
+    const readyViewText = () => {
+        return (
+            <div>
+                <h1>準備は良いですか？</h1>
+                <h2>良ければスタートボタンを押してください</h2>
+                <h3>10問おきに継続，終了を選べます</h3>
+                <h3>終了後アンケートにお答えください</h3>
+            </div>
+        );
+    };
+
     const startCheckButton = (e: any) => {
         console.log(e.currentTarget.value);
         if (e.currentTarget.value == 1) {
@@ -170,6 +181,7 @@ function LearningPage() {
                     cameraState={cameraState}
                     changeMethod={changeMethod}
                     startCheckButton={startCheckButton}
+                    readyViewText={readyViewText()}
                 ></ReadyViewComponent>
             )}
 
