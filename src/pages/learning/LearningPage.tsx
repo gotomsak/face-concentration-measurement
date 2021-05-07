@@ -46,7 +46,7 @@ function LearningPage() {
     const [finish, setFinish] = useState(false);
 
     // FinishViewのボタンクリック時の判定
-    const [finishFlag, setFinishFlag] = useState(false);
+    // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
     const [concData, setConcData] = useState([]);
@@ -75,7 +75,7 @@ function LearningPage() {
     }, [next]);
 
     useEffect(() => {
-        if (finishFlag === true) {
+        if (finish === true) {
             console.log("owaru");
             checkAnswerSection(setSectionResult())
                 .then((res) => {
@@ -91,9 +91,8 @@ function LearningPage() {
                 .catch((err) => {
                     console.log(err);
                 });
-            history.push("/questionnaire");
         }
-    }, [finishFlag]);
+    }, [finish]);
 
     useEffect(() => {
         if (startCheck === true) {
@@ -156,6 +155,9 @@ function LearningPage() {
         }
     };
 
+    const nextButton = (e: any) => {
+        history.push("/questionnaire");
+    };
     return (
         <div className="LearningPageContainer">
             {startCheck ? (
@@ -174,7 +176,7 @@ function LearningPage() {
                 )
             ) : finish ? (
                 <FinishViewComponent
-                    setFinishFlag={setFinishFlag}
+                    nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
                 <ReadyViewComponent
@@ -189,6 +191,7 @@ function LearningPage() {
                 start={cameraStart}
                 stop={cameraStop}
                 method={false}
+                frequency={null}
             ></WebCameraComponent>
         </div>
     );

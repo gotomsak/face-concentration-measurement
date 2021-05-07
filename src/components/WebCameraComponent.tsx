@@ -14,18 +14,19 @@ const WebCameraComponent: React.FC<{
     start: boolean;
     stop: boolean;
     method: boolean;
-}> = ({ start, stop, method }) => {
+    frequency: string | null;
+}> = ({ start, stop, method, frequency }) => {
     const videoRef = createRef<HTMLVideoElement>();
     const canvas1Ref = createRef<HTMLCanvasElement>();
     const canvas2Ref = createRef<HTMLCanvasElement>();
     const [video, setVideo] = useState<HTMLVideoElement>();
     const [check, setCheck] = useState(0);
-    const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+
     const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
     const [canvas1, setCanvas1] = useState<HTMLCanvasElement>();
     const [canvas2, setCanvas2] = useState<HTMLCanvasElement>();
     const [streamState, setStreamState] = useState<MediaStream | null>(null);
-    // refをstateにセット？
+
     useEffect(() => {
         if (videoRef.current !== null) {
             setCheck(1);
@@ -105,16 +106,17 @@ const WebCameraComponent: React.FC<{
         }
     }, [check]);
 
-    // start時にn秒おきに同時にwebsocketで画像を送信
+    // start時
     useEffect(() => {
         if (start === true) {
             recorder!.start(200);
             if (method == true) {
+                // ?
             }
         }
     }, [start]);
 
-    // stop時にe-learning中の動画を取得，保存
+    // stop時
     useEffect(() => {
         if (stop === true) {
             streamState?.getTracks()[0].stop();
@@ -131,27 +133,6 @@ const WebCameraComponent: React.FC<{
         }
     };
 
-    // blobdataを取得
-    const getBlobData = () => {
-        const _chunks = recordedChunks.splice(0, recordedChunks.length); // バッファを空にする
-        const b = new Blob(_chunks, {
-            type: "video/mp4",
-        });
-        return b;
-    };
-
-    // // 画像をbase64で取得
-    // const getCanvasData = () => {
-    //     // const canvas: HTMLCanvasElement = document.createElement("canvas");
-    //     // canvas.width = video!.offsetWidth;
-    //     // canvas.height = video!.offsetHeight;
-    //     canvas
-    //         .getContext("2d")!
-    //         .drawImage(video!, 0, 0, video!.offsetWidth, video!.offsetHeight);
-    //     const base64 = canvas.toDataURL("image/png");
-    //     return base64;
-    // };
-
     return (
         <div className={classes.WebCameraContainer}>
             <OpenCvProvider onLoad={onLoaded} openCvPath="./opencv.js">
@@ -161,6 +142,7 @@ const WebCameraComponent: React.FC<{
                     canvas2={canvas2}
                     start={start}
                     faceapi={faceapi}
+                    frequency={frequency}
                 ></ConcentrationEstimateComponent>
                 <video
                     ref={videoRef}

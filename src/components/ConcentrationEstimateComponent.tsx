@@ -21,7 +21,29 @@ const ConcentrationEstimateComponent: React.FC<{
     canvas2: any;
     start: any;
     faceapi: any;
-}> = ({ video, canvas1, canvas2, start, faceapi }) => {
+    frequency: string | null;
+    // maxSectionFacePointRef: any;
+    // minSectionFacePointRef: any;
+    // maxSectionBlinkRef: any;
+    // minSectionBlinkRef: any;
+    // maxSectionYawRef: any;
+    // maxSectionPitchRef: any;
+    // maxSectionRollRef: any;
+}> = ({
+    video,
+    canvas1,
+    canvas2,
+    start,
+    faceapi,
+    frequency,
+    // maxSectionFacePointRef,
+    // minSectionFacePointRef,
+    // maxSectionBlinkRef,
+    // minSectionBlinkRef,
+    // maxSectionYawRef,
+    // maxSectionPitchRef,
+    // maxSectionRollRef,
+}) => {
     const dispatch = useDispatch();
 
     const { loaded, cv } = useOpenCv();
@@ -29,18 +51,19 @@ const ConcentrationEstimateComponent: React.FC<{
     const [oldData, setOldData] = useState<any>([]);
 
     const [sectionBlink, setSectionBlink] = useState<any>([]);
-    const [sectionFacePoint, setSectionFacePoint] = useState<any>([]);
+    const [sectionFaceMove, setSectionFaceMove] = useState<any>([]);
     const [sectionAngle, setSectionAngle] = useState<any>([]);
+    const [facePointAll, setFacePointAll] = useState<any>([]);
 
     const [msSeparation, setMsSeparation] = useState(1000);
     const [separationNum, setSeparationNum] = useState(5);
-    const maxSectionFacePointRef = useRef(0);
-    const minSectionFacePointRef = useRef(0);
-    const maxSectionBlinkRef = useRef(0);
-    const minSectionBlinkRef = useRef(0);
-    const maxSectionYawRef = useRef(0);
-    const maxSectionPitchRef = useRef(0);
-    const maxSectionRollRef = useRef(0);
+    // const maxSectionFacePointRef = useRef(0);
+    // const minSectionFacePointRef = useRef(0);
+    // const maxSectionBlinkRef = useRef(0);
+    // const minSectionBlinkRef = useRef(0);
+    // const maxSectionYawRef = useRef(0);
+    // const maxSectionPitchRef = useRef(0);
+    // const maxSectionRollRef = useRef(0);
 
     useEffect(() => {
         if (cv) {
@@ -55,16 +78,23 @@ const ConcentrationEstimateComponent: React.FC<{
             setInterval(() => {
                 detect(faceapi, video, canvas1, canvas2, cvnew).then((res) => {
                     if (res === undefined) {
-                        sectionFacePoint.push(maxSectionFacePointRef.current);
-                        sectionBlink.push(maxSectionBlinkRef.current);
+                        sectionFaceMove.push(
+                            store.getState().maxFaceMoveReducer
+                        );
+                        sectionBlink.push(store.getState().maxBlinkReducer);
                         sectionAngle.push({
-                            yaw: maxSectionYawRef.current,
-                            pitch: maxSectionPitchRef.current,
-                            roll: maxSectionRollRef.current,
+                            yaw: store.getState().maxYawReducer,
+                            pitch: store.getState().maxPitchReducer,
+                            roll: store.getState().maxRollReducer,
                         });
                     } else {
                         PreprocessingData(res, oldData);
                     }
+                    dispatch({
+                        type: "facePointSet",
+                        face_point: res?.facePointAll,
+                    });
+
                     oldData.push(res);
                     ConcentrationCalculation();
                 });
@@ -73,69 +103,131 @@ const ConcentrationEstimateComponent: React.FC<{
     }, [start]);
 
     const ConcentrationCalculation = () => {
-        if (sectionFacePoint.length >= separationNum) {
-            const PointSum = sectionFacePoint.reduce(
+        if (sectionFaceMove.length >= separationNum) {
+            const PointSum = sectionFaceMove.reduce(
                 (sum: any, value: any) => sum + value,
                 0
             );
-
-            if (
-                minSectionFacePointRef.current > PointSum ||
-                minSectionFacePointRef.current === 0
-            )
-                minSectionFacePointRef.current = PointSum;
-            if (maxSectionFacePointRef.current < PointSum)
-                maxSectionFacePointRef.current = PointSum;
-
             const BlinkSum = sectionBlink.reduce(
                 (sum: any, value: any) => sum + (value == true ? 1 : 0),
                 0
             );
-            // if (minSectionBlinkRef.current > BlinkSum) setMinSectionBlink(BlinkSum);
-            if (maxSectionBlinkRef.current < BlinkSum)
-                maxSectionBlinkRef.current = BlinkSum;
 
-            let yawSum = 0;
-            let pitchSum = 0;
-            let rollSum = 0;
-            sectionAngle.forEach((value: any) => {
-                yawSum += value.yaw;
-                pitchSum += value.pitch;
-                rollSum += value.roll;
-            });
-            if (maxSectionYawRef.current < yawSum)
-                maxSectionYawRef.current = yawSum;
-            if (maxSectionPitchRef.current < pitchSum)
-                maxSectionPitchRef.current = pitchSum;
-            if (maxSectionRollRef.current < rollSum)
-                maxSectionRollRef.current = rollSum;
+            if (frequency !== null) {
+            }
 
-            const c1 = getConcentration(
-                BlinkSum,
-                maxSectionBlinkRef.current,
-                minSectionBlinkRef.current
-            );
+            if (frequency === "max") {
+                if (
+                    store.getState().maxFaceMoveReducer < PointSum ||
+                    store.getState().maxFaceMoveReducer === null
+                ) {
+                    dispatch({
+                        type: "maxFaceMoveSet",
+                        maxFaceMove: PointSum,
+                    });
+                }
 
-            const c2 = getConcentration(
-                PointSum,
-                maxSectionFacePointRef.current,
-                minSectionFacePointRef.current
-            );
+                if (
+                    store.getState().maxBlinkReducer < BlinkSum ||
+                    store.getState().maxBlinkReducer === null
+                )
+                    dispatch({
+                        type: "maxBlinkSet",
+                        maxBlink: BlinkSum,
+                    });
+            }
+            if (frequency == "min") {
+                if (
+                    store.getState().minFaceMoveReducer > PointSum ||
+                    store.getState().minFaceMoveReducer === null
+                ) {
+                    dispatch({
+                        type: "minFaceMoveSet",
+                        minFaceMove: PointSum,
+                    });
+                }
 
-            const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
-            const c3 = getConcentrationSynthesis(c1, c2, w);
-            const date = new Date();
+                if (
+                    store.getState().minBlinkReducer > BlinkSum ||
+                    store.getState().minBlinkReducer === null
+                )
+                    dispatch({
+                        type: "minBlinkSet",
+                        minBlink: BlinkSum,
+                    });
+            }
 
-            dispatch({
-                type: "concSet",
-                conc: { c1: c1, c2: c2, w: w, c3: c3, date: date },
-            });
-            console.log(store.getState().concReducer);
-            sectionFacePoint.shift();
+            if (frequency == null) {
+                let yawSum = 0;
+                let pitchSum = 0;
+                let rollSum = 0;
+                sectionAngle.forEach((value: any) => {
+                    yawSum += value.yaw;
+                    pitchSum += value.pitch;
+                    rollSum += value.roll;
+                });
+                // if (frequency == true) {
+                //     if (
+                //         store.getState().maxYawReducer < yawSum ||
+                //         store.getState().maxYawReducer === null
+                //     )
+                //         dispatch({
+                //             type: "maxYawSet",
+                //             maxYaw: yawSum,
+                //         });
+                //     if (
+                //         store.getState().maxPitchReducer < pitchSum ||
+                //         store.getState().maxPitchReducer === null
+                //     )
+                //         dispatch({
+                //             type: "maxPitchSet",
+                //             maxPitch: pitchSum,
+                //         });
+                //     if (
+                //         store.getState().maxRollReducer < rollSum ||
+                //         store.getState().maxRollReducer === null
+                //     )
+                //         dispatch({
+                //             type: "maxRollSet",
+                //             maxRoll: rollSum,
+                //         });
+                // }
+
+                const c1 = getConcentration(
+                    BlinkSum,
+                    store.getState().maxBlinkReducer,
+                    store.getState().minBlinkReducer
+                );
+
+                const c2 = getConcentration(
+                    PointSum,
+                    store.getState().maxFaceMoveReducer,
+                    store.getState().minFaceMoveReducer
+                );
+
+                const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
+                const c3 = getConcentrationSynthesis(c1, c2, w);
+                const date = new Date();
+
+                dispatch({
+                    type: "concSet",
+                    conc: {
+                        c1: c1,
+                        c2: c2,
+                        w: w,
+                        c3: c3,
+                        date: date,
+                        face_point: facePointAll,
+                    },
+                });
+                console.log(store.getState().concReducer);
+            }
+            sectionFaceMove.shift();
             sectionAngle.shift();
             sectionBlink.shift();
         }
     };
+
     const PreprocessingData = (newData: any, oldData: any) => {
         if (oldData.length > 0 && oldData.slice(-1)[0] !== undefined) {
             let AllPointSum = 0;
@@ -146,7 +238,7 @@ const ConcentrationEstimateComponent: React.FC<{
                 );
             }
             // console.log(AllPointSum);
-            sectionFacePoint.push(AllPointSum);
+            sectionFaceMove.push(AllPointSum);
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,

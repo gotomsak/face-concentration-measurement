@@ -20,6 +20,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import Tooltip from "@material-ui/core/Tooltip";
 import CopyToClipBoard from "react-copy-to-clipboard";
 import { RecordingPageStyle, RecordingPageButton } from "../Styles";
+import { getFrequency } from "../apis/backendAPI/frequency/getFrequency";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -27,7 +28,7 @@ const RecordingPage: React.FC = () => {
     const [openTip, setOpenTip] = useState<boolean>(false);
 
     const [id, setID] = useState<string>("idを発行してください");
-
+    const [frequencys, setFrequencys] = useState<any>();
     const [method, setMethod] = useState(true);
     const [measurements, setMeasurements] = useState([
         {
@@ -42,19 +43,25 @@ const RecordingPage: React.FC = () => {
 
     const [typeParam, setTypeParam] = useState("gotoSys");
 
+    // useEffect(() => {
+    //     if (stop === true) {
+    //         // saveConcentration({
+    //         //     type: typeParam,
+    //         //     measurement: measurement,
+    //         //     id: id,
+    //         //     concentration: [store.getState().concReducer],
+    //         // }).then((res: any) => {
+    //         //     console.log(res);
+    //         // });
+    //         setStart(false);
+    //     }
+    // }, [stop]);
     useEffect(() => {
-        if (stop === true) {
-            // saveConcentration({
-            //     type: typeParam,
-            //     measurement: measurement,
-            //     id: id,
-            //     concentration: [store.getState().concReducer],
-            // }).then((res: any) => {
-            //     console.log(res);
-            // });
-            setStart(false);
-        }
-    }, [stop]);
+        getFrequency().then((res: any) => {
+            setFrequencys(res);
+            console.log(res);
+        });
+    }, []);
 
     const handleCloseTip = (): void => {
         setOpenTip(false);
@@ -135,6 +142,7 @@ const RecordingPage: React.FC = () => {
                 start={start}
                 stop={stop}
                 method={method}
+                frequency={null}
             ></WebCameraComponent>
 
             <p>

@@ -40,7 +40,7 @@ function GymPage() {
     const [finish, setFinish] = useState(false);
 
     // FinishViewのボタンクリック時の判定
-    const [finishFlag, setFinishFlag] = useState(false);
+    // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
     const [blobData, setBlobData] = useState<Blob | null>(null);
     const [imagePath, setImagePath] = useState("");
@@ -68,11 +68,11 @@ function GymPage() {
     }, [next]);
 
     useEffect(() => {
-        if (finishFlag === true) {
+        if (finish === true) {
             console.log("owaru");
             history.push("/");
         }
-    }, [finishFlag]);
+    }, [finish]);
 
     useEffect(() => {
         if (startCheck === true) {
@@ -153,6 +153,9 @@ function GymPage() {
             </div>
         );
     };
+    const nextButton = (e: any) => {
+        history.push("/questionnaire");
+    };
     return (
         <div className="LearningPageContainer">
             {startCheck ? (
@@ -167,7 +170,7 @@ function GymPage() {
                 )
             ) : finish ? (
                 <FinishViewComponent
-                    setFinishFlag={setFinishFlag}
+                    nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
                 <h1>準備中</h1>
@@ -181,6 +184,7 @@ function GymPage() {
                 start={cameraStart}
                 stop={cameraStop}
                 method={false}
+                frequency={null}
                 // setBlobData={setBlobData}
                 // setWebSocketData={webSocketDataAdd}
                 // method1={method1}

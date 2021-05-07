@@ -15,6 +15,18 @@ import {
     InitMaxFrequency,
     InitMinFrequency,
 } from "../../apis/backendAPI/frequency/interfaces";
+import store from "../..";
+import { maxBlinkReducer } from "../../reducers/frequency/maxBlinkReducer";
+import {
+    makeStyles,
+    styled,
+    TextField,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
+} from "@material-ui/core";
+import { SourceCode } from "eslint";
+import { FrequencyPageStyle } from "../../Styles";
 
 function FrequencyPage() {
     const [startCheck, setStartCheck] = useState(false);
@@ -23,24 +35,23 @@ function FrequencyPage() {
     const [finishCheck, setFinishCheck] = useState(false);
 
     // 終了メッセージが表示されたあとのステート
-    const [finishFlag, setFinishFlag] = useState(false);
-    const [blobData, setBlobData] = useState<Blob | null>(null);
-    const [maxRecord, setMaxRecord] = useState(false);
-    const [minRecord, setMinRecord] = useState(false);
-    const [maxSend, setMaxSend] = useState(false);
-    const [minSend, setMinSend] = useState(false);
+    // const [finishFlag, setFinishFlag] = useState(false);
+
     const [ready, setReady] = useState(false);
     const [cameraStart, setCameraStart] = useState(false);
     const [cameraStop, setCameraStop] = useState(false);
     const history = useHistory();
-    const [webSocketData, setWebSocketData] = useState<BtoF>({
-        blink: 0,
-        face_move: 0,
-    });
+    const [environment, setEnvironment] = useState<string>("");
+    const [frequency, setFrequency] = useState<string | null>(null);
+
+    const classes = FrequencyPageStyle();
 
     useEffect(() => {
-        if (finishFlag === true) {
-            if (maxSend === true) {
+        if (finishCheck === true) {
+            setCameraStop(true);
+            setCameraStart(false);
+            setStartCheck(false);
+            if (frequency === "max") {
                 initMaxFrequency(initMaxFrequencyValue())
                     .then((res) => {
                         console.log(res);
@@ -49,7 +60,7 @@ function FrequencyPage() {
                         console.log(err);
                     });
             }
-            if (minSend === true) {
+            if (frequency === "min") {
                 initMinFrequency(initMinFrequencyValue())
                     .then((res) => {
                         console.log(res);
@@ -58,59 +69,77 @@ function FrequencyPage() {
                         console.log(err);
                     });
             }
-            history.push("/");
-        }
-    }, [finishFlag]);
-
-    useEffect(() => {
-        if (finishCheck === true) {
-            if (maxRecord === true) {
-                setMaxSend(true);
-                setMaxRecord(false);
-                setStartCheck(false);
-            }
-            if (minRecord === true) {
-                setMinSend(true);
-                setMinRecord(false);
-                setStartCheck(false);
-            }
         }
     }, [finishCheck]);
+
+    // useEffect(() => {
+    //     if (finishCheck === true) {
+    //     }
+    // }, [finishCheck]);
 
     const initMaxFrequencyValue = (): InitMaxFrequency => {
         return {
             user_id: Number(localStorage.getItem("user_id")),
-            max_frequency_video: blobData!,
-            max_blink_number: webSocketData["blink"],
-            max_face_move_number: webSocketData["face_move"],
+            max_frequency_data: {
+                max_blink: Number(store.getState().maxBlinkReducer),
+                max_face_move: Number(store.getState().maxFaceMoveReducer),
+                face_point_all: store.getState().facePointReducer,
+            },
+            environment: environment,
         };
     };
 
     const initMinFrequencyValue = (): InitMinFrequency => {
         return {
             user_id: Number(localStorage.getItem("user_id")),
-            min_frequency_video: blobData!,
-            min_blink_number: webSocketData["blink"],
-            min_face_move_number: webSocketData["face_move"],
+            min_frequency_data: {
+                min_blink: Number(store.getState().minBlinkReducer),
+                min_face_move: Number(store.getState().minFaceMoveReducer),
+                face_point_all: store.getState().facePointReducer,
+            },
+            environment: environment,
         };
     };
 
-    const recordSelect = (e: any) => {
-        if (e.currentTarget.value == "max") setStartCheck(true);
-        setMaxRecord(true);
-        if (e.currentTarget.value == "min") setStartCheck(true);
-        setMinRecord(true);
+    const recordSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFrequency((e.target as HTMLInputElement).value);
     };
 
     const readyViewText = () => {
         return (
             <div>
-                <Button onClick={recordSelect} color="secondary" value={"max"}>
+                <TextField
+                    label="環境"
+                    variant="outlined"
+                    onChange={(e: any) => {
+                        setEnvironment(e.target.value);
+                    }}
+                />
+
+                <RadioGroup
+                    aria-label="frequency"
+                    name="frequency"
+                    value={frequency}
+                    onChange={recordSelect}
+                >
+                    <FormControlLabel
+                        value="max"
+                        control={<Radio />}
+                        label="Max"
+                    />
+                    <FormControlLabel
+                        value="min"
+                        control={<Radio />}
+                        label="Min"
+                    />
+                </RadioGroup>
+
+                {/* <Button onClick={recordSelect} color="secondary" value={"max"}>
                     最高頻度を算出
                 </Button>
                 <Button onClick={recordSelect} color="secondary" value={"min"}>
                     最低頻度を算出
-                </Button>
+                </Button> */}
             </div>
         );
     };
@@ -122,14 +151,14 @@ function FrequencyPage() {
     };
 
     const renderRecord = () => {
-        if (maxRecord) {
+        if (frequency === "max") {
             return (
                 <MaxFrequencyComponent
                     setFinishCheck={setFinishCheck}
                 ></MaxFrequencyComponent>
             );
         }
-        if (minRecord) {
+        if (frequency === "min") {
             return (
                 <MinFrequencyComponent
                     setFinishCheck={setFinishCheck}
@@ -146,26 +175,33 @@ function FrequencyPage() {
             setStartCheck(true);
         }
     };
+    const nextButton = (e: any) => {
+        history.push("/");
+    };
     return (
-        <div className="FrequencyPageContainer">
+        <div className={classes.root}>
+            {/* <div className={classes.head}></div> */}
             {startCheck ? (
                 renderRecord()
             ) : finishCheck ? (
                 <FinishViewComponent
-                    setFinishFlag={setFinishFlag}
+                    nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
-                <ReadyViewComponent
-                    cameraState={cameraState}
-                    changeMethod={changeMethod}
-                    startCheckButton={startCheckButton}
-                    readyViewText={readyViewText()}
-                ></ReadyViewComponent>
+                <div className={classes.menu}>
+                    <ReadyViewComponent
+                        cameraState={cameraState}
+                        changeMethod={changeMethod}
+                        startCheckButton={startCheckButton}
+                        readyViewText={readyViewText()}
+                    ></ReadyViewComponent>
+                </div>
             )}
             <WebCameraComponent
-                start={startCheck}
-                stop={finishCheck}
+                start={cameraStart}
+                stop={cameraStop}
                 method={false}
+                frequency={frequency}
             ></WebCameraComponent>
         </div>
     );

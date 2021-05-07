@@ -8,6 +8,7 @@ import MathWorkPage from "./pages/mathwork/MathWorkPage";
 import LearningPage from "./pages/learning/LearningPage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
+import FrequencyPage from "./pages/frequency/FrequencyPage";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             <React.Fragment>
                 <Switch>
                     <Route exact path="/" component={TopPage}></Route>
+                    <Route path="/Frequency" component={FrequencyPage}></Route>
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>

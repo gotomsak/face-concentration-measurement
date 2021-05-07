@@ -16,12 +16,22 @@ const TopMenuComponent: React.FC = () => {
             <p>
                 <TopPageButton
                     onClick={() => {
+                        history.push("/Frequency");
+                    }}
+                >
+                    頻度初期化
+                </TopPageButton>
+            </p>
+            <p>
+                <TopPageButton
+                    onClick={() => {
                         history.push("/Recording");
                     }}
                 >
                     集中度測定
                 </TopPageButton>
             </p>
+
             <p>
                 <TopPageButton
                     onClick={() => {

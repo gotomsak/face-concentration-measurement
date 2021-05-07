@@ -9,7 +9,7 @@ const ReadyViewComponent: React.FC<{
 }> = ({ cameraState, changeMethod, startCheckButton, readyViewText }) => {
     return (
         <div className="ReadyViewContainer">
-            {readyViewText()}
+            {readyViewText}
 
             <FormControlLabel
                 control={
