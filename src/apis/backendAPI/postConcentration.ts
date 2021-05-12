@@ -1,9 +1,9 @@
 import axios from "axios";
 import "./index";
 import { backendAxiosConfig } from "./index";
-import { SaveConcentrationPost } from "./interfaces";
+import { PostConcentrationSave } from "./interfaces";
 
-export const saveConcentration = (postData: SaveConcentrationPost) => {
+export const postConcentration = (postData: PostConcentrationSave) => {
     return axios
         .post("/save_concent", postData, backendAxiosConfig)
         .then((res: any) => {

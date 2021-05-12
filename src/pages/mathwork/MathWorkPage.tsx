@@ -48,7 +48,6 @@ function MathWorkPage() {
             <WebCameraComponent
                 start={cameraStart}
                 stop={cameraStop}
-                method={false}
                 frequency={null}
             ></WebCameraComponent>
         </div>

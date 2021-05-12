@@ -9,24 +9,29 @@ import ConcentrationEstimateComponent from "./ConcentrationEstimateComponent";
 import { OpenCvProvider, useOpenCv } from "opencv-react";
 import * as faceapi from "face-api.js";
 import { Button, makeStyles, styled } from "@material-ui/core";
+import { postFacePoint } from "../apis/backendAPI/postFacePoint";
+
+import store from "..";
+import { useDispatch } from "react-redux";
 
 const WebCameraComponent: React.FC<{
     start: boolean;
     stop: boolean;
-    method: boolean;
     frequency: string | null;
-}> = ({ start, stop, method, frequency }) => {
+}> = ({ start, stop, frequency }) => {
     const videoRef = createRef<HTMLVideoElement>();
     const canvas1Ref = createRef<HTMLCanvasElement>();
     const canvas2Ref = createRef<HTMLCanvasElement>();
     const [video, setVideo] = useState<HTMLVideoElement>();
     const [check, setCheck] = useState(0);
+    // const [cntTime, setCntTime] = useState(0);
+    const dispatch = useDispatch();
 
     const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
     const [canvas1, setCanvas1] = useState<HTMLCanvasElement>();
     const [canvas2, setCanvas2] = useState<HTMLCanvasElement>();
     const [streamState, setStreamState] = useState<MediaStream | null>(null);
-
+    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
     useEffect(() => {
         if (videoRef.current !== null) {
             setCheck(1);
@@ -110,8 +115,20 @@ const WebCameraComponent: React.FC<{
     useEffect(() => {
         if (start === true) {
             recorder!.start(200);
-            if (method == true) {
-                // ?
+            if (frequency === null) {
+                setIntervalID(
+                    setInterval(() => {
+                        postFacePoint({
+                            id: store.getState().facePointIDReducer,
+                            face_point_all: store.getState().facePointReducer,
+                        }).then((res: any) => {
+                            console.log(res);
+                        });
+                        dispatch({
+                            type: "facePointReset",
+                        });
+                    }, 10000)
+                );
             }
         }
     }, [start]);
@@ -121,6 +138,18 @@ const WebCameraComponent: React.FC<{
         if (stop === true) {
             streamState?.getTracks()[0].stop();
             recorder!.stop();
+            if (frequency === null) {
+                clearInterval(Number(intervalID));
+                postFacePoint({
+                    id: store.getState().facePointIDReducer,
+                    face_point_all: store.getState().facePointReducer,
+                }).then((res: any) => {
+                    console.log(res);
+                });
+                dispatch({
+                    type: "facePointReset",
+                });
+            }
         }
     }, [stop]);
 

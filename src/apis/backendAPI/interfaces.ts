@@ -1,9 +1,14 @@
-export interface SaveConcentrationPost {
+export interface PostConcentrationSave {
     type: string;
     id: string;
     user_id: number;
     measurement: string;
     concentration: any[];
+}
+
+export interface PostFacePointSave {
+    id: string;
+    face_point_all: any[];
 }
 
 export interface GetIDPost {

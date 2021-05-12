@@ -183,7 +183,6 @@ function GymPage() {
             <WebCameraComponent
                 start={cameraStart}
                 stop={cameraStop}
-                method={false}
                 frequency={null}
                 // setBlobData={setBlobData}
                 // setWebSocketData={webSocketDataAdd}

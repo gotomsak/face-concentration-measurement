@@ -200,7 +200,6 @@ function FrequencyPage() {
             <WebCameraComponent
                 start={cameraStart}
                 stop={cameraStop}
-                method={false}
                 frequency={frequency}
             ></WebCameraComponent>
         </div>

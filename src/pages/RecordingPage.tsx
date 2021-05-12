@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import WebCameraComponent from "../components/WebCameraComponent";
 import { makeStyles, styled, Button, TextField } from "@material-ui/core";
 import ConcentrationViewComponent from "../components/ConcentrationViewComponent";
@@ -10,7 +10,7 @@ import { OpenCvProvider, useOpenCv } from "opencv-react";
 import * as faceapi from "face-api.js";
 import store from "..";
 import { Conc } from "../reducers/concReducer";
-import { saveConcentration } from "../apis/backendAPI/saveConcentration";
+import { postConcentration } from "../apis/backendAPI/postConcentration";
 import { getID } from "../apis/backendAPI/getID";
 import FormControl from "@material-ui/core/FormControl";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
@@ -21,15 +21,19 @@ import Tooltip from "@material-ui/core/Tooltip";
 import CopyToClipBoard from "react-copy-to-clipboard";
 import { RecordingPageStyle, RecordingPageButton } from "../Styles";
 import { getFrequency } from "../apis/backendAPI/frequency/getFrequency";
+import SetFrequencyComponent from "../components/utils/SetFrequencyComponent";
+import { useDispatch } from "react-redux";
+import { solvedIDsReducer } from "../reducers/learning/solvedIDsReducer";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
+    const dispatch = useDispatch();
     const [stop, setStop] = useState(false);
     const [openTip, setOpenTip] = useState<boolean>(false);
 
     const [id, setID] = useState<string>("idを発行してください");
     const [frequencys, setFrequencys] = useState<any>();
-    const [method, setMethod] = useState(true);
+
     const [measurements, setMeasurements] = useState([
         {
             type: "other",
@@ -43,22 +47,10 @@ const RecordingPage: React.FC = () => {
 
     const [typeParam, setTypeParam] = useState("gotoSys");
 
-    // useEffect(() => {
-    //     if (stop === true) {
-    //         // saveConcentration({
-    //         //     type: typeParam,
-    //         //     measurement: measurement,
-    //         //     id: id,
-    //         //     concentration: [store.getState().concReducer],
-    //         // }).then((res: any) => {
-    //         //     console.log(res);
-    //         // });
-    //         setStart(false);
-    //     }
-    // }, [stop]);
     useEffect(() => {
         getFrequency().then((res: any) => {
             setFrequencys(res);
+
             console.log(res);
         });
     }, []);
@@ -77,8 +69,21 @@ const RecordingPage: React.FC = () => {
             user_id: Number(localStorage.getItem("user_id")),
             concentration: [],
         }).then((res) => {
-            setID(res.data.id);
+            console.log(res);
+            console.log(res.data.conc_id);
+            console.log(res.data.face_point_id);
+            setID(res.data.conc_id);
+            dispatch({
+                type: "concIDSet",
+                conc_id: res.data.conc_id,
+            });
+            dispatch({
+                type: "facePointIDSet",
+                face_point_id: res.data.face_point_id,
+            });
         });
+        console.log(store.getState().facePointIDReducer);
+        console.log(store.getState().concIDReducer);
         console.log(typeParam);
     };
 
@@ -111,7 +116,7 @@ const RecordingPage: React.FC = () => {
 
     const sendConcentration = () => {
         if (stop === true) {
-            saveConcentration({
+            postConcentration({
                 type: typeParam,
                 measurement: measurement,
                 user_id: Number(localStorage.getItem("user_id")),
@@ -141,7 +146,6 @@ const RecordingPage: React.FC = () => {
             <WebCameraComponent
                 start={start}
                 stop={stop}
-                method={method}
                 frequency={null}
             ></WebCameraComponent>
 
@@ -199,6 +203,15 @@ const RecordingPage: React.FC = () => {
                         />
                     </div>
                 </div>
+            </p>
+            <p>
+                {frequencys ? (
+                    <SetFrequencyComponent
+                        frequencys={frequencys}
+                    ></SetFrequencyComponent>
+                ) : (
+                    <></>
+                )}
             </p>
             <p>
                 <div className={classes.fID}>

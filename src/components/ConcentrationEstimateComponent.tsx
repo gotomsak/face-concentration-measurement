@@ -53,7 +53,6 @@ const ConcentrationEstimateComponent: React.FC<{
     const [sectionBlink, setSectionBlink] = useState<any>([]);
     const [sectionFaceMove, setSectionFaceMove] = useState<any>([]);
     const [sectionAngle, setSectionAngle] = useState<any>([]);
-    const [facePointAll, setFacePointAll] = useState<any>([]);
 
     const [msSeparation, setMsSeparation] = useState(1000);
     const [separationNum, setSeparationNum] = useState(5);
@@ -217,7 +216,7 @@ const ConcentrationEstimateComponent: React.FC<{
                         w: w,
                         c3: c3,
                         date: date,
-                        face_point: facePointAll,
+                        face_point: store.getState().facePointReducer,
                     },
                 });
                 console.log(store.getState().concReducer);

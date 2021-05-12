@@ -4,7 +4,7 @@ export const facePointReducer = (state: any = [], action: any): any => {
             state = state.concat([action.face_point]);
             return state;
         case "facePointReset":
-            return 0;
+            return [];
         default:
             return state;
     }
