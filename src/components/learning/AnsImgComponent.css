@@ -1,0 +1,7 @@
+.AnsList {
+    display: flex;
+    justify-content: space-between;
+
+    width: auto;
+    margin: 10px;
+}

@@ -1,45 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Button, makeStyles, styled } from "@material-ui/core";
 import { useHistory } from "react-router";
+import { TopPageStyle, TopPageButton } from "../Styles";
+import TopMenuComponent from "../components/TopMenuComponent";
+import { checkSession } from "../apis/backendAPI/userAuth";
+import { signout } from "../apis/backendAPI/userAuth";
 
 const TopPage: React.FC = () => {
     const history = useHistory();
-    const useStyles = makeStyles({
-        root: {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            // textAlign: "center",
-            alignItems: "center",
-            width: "100%",
-            height: "100%",
-        },
-    });
-    const MyButton = styled(Button)({
-        height: 50,
-        width: 200,
-        background: "rgb(38.6%, 88.8%, 100%)",
-        // variant: "contained",
-        color: "primary",
-        size: "medium",
-        fontWeight: 800,
-    });
-    const classes = useStyles();
+
+    const classes = TopPageStyle();
+
+    useLayoutEffect(() => {
+        checkSession()
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                history.push("/Signin");
+            });
+    }, []);
+
     return (
         <div className={classes.root}>
             <h1>集中度測定器</h1>
-            <p>
-                <MyButton
-                    onClick={() => {
-                        history.push("/Recording");
-                    }}
-                >
-                    開始
-                </MyButton>
-            </p>
-            <p>
-                <MyButton>使い方</MyButton>
-            </p>
+            <TopMenuComponent></TopMenuComponent>
         </div>
     );
 };

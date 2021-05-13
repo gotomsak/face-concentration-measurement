@@ -103,5 +103,6 @@ export async function detect(
         ],
         ear: { left: resel, right: reser },
         angle: resh,
+        facePointAll: landmarks,
     };
 }
