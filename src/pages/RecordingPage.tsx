@@ -67,7 +67,7 @@ const RecordingPage: React.FC = () => {
             type: typeParam,
             measurement: measurement,
             user_id: Number(localStorage.getItem("user_id")),
-            concentration: [],
+            concentration: store.getState().concReducer,
         }).then((res) => {
             console.log(res);
             console.log(res.data.conc_id);
@@ -115,13 +115,14 @@ const RecordingPage: React.FC = () => {
     };
 
     const sendConcentration = () => {
+        console.log(store.getState().concReducer);
         if (stop === true) {
             postConcentration({
                 type: typeParam,
                 measurement: measurement,
                 user_id: Number(localStorage.getItem("user_id")),
                 id: id,
-                concentration: [store.getState().concReducer],
+                concentration: store.getState().concReducer,
             }).then((res: any) => {
                 console.log(res);
             });

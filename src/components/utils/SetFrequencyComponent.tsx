@@ -33,12 +33,10 @@ const SetFrequencyComponent: React.FC<{ frequencys: any }> = ({
                     frequencys.data["max_frequency"].forEach((element: any) => {
                         if (element.environment === value) {
                             console.log(store.getState().maxBlinkReducer);
-                            console.log(
-                                element["max_frequency_data"].max_blink
-                            );
+                            console.log(element.id);
                             dispatch({
                                 type: "maxFreqIDSet",
-                                action: element["max_frequency_data"].id,
+                                max_freq_id: element.id,
                             });
                             dispatch({
                                 type: "maxBlinkSet",
@@ -77,7 +75,7 @@ const SetFrequencyComponent: React.FC<{ frequencys: any }> = ({
                             );
                             dispatch({
                                 type: "minFreqIDSet",
-                                action: element["min_frequency_data"].id,
+                                min_freq_id: element.id,
                             });
                             dispatch({
                                 type: "minBlinkSet",

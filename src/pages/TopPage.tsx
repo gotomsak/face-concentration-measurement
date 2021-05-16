@@ -23,6 +23,7 @@ const TopPage: React.FC = () => {
 
     return (
         <div className={classes.root}>
+            <h5>user_id: {localStorage.getItem("user_id")}</h5>
             <h1>集中度測定器</h1>
             <TopMenuComponent></TopMenuComponent>
         </div>

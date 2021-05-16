@@ -20,7 +20,6 @@ import { maxPitchReducer } from "./reducers/frequency/maxPitchReducer";
 import { facePointReducer } from "./reducers/frequency/facePointReducer";
 import { facePointIDReducer } from "./reducers/facePointIDReducer";
 import { concIDReducer } from "./reducers/concIDReducer";
-import { freqIDReducer } from "./reducers/freqIDReducer";
 
 export default function createStore(histroy: any) {
     return reduxCreateStore(
@@ -41,7 +40,7 @@ export default function createStore(histroy: any) {
             facePointReducer,
             facePointIDReducer,
             concIDReducer,
-            freqIDReducer,
+
             router: connectRouter(histroy),
         }),
         applyMiddleware(routerMiddleware(histroy))
