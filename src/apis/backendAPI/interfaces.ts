@@ -2,6 +2,8 @@ export interface PostConcentrationSave {
     type: string;
     id: string;
     user_id: number;
+    work: string;
+    memo: string;
     measurement: string;
     concentration: any[];
 }
@@ -14,6 +16,8 @@ export interface PostFacePointSave {
 export interface GetIDPost {
     type: string;
     measurement: string;
+    work: string;
+    memo: string;
     user_id: number;
     concentration: any[];
 }

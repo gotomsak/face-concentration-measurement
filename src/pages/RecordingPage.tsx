@@ -34,16 +34,18 @@ const RecordingPage: React.FC = () => {
     const [id, setID] = useState<string>("idを発行してください");
     const [frequencys, setFrequencys] = useState<any>();
 
-    const [measurements, setMeasurements] = useState([
-        {
-            type: "other",
-        },
-        {
-            type: "tetsuoSys",
-        },
-    ]);
-    const [measurement, setMeasurement] = useState("");
+    // const [work, setWork] = useState([
+    //     {
+    //         type: "other",
+    //     },
+    //     {
+    //         type: "tetsuoSys",
+    //     },
+    // ]);
+
     const [imagePath, setImagePath] = useState("");
+    const [work, setWork] = useState("");
+    const [memo, setMemo] = useState("");
 
     const [typeParam, setTypeParam] = useState("gotoSys");
 
@@ -65,7 +67,9 @@ const RecordingPage: React.FC = () => {
     const createID = () => {
         getID({
             type: typeParam,
-            measurement: measurement,
+            work: work,
+            memo: memo,
+            measurement: "gotoConc",
             user_id: Number(localStorage.getItem("user_id")),
             concentration: store.getState().concReducer,
         }).then((res) => {
@@ -119,7 +123,9 @@ const RecordingPage: React.FC = () => {
         if (stop === true) {
             postConcentration({
                 type: typeParam,
-                measurement: measurement,
+                work: work,
+                memo: memo,
+                measurement: "gotoConc",
                 user_id: Number(localStorage.getItem("user_id")),
                 id: id,
                 concentration: store.getState().concReducer,
@@ -183,11 +189,33 @@ const RecordingPage: React.FC = () => {
                                 }
                             />
                         </FormControl>
+                        <TextField
+                            label="作業名"
+                            variant="outlined"
+                            value={work}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                                setWork(e.target.value);
+                            }}
+                        ></TextField>
+
+                        <TextField
+                            label="メモ"
+                            variant="outlined"
+                            value={memo}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                                setMemo(e.target.value);
+                            }}
+                        ></TextField>
+
                         {/* <TextField value={id} variant="outlined" /> */}
                         {/* <div className={classes.tID}>{id}</div> */}
-                        <Autocomplete
+                        {/* <Autocomplete
                             id="combo-box-demo"
-                            options={measurements}
+                            options={works}
                             getOptionLabel={(option) => option.type}
                             style={{ width: 300 }}
                             renderInput={(params) => (
@@ -199,29 +227,31 @@ const RecordingPage: React.FC = () => {
                             )}
                             onInputChange={(e, value) => {
                                 console.log(value);
-                                setMeasurement(value);
+                                setWork(value);
                             }}
-                        />
+                        /> */}
                     </div>
                 </div>
             </p>
-            <p>
-                {frequencys ? (
-                    <SetFrequencyComponent
-                        frequencys={frequencys}
-                    ></SetFrequencyComponent>
-                ) : (
-                    <></>
-                )}
-            </p>
+
             <p>
                 <div className={classes.fID}>
-                    <div className={classes.tID}>
-                        {" "}
-                        {recordButton()}
-                        {sendButtonVisible()}
-                    </div>
-                    
+                    {frequencys ? (
+                        <SetFrequencyComponent
+                            frequencys={frequencys}
+                        ></SetFrequencyComponent>
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
+            </p>
+
+            <p>
+                <div className={classes.fID}>
+                    {/* <div className={classes.tID}> */}
+                    {recordButton()}
+                    {sendButtonVisible()}
+                    {/* </div>  */}
                 </div>
             </p>
 

@@ -83,7 +83,14 @@ export const RecordingPageStyle = makeStyles({
         height: 50,
         justifyContent: "space-evenly",
         // WebkitJustifyContent: "center",
+
         alignItems: "center",
+    },
+    setFreqComp: {
+        display: "flex",
+        justifyContent: "space-evenly",
+
+        // justifyContent: "space-evenly",
     },
 });
 export const TopPageButton = styled(Button)({

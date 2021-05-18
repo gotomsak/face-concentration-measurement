@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, createRef } from "react";
 
 import ReactApexCharts from "react-apexcharts";
+// import Chart from "react-apexcharts";
 import ApexCharts from "apexcharts";
 import store from "..";
 
@@ -80,22 +81,42 @@ const ChartViewComponent: React.FC<{ concViewData: any[] }> = ({
                 width={1000}
                 type="line"
                 options={{
-                    chart: {
-                        id: "realtime",
-                        animations: {
-                            enabled: true,
-                            easing: "linear",
-                            dynamicAnimation: {
-                                speed: 500,
-                            },
-                        },
-                        zoom: {
-                            enabled: false,
+                    // chart: {
+                    //     id: "realtime",
+                    //     animations: {
+                    //         enabled: true,
+                    //         easing: "linear",
+                    //         dynamicAnimation: {
+                    //             speed: 500,
+                    //         },
+                    //     },
+                    //     zoom: {
+                    //         enabled: false,
+                    //     },
+                    // },
+                    tooltip: {
+                        enabled: true,
+                        x: {
+                            format: "yyyy/MM/dd HH:mm:ss.f",
                         },
                     },
                     xaxis: {
-                        type: "category",
-                        range: 10,
+                        type: "datetime",
+                        // categorise: concViewData[0][x],
+                        // range: concViewData.length,
+                        labels: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                        },
+                        axisTicks: {
+                            show: true,
+                        },
+                        crosshairs: {
+                            show: true,
+                        },
+                        // range: 10,
                     },
                     yaxis: {
                         max: 1,
@@ -105,11 +126,11 @@ const ChartViewComponent: React.FC<{ concViewData: any[] }> = ({
                     noData: {
                         text: "Loading...",
                     },
-                    stroke: {
-                        curve: "smooth",
-                    },
+                    // stroke: {
+                    //     curve: "smooth",
+                    // },
                     legend: {
-                        show: false,
+                        show: true,
                     },
                 }}
                 series={concViewData}
