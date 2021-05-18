@@ -9,6 +9,7 @@ import LearningPage from "./pages/learning/LearningPage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
 import FrequencyPage from "./pages/frequency/FrequencyPage";
+import AnalysisPage from "./pages/analysis/AnalysisPage";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>
+                    <Route path="/Analysis" component={AnalysisPage}></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
                 </Switch>

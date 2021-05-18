@@ -6,8 +6,9 @@ export interface Conc {
     c3: any[];
     w: any[];
     date: any[];
-    face_point: string;
-    freq_id: string;
+    face_point_id: string;
+    max_freq_id: string;
+    min_freq_id: string;
 }
 
 export const concReducer = (
@@ -17,8 +18,9 @@ export const concReducer = (
         c3: [],
         w: [],
         date: [],
-        face_point: "",
-        freq_id: "",
+        face_point_id: "",
+        max_freq_id: "",
+        min_freq_id: "",
     },
     action: any
 ): any => {
@@ -32,17 +34,31 @@ export const concReducer = (
 
             return state;
 
-        case "freqIDSet":
-            state.freq_id = action.freq_id;
+        case "maxFreqIDSet":
+            state.max_freq_id = action.max_freq_id;
+            return state;
 
+        case "minFreqIDSet":
+            state.min_freq_id = action.min_freq_id;
+            return state;
+
+        case "freqIDReset":
+            state.max_freq_id = "";
+            state.min_freq_id = "";
             return state;
 
         case "facePointIDSet":
-            state.face_point = action.face_point;
+            state.face_point_id = action.face_point_id;
             return state;
 
         case "concReset":
-            return [];
+            state.c1 = [];
+            state.c2 = [];
+            state.c3 = [];
+            state.w = [];
+            state.date = [];
+
+            return state;
 
         default:
             return state;
