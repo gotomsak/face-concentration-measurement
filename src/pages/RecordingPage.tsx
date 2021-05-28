@@ -24,6 +24,7 @@ import { getFrequency } from "../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../components/utils/SetFrequencyComponent";
 import { useDispatch } from "react-redux";
 import { solvedIDsReducer } from "../reducers/learning/solvedIDsReducer";
+import { concIDReducer } from "../reducers/concIDReducer";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -33,6 +34,10 @@ const RecordingPage: React.FC = () => {
 
     const [id, setID] = useState<string>("idを発行してください");
     const [frequencys, setFrequencys] = useState<any>();
+    const [viewC3, setViewC3] = useState(0);
+    const [viewC2, setViewC2] = useState(0);
+    const [viewC1, setViewC1] = useState(0);
+    const [viewW, setViewW] = useState(0);
 
     // const [work, setWork] = useState([
     //     {
@@ -55,7 +60,16 @@ const RecordingPage: React.FC = () => {
 
             console.log(res);
         });
+        store.subscribe(() => {
+            console.log(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
+            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
+            setViewW(store.getState().concReducer.w.slice(-1)[0]);
+        });
     }, []);
+
+    console.log("nandeyanen");
 
     const handleCloseTip = (): void => {
         setOpenTip(false);
@@ -254,6 +268,10 @@ const RecordingPage: React.FC = () => {
                     {/* </div>  */}
                 </div>
             </p>
+            <h5>c3: {viewC3}</h5>
+            <h5>c2: {viewC2}</h5>
+            <h5>c1: {viewC1}</h5>
+            <h5>w: {viewW}</h5>
 
             {/* <ChartViewComponent></ChartViewComponent> */}
 

@@ -107,13 +107,11 @@ const ConcentrationEstimateComponent: React.FC<{
                 (sum: any, value: any) => sum + value,
                 0
             );
+            console.log("pointSum: " + PointSum.toString());
             const BlinkSum = sectionBlink.reduce(
                 (sum: any, value: any) => sum + (value == true ? 1 : 0),
                 0
             );
-
-            if (frequency !== null) {
-            }
 
             if (frequency === "max") {
                 if (
@@ -165,32 +163,6 @@ const ConcentrationEstimateComponent: React.FC<{
                     pitchSum += value.pitch;
                     rollSum += value.roll;
                 });
-                // if (frequency == true) {
-                //     if (
-                //         store.getState().maxYawReducer < yawSum ||
-                //         store.getState().maxYawReducer === null
-                //     )
-                //         dispatch({
-                //             type: "maxYawSet",
-                //             maxYaw: yawSum,
-                //         });
-                //     if (
-                //         store.getState().maxPitchReducer < pitchSum ||
-                //         store.getState().maxPitchReducer === null
-                //     )
-                //         dispatch({
-                //             type: "maxPitchSet",
-                //             maxPitch: pitchSum,
-                //         });
-                //     if (
-                //         store.getState().maxRollReducer < rollSum ||
-                //         store.getState().maxRollReducer === null
-                //     )
-                //         dispatch({
-                //             type: "maxRollSet",
-                //             maxRoll: rollSum,
-                //         });
-                // }
 
                 const c1 = getConcentration(
                     BlinkSum,
@@ -200,7 +172,7 @@ const ConcentrationEstimateComponent: React.FC<{
 
                 const c2 = getConcentration(
                     PointSum,
-                    store.getState().maxFaceMoveReducer,
+                    store.getState().maxFaceMoveReducer - 100,
                     store.getState().minFaceMoveReducer
                 );
 
