@@ -10,13 +10,17 @@ import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
 import FrequencyPage from "./pages/frequency/FrequencyPage";
 import AnalysisPage from "./pages/analysis/AnalysisPage";
-
+import AdminTopPage from "./pages/admin/AdminTopPage";
+import AdminSigninPage from "./pages/admin/AdminSigninPage";
+import AdminSignupPage from "./pages/admin/AdminSignupPage";
+import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
 function App() {
     return (
         <div className="App">
             <React.Fragment>
                 <Switch>
                     <Route exact path="/" component={TopPage}></Route>
+                    <Route path="/Admin" component={AdminTopPage}></Route>
                     <Route path="/Frequency" component={FrequencyPage}></Route>
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
@@ -24,6 +28,18 @@ function App() {
                     <Route path="/Analysis" component={AnalysisPage}></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
+                    <Route
+                        path="/AdminSignin"
+                        component={AdminSigninPage}
+                    ></Route>
+                    <Route
+                        path="/AdminSignup"
+                        component={AdminSignupPage}
+                    ></Route>
+                    <Route
+                        path="/AdminAnalysis"
+                        component={AdminAnalysisPage}
+                    ></Route>
                 </Switch>
             </React.Fragment>
         </div>
