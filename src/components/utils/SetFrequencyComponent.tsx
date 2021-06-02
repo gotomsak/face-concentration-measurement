@@ -113,4 +113,4 @@ const SetFrequencyComponent: React.FC<{ frequencys: any }> = ({
     );
 };
 
-export default SetFrequencyComponent;
+export default React.memo(SetFrequencyComponent);

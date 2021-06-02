@@ -5,4 +5,4 @@ const TitleComponent: React.FC<{ title: string }> = ({ title }) => {
     return <div className="TitleContainer">{title}</div>;
 };
 
-export default TitleComponent;
+export default React.memo(TitleComponent);

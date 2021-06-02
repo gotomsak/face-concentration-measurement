@@ -129,7 +129,7 @@ const GymQuestionViewComponent: React.FC<{
             <QuestionComponent questionText={questionText}></QuestionComponent>
 
             {/* <div className="LogsContainer"> */}
-            <div className={classes.root}>
+            {/* <div className={classes.root}>
                 <Grid item>
                     <Grid container spacing={spacing}>
                         <Grid>
@@ -146,7 +146,7 @@ const GymQuestionViewComponent: React.FC<{
                         </Grid>
                     </Grid>
                 </Grid>
-            </div>
+            </div> */}
 
             {changeAnsType()}
             {answerResult !== "" && (

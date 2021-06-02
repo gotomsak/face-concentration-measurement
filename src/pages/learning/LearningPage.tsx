@@ -34,8 +34,9 @@ import { getIDLogs } from "../../apis/backendAPI/admin/getIDLogs";
 import { postConcentSplitSave } from "../../apis/backendAPI/postConcentSplitSave";
 import { getFrequency } from "../../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../../components/utils/SetFrequencyComponent";
+import ConcentTextViewComponent from "../../components/ConcentTextViewComponent";
 
-function LearningPage() {
+const LearningPage: React.FC = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const selector = useSelector((state) => state);
@@ -55,7 +56,6 @@ function LearningPage() {
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
-    const [concData, setConcData] = useState([]);
     const [viewC3, setViewC3] = useState(0);
     const [viewC2, setViewC2] = useState(0);
     const [viewC1, setViewC1] = useState(0);
@@ -234,7 +234,6 @@ function LearningPage() {
                     <div>
                         <QuestionViewComponent
                             questionID={questionID}
-                            concentrationData={concData}
                             setNext={setNext}
                         ></QuestionViewComponent>
                         {/* <ConcentrationViewComponent
@@ -271,11 +270,13 @@ function LearningPage() {
                 stop={cameraStop}
                 frequency={null}
             ></WebCameraComponent>
-            <h5>c3: {viewC3}</h5>
-            <h5>c2: {viewC2}</h5>
-            <h5>c1: {viewC1}</h5>
-            <h5>w: {viewW}</h5>
+            <ConcentTextViewComponent
+                viewC3={viewC3}
+                viewC2={viewC2}
+                viewC1={viewC1}
+                viewW={viewW}
+            ></ConcentTextViewComponent>
         </div>
     );
-}
-export default LearningPage;
+};
+export default React.memo(LearningPage);

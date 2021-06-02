@@ -20,4 +20,4 @@ const QuestionComponent: React.FC<{
     );
 };
 
-export default QuestionComponent;
+export default React.memo(QuestionComponent);

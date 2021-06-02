@@ -29,4 +29,4 @@ const ReadyViewComponent: React.FC<{
     );
 };
 
-export default ReadyViewComponent;
+export default React.memo(ReadyViewComponent);

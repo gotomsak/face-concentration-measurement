@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import TitleComponent from "./TitleComponent";
 import QuestionComponent from "./QuestionComponent";
 import LogComponent from "./LogComponent";
@@ -19,8 +19,7 @@ import AnsImgComponent from "./AnsImgComponent";
 const QuestionViewComponent: React.FC<{
     questionID: number;
     setNext: any;
-    concentrationData: any[];
-}> = ({ questionID, setNext, concentrationData }) => {
+}> = ({ questionID, setNext }) => {
     const dispatch = useDispatch();
     const [questionText, setQuestionText] = useState("");
     const [questionImg, setQuestionImg] = useState([]);
@@ -65,12 +64,26 @@ const QuestionViewComponent: React.FC<{
     }, [answerFinal]);
 
     useEffect(() => {
+        // calculatorRef.current = calculatorResult;
+        if (log === "") {
+            // setLog(calculatorRef.current);
+            setLog(calculatorResult);
+        }
+        if (calculatorResult !== "") {
+            setLog(log + "\n" + calculatorResult);
+        }
+    }, [calculatorResult]);
+
+    useEffect(() => {
         questionFetch(questionID);
     }, [questionID]);
 
     useEffect(() => {
         refWindowNonFocusTimer.current = windowNonFocusTimer;
     }, [windowNonFocusTimer]);
+    // useEffect(() => {
+    //     console.log("logChange");
+    // }, [log]);
 
     useEffect(() => {
         let windowNonFocusTimerFlag: any;
@@ -124,6 +137,11 @@ const QuestionViewComponent: React.FC<{
         window.scrollTo(0, 0);
     };
 
+    const changeText = useCallback((e: any) => {
+        // console.log(e.target.value);
+        setLog(e.target.value);
+    }, []);
+
     const changeAnsType = () => {
         console.log(answerText.length);
         console.log(answerText);
@@ -156,13 +174,20 @@ const QuestionViewComponent: React.FC<{
 
             {/* <div className="LogsContainer"> */}
             <div className={classes.root}>
+                {/* <GridLogsComponent
+                    calculatorResult={calculatorResult}
+                    log={log}
+                    setLog={setLog}
+                    setCalculatorResult={setCalculatorResult}
+                ></GridLogsComponent> */}
                 <Grid item>
                     <Grid container spacing={spacing}>
                         <Grid>
                             <LogComponent
-                                calculatorResult={calculatorResult}
+                                // calculatorResult={calculatorResult}
                                 log={log}
-                                setLog={setLog}
+                                changeText={changeText}
+                                // setLog={setLog}
                             ></LogComponent>
                         </Grid>
                         <Grid>
@@ -187,4 +212,4 @@ const QuestionViewComponent: React.FC<{
     );
 };
 
-export default QuestionViewComponent;
+export default React.memo(QuestionViewComponent);

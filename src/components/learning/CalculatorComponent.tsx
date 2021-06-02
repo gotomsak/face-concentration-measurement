@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "./CalculatorComponent.css";
 
 const CalculatorComponent: React.FC<{ calculatorResult: any }> = ({
@@ -113,4 +113,4 @@ const CalculatorComponent: React.FC<{ calculatorResult: any }> = ({
     );
 };
 
-export default CalculatorComponent;
+export default React.memo(CalculatorComponent);

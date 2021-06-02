@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { solvedIDsReducer } from "../reducers/learning/solvedIDsReducer";
 import { concIDReducer } from "../reducers/concIDReducer";
 import { postConcentSplitSave } from "../apis/backendAPI/postConcentSplitSave";
+import ConcentTextViewComponent from "../components/ConcentTextViewComponent";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -298,10 +299,12 @@ const RecordingPage: React.FC = () => {
                     {/* </div>  */}
                 </div>
             </p>
-            <h5>c3: {viewC3}</h5>
-            <h5>c2: {viewC2}</h5>
-            <h5>c1: {viewC1}</h5>
-            <h5>w: {viewW}</h5>
+            <ConcentTextViewComponent
+                viewC3={viewC3}
+                viewC2={viewC2}
+                viewC1={viewC1}
+                viewW={viewW}
+            ></ConcentTextViewComponent>
 
             {/* <ChartViewComponent></ChartViewComponent> */}
 
