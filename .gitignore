@@ -29,3 +29,4 @@ yarn-error.log*
 emsdk
 /opencv
 build_js
+/public

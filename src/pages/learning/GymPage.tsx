@@ -87,15 +87,6 @@ function GymPage() {
         }
     }, [selector]);
 
-    // e.dataはストリング
-    const webSocketDataAdd = (e: any) => {
-        const jsonData = JSON.parse(e.data);
-        console.log(jsonData);
-
-        setConcData((concData) => concData.concat(jsonData));
-        setImagePath(jsonData["face_image_path"]);
-    };
-
     const sendData = () => {};
 
     const changeMethod = (e: any) => {

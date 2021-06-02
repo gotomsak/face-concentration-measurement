@@ -6,7 +6,7 @@ import { getSaveImagesID } from "../apis/backendAPI/getSaveImagesID";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import ChartViewComponent from "../components/ChartViewComponent";
 import { OpenCvProvider, useOpenCv } from "opencv-react";
-
+import { useHistory } from "react-router";
 import * as faceapi from "face-api.js";
 import store from "..";
 import { Conc } from "../reducers/concReducer";
@@ -24,6 +24,9 @@ import { getFrequency } from "../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../components/utils/SetFrequencyComponent";
 import { useDispatch } from "react-redux";
 import { solvedIDsReducer } from "../reducers/learning/solvedIDsReducer";
+import { concIDReducer } from "../reducers/concIDReducer";
+import { postConcentSplitSave } from "../apis/backendAPI/postConcentSplitSave";
+import ConcentTextViewComponent from "../components/ConcentTextViewComponent";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -33,7 +36,12 @@ const RecordingPage: React.FC = () => {
 
     const [id, setID] = useState<string>("idを発行してください");
     const [frequencys, setFrequencys] = useState<any>();
-
+    const [viewC3, setViewC3] = useState(0);
+    const [viewC2, setViewC2] = useState(0);
+    const [viewC1, setViewC1] = useState(0);
+    const [viewW, setViewW] = useState(0);
+    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
+    const history = useHistory();
     // const [work, setWork] = useState([
     //     {
     //         type: "other",
@@ -43,7 +51,6 @@ const RecordingPage: React.FC = () => {
     //     },
     // ]);
 
-    const [imagePath, setImagePath] = useState("");
     const [work, setWork] = useState("");
     const [memo, setMemo] = useState("");
 
@@ -55,7 +62,16 @@ const RecordingPage: React.FC = () => {
 
             console.log(res);
         });
+        store.subscribe(() => {
+            console.log(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
+            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
+            setViewW(store.getState().concReducer.w.slice(-1)[0]);
+        });
     }, []);
+
+    console.log("nandeyanen");
 
     const handleCloseTip = (): void => {
         setOpenTip(false);
@@ -93,29 +109,58 @@ const RecordingPage: React.FC = () => {
 
     const classes = RecordingPageStyle();
     const recordButton = () => {
+        if (stop === true) {
+            return (
+                <RecordingPageButton
+                    onClick={() => {
+                        history.push("/");
+                    }}
+                >
+                    topに戻る
+                </RecordingPageButton>
+            );
+        }
         if (start === false) {
             return (
                 <RecordingPageButton
                     onClick={() => {
                         setStart(true);
                         setStop(false);
+                        setIntervalID(setInterval(sendConcentSplit, 10000));
                     }}
                 >
                     開始
                 </RecordingPageButton>
             );
-        } else {
+        }
+        if (start === true) {
             return (
                 <RecordingPageButton
                     onClick={() => {
                         setStart(false);
                         setStop(true);
+                        clearInterval(Number(intervalID));
+                        sendConcentSplit();
                     }}
                 >
                     停止
                 </RecordingPageButton>
             );
         }
+    };
+
+    const sendConcentSplit = () => {
+        postConcentSplitSave({
+            type: typeParam,
+            measurement: "gotoConc",
+            concentration: store.getState().concReducer,
+            id: id,
+        }).then((res: any) => {
+            console.log(res);
+            dispatch({
+                type: "concReset",
+            });
+        });
     };
 
     const sendConcentration = () => {
@@ -250,10 +295,16 @@ const RecordingPage: React.FC = () => {
                 <div className={classes.fID}>
                     {/* <div className={classes.tID}> */}
                     {recordButton()}
-                    {sendButtonVisible()}
+                    {/* {sendButtonVisible()} */}
                     {/* </div>  */}
                 </div>
             </p>
+            <ConcentTextViewComponent
+                viewC3={viewC3}
+                viewC2={viewC2}
+                viewC1={viewC1}
+                viewW={viewW}
+            ></ConcentTextViewComponent>
 
             {/* <ChartViewComponent></ChartViewComponent> */}
 

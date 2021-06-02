@@ -100,7 +100,6 @@ const GymQuestionViewComponent: React.FC<{
             memo_log: log,
             other_focus_second: windowNonFocusTimer,
             user_answer: answerFinal,
-            concentration_data: concentrationData,
             start_time: startTime,
             end_time: end,
         };
@@ -130,7 +129,7 @@ const GymQuestionViewComponent: React.FC<{
             <QuestionComponent questionText={questionText}></QuestionComponent>
 
             {/* <div className="LogsContainer"> */}
-            <div className={classes.root}>
+            {/* <div className={classes.root}>
                 <Grid item>
                     <Grid container spacing={spacing}>
                         <Grid>
@@ -147,7 +146,7 @@ const GymQuestionViewComponent: React.FC<{
                         </Grid>
                     </Grid>
                 </Grid>
-            </div>
+            </div> */}
 
             {changeAnsType()}
             {answerResult !== "" && (

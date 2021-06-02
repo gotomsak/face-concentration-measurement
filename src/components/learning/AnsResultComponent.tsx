@@ -25,4 +25,4 @@ const AnsResultComponent: React.FC<{ ansResult: string }> = ({ ansResult }) => {
     );
 };
 
-export default AnsResultComponent;
+export default React.memo(AnsResultComponent);

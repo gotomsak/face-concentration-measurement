@@ -3,12 +3,15 @@ export const getConcentration = (
     maxFrequency: any,
     minFrequency: any
 ) => {
+    const www = 10000;
     try {
         const res =
             Math.round(
-                ((moveNum - maxFrequency) / (minFrequency - maxFrequency)) *
+                ((moveNum / www - maxFrequency / www) /
+                    (minFrequency / www - maxFrequency / www)) *
                     1000
             ) / 1000;
+        console.log("c2: " + res.toString());
         if (isNaN(res)) return 0;
         if (res < 0) return 0;
         if (res > 1) return 1;
