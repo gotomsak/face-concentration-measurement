@@ -111,7 +111,7 @@ const QuestionViewComponent: React.FC<{
             memo_log: log,
             other_focus_second: windowNonFocusTimer,
             user_answer: answerFinal,
-            concentration_data: concentrationData,
+            // concentration_data: concentrationData,
             start_time: startTime,
             end_time: end,
         };

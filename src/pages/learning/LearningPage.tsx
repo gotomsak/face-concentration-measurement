@@ -13,6 +13,7 @@ import {
     CheckAnswerSectionPost,
     SonConc,
 } from "../../apis/backendAPI/learning/interfaces";
+import { getID } from "../../apis/backendAPI/getID";
 
 // import ReadyViewComponent from "../../components/learning/ReadyViewComponent";
 import { useHistory } from "react-router";
@@ -29,6 +30,10 @@ import WebCameraComponent from "../../components/WebCameraComponent";
 import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import ConcentrationViewComponent from "../../components/learning/ConcentrationViewComponent";
 import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
+import { getIDLogs } from "../../apis/backendAPI/admin/getIDLogs";
+import { postConcentSplitSave } from "../../apis/backendAPI/postConcentSplitSave";
+import { getFrequency } from "../../apis/backendAPI/frequency/getFrequency";
+import SetFrequencyComponent from "../../components/utils/SetFrequencyComponent";
 
 function LearningPage() {
     const history = useHistory();
@@ -44,15 +49,34 @@ function LearningPage() {
     const [cameraStop, setCameraStop] = useState(false);
     // 問題が10問とき終わったときのstate
     const [finish, setFinish] = useState(false);
+    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
     const [concData, setConcData] = useState([]);
+    const [viewC3, setViewC3] = useState(0);
+    const [viewC2, setViewC2] = useState(0);
+    const [viewC1, setViewC1] = useState(0);
+    const [viewW, setViewW] = useState(0);
+    const [frequencys, setFrequencys] = useState<any>();
 
     useEffect(() => {
         setStartTime(getNowTimeString());
+        getFrequency().then((res: any) => {
+            setFrequencys(res);
+
+            console.log(res);
+        });
+
+        store.subscribe(() => {
+            console.log(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
+            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
+            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
+            setViewW(store.getState().concReducer.w.slice(-1)[0]);
+        });
     }, []);
 
     useEffect(() => {
@@ -69,7 +93,6 @@ function LearningPage() {
             const cnt = qCount + 1;
             setQuestionID(store.getState().questionIDsReducer[cnt]);
             setQCount(qCount + 1);
-            setConcData([]);
             setNext(false);
         }
     }, [next]);
@@ -77,6 +100,8 @@ function LearningPage() {
     useEffect(() => {
         if (finish === true) {
             console.log("owaru");
+            clearInterval(Number(intervalID));
+            sendConcentSplit();
             checkAnswerSection(setSectionResult())
                 .then((res) => {
                     console.log(res);
@@ -95,8 +120,37 @@ function LearningPage() {
     }, [finish]);
 
     useEffect(() => {
+        if (cameraState === true) {
+            getID({
+                type: "gotoSys",
+                work: "learning",
+                memo: "基本情報のE-learning",
+                measurement: "gotoConc",
+                user_id: Number(localStorage.getItem("user_id")),
+                concentration: store.getState().concReducer,
+            }).then((res) => {
+                console.log(res);
+                console.log(res.data.conc_id);
+                console.log(res.data.face_point_id);
+                // setID(res.data.conc_id);
+                dispatch({
+                    type: "concIDSet",
+                    conc_id: res.data.conc_id,
+                });
+                dispatch({
+                    type: "facePointIDSet",
+                    face_point_id: res.data.face_point_id,
+                });
+            });
+        }
+    }, [cameraState]);
+
+    useEffect(() => {
         if (startCheck === true) {
             console.log("startした");
+            if (cameraState == true) {
+                setIntervalID(setInterval(sendConcentSplit, 10000));
+            }
             const getQuestionIdsPost: GetQuestionIdsPost = {
                 solved_ids: store.getState().solvedIDsReducer,
                 question_ids: store.getState().questionIDsReducer,
@@ -123,6 +177,7 @@ function LearningPage() {
             user_id: Number(localStorage.getItem("user_id")),
             answer_result_ids: store.getState().ansResultIDsReducer,
             correct_answer_number: store.getState().correctNumberReducer,
+            conc_id: store.getState().concIDReducer,
             start_time: startTime,
             end_time: getNowTimeString(),
         };
@@ -132,6 +187,20 @@ function LearningPage() {
         if (e.target.name == "camera") {
             setCameraState(e.target.checked);
         }
+    };
+
+    const sendConcentSplit = () => {
+        postConcentSplitSave({
+            type: "gotoSys",
+            id: store.getState().concIDReducer,
+            measurement: "gotoConc",
+            concentration: store.getState().concReducer,
+        }).then((res: any) => {
+            console.log(res);
+            dispatch({
+                type: "concReset",
+            });
+        });
     };
 
     const readyViewText = () => {
@@ -179,12 +248,22 @@ function LearningPage() {
                     nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
-                <ReadyViewComponent
-                    cameraState={cameraState}
-                    changeMethod={changeMethod}
-                    startCheckButton={startCheckButton}
-                    readyViewText={readyViewText()}
-                ></ReadyViewComponent>
+                <div>
+                    <ReadyViewComponent
+                        cameraState={cameraState}
+                        changeMethod={changeMethod}
+                        startCheckButton={startCheckButton}
+                        readyViewText={readyViewText()}
+                    ></ReadyViewComponent>
+
+                    {frequencys ? (
+                        <SetFrequencyComponent
+                            frequencys={frequencys}
+                        ></SetFrequencyComponent>
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
             )}
 
             <WebCameraComponent
@@ -192,6 +271,10 @@ function LearningPage() {
                 stop={cameraStop}
                 frequency={null}
             ></WebCameraComponent>
+            <h5>c3: {viewC3}</h5>
+            <h5>c2: {viewC2}</h5>
+            <h5>c1: {viewC1}</h5>
+            <h5>w: {viewW}</h5>
         </div>
     );
 }

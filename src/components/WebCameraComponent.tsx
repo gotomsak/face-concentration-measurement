@@ -123,9 +123,9 @@ const WebCameraComponent: React.FC<{
                             face_point_all: store.getState().facePointReducer,
                         }).then((res: any) => {
                             console.log(res);
-                        });
-                        dispatch({
-                            type: "facePointReset",
+                            dispatch({
+                                type: "facePointReset",
+                            });
                         });
                     }, 10000)
                 );
@@ -145,9 +145,9 @@ const WebCameraComponent: React.FC<{
                     face_point_all: store.getState().facePointReducer,
                 }).then((res: any) => {
                     console.log(res);
-                });
-                dispatch({
-                    type: "facePointReset",
+                    dispatch({
+                        type: "facePointReset",
+                    });
                 });
             }
         }

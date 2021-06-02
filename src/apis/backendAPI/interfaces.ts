@@ -8,6 +8,13 @@ export interface PostConcentrationSave {
     concentration: any[];
 }
 
+export interface PostConcentSplitSave {
+    type: string;
+    id: string;
+    measurement: string;
+    concentration: any[];
+}
+
 export interface PostFacePointSave {
     id: string;
     face_point_all: any[];

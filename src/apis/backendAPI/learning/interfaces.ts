@@ -15,7 +15,8 @@ export interface CheckAnswerPost {
     other_focus_second: number;
     user_answer: string;
     memo_log: string;
-    concentration_data: any[];
+    // concentration_data: any[];
+    // get_id_logs_id: number;
     start_time: string;
     end_time: string;
 }
@@ -24,6 +25,7 @@ export interface CheckAnswerSectionPost {
     user_id: number;
     answer_result_ids: number[];
     correct_answer_number: number;
+    conc_id: string;
     start_time: string;
     end_time: string;
 }
@@ -37,18 +39,18 @@ export interface SaveQuestionnairePost {
     nonsense: number;
 }
 
-export interface InitMaxFrequency{
+export interface InitMaxFrequency {
     user_id: number;
     max_blink_number: number;
     max_face_move_number: number;
-    max_frequency_video?:Blob;
+    max_frequency_video?: Blob;
 }
 
-export interface InitMinFrequency{
+export interface InitMinFrequency {
     user_id: number;
     min_blink_number: number;
     min_face_move_number: number;
-    min_frequency_video?:Blob;
+    min_frequency_video?: Blob;
 }
 
 export interface BtoF {
@@ -71,6 +73,6 @@ export interface SonConc {
     concentration: any[];
 }
 
-export interface GetQuestionGymPost{
+export interface GetQuestionGymPost {
     now_level: number;
 }

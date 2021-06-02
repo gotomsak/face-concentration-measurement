@@ -14,6 +14,7 @@ import AdminTopPage from "./pages/admin/AdminTopPage";
 import AdminSigninPage from "./pages/admin/AdminSigninPage";
 import AdminSignupPage from "./pages/admin/AdminSignupPage";
 import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
+import QuestionnairePage from "./pages/learning/QuestionnairePage";
 function App() {
     return (
         <div className="App">
@@ -26,6 +27,10 @@ function App() {
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>
                     <Route path="/Analysis" component={AnalysisPage}></Route>
+                    <Route
+                        path="/Questionnaire"
+                        component={QuestionnairePage}
+                    ></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
                     <Route
