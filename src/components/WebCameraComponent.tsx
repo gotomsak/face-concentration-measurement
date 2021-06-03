@@ -194,4 +194,4 @@ const WebCameraComponent: React.FC<{
         </div>
     );
 };
-export default WebCameraComponent;
+export default React.memo(WebCameraComponent);
