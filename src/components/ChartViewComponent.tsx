@@ -81,19 +81,30 @@ const ChartViewComponent: React.FC<{ concViewData: any[] }> = ({
                 width={1000}
                 type="line"
                 options={{
-                    // chart: {
-                    //     id: "realtime",
-                    //     animations: {
-                    //         enabled: true,
-                    //         easing: "linear",
-                    //         dynamicAnimation: {
-                    //             speed: 500,
-                    //         },
-                    //     },
-                    //     zoom: {
-                    //         enabled: false,
-                    //     },
-                    // },
+                    chart: {
+                        // id: "realtime",
+                        // animations: {
+                        //     enabled: true,
+                        //     easing: "linear",
+                        //     dynamicAnimation: {
+                        //         speed: 500,
+                        //     },
+                        // },
+                        // zoom: {
+                        //     enabled: false,
+                        // },
+                        toolbar: {
+                            export: {
+                                csv: {
+                                    dateFormatter(timestamp: any) {
+                                        return new Date(
+                                            timestamp
+                                        ).toLocaleString();
+                                    },
+                                },
+                            },
+                        },
+                    },
                     tooltip: {
                         enabled: true,
                         x: {
