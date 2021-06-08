@@ -3,3 +3,9 @@ export interface AdminUser {
     email: string;
     password: string;
 }
+
+export interface AdminGetUserAllRes {
+    user_id: Number;
+    username?: string;
+    email?: string;
+}
