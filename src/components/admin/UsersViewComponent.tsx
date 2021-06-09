@@ -20,7 +20,7 @@ const UsersViewComponent: React.FC = () => {
         },
     ]);
     const [usersViewData, setUsersViewData] = useState<UsersView[]>([]);
-    const changeKey = (listData: AdminGetUserAllRes[]) => {
+    const userIDtoID = (listData: AdminGetUserAllRes[]) => {
         const newListData: UsersView[] = listData.map(
             (value: AdminGetUserAllRes): UsersView => {
                 return {
@@ -34,7 +34,7 @@ const UsersViewComponent: React.FC = () => {
     };
     useLayoutEffect(() => {
         getUserAll().then((res: any) => {
-            const changeData = changeKey(res.data["users_info"]);
+            const changeData = userIDtoID(res.data["users_info"]);
             console.log(changeData);
             setUsersViewData(changeData);
             // res.data[]
