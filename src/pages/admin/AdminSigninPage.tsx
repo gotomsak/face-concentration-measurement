@@ -13,6 +13,7 @@ const AdminSigninPage: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [token, setToken] = useState("");
     const formChange = (event: any) => {
         switch (event.target.name) {
             case "email":
@@ -21,10 +22,17 @@ const AdminSigninPage: React.FC = () => {
             case "password":
                 setPassword(event.target.value);
                 break;
+            case "token":
+                setToken(event.target.value);
+                break;
         }
     };
     const adminSigninSubmit = () => {
-        const user: AdminUser = { email: email, password: password };
+        const user: AdminUser = {
+            email: email,
+            password: password,
+            token: token,
+        };
         adminSignin(user)
             .then((res) => {
                 localStorage.setItem("user_id", res.data["user_id"]);
@@ -36,7 +44,7 @@ const AdminSigninPage: React.FC = () => {
             });
     };
     const changeHistory = () => {
-        history.push("/signup");
+        history.push("/AdminSignup");
     };
     const manual = () => {
         history.push("/manual");
@@ -63,6 +71,15 @@ const AdminSigninPage: React.FC = () => {
                         placeholder="password"
                         onChange={formChange}
                         value={password}
+                    ></Input>
+                </p>
+                <p>
+                    <Input
+                        type="password"
+                        name="token"
+                        placeholder="token"
+                        onChange={formChange}
+                        value={token}
                     ></Input>
                 </p>
                 <p>

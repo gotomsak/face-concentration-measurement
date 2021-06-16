@@ -41,6 +41,9 @@ function SigninPage() {
     const manual = () => {
         history.push("/manual");
     };
+    const changeHistoryAdmin = () => {
+        history.push("/admin");
+    };
 
     return (
         <div className="SigninPageContainer">
@@ -86,6 +89,10 @@ function SigninPage() {
             <MenuBtnComponent
                 btnText={"使い方&紹介"}
                 event={manual}
+            ></MenuBtnComponent>
+            <MenuBtnComponent
+                btnText={"admin"}
+                event={changeHistoryAdmin}
             ></MenuBtnComponent>
             {errorMessage !== "" && (
                 <ErrorViewComponent
