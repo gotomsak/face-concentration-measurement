@@ -42,7 +42,12 @@ function App() {
                         component={AdminSignupPage}
                     ></Route>
                     <Route
+                        exact
                         path="/AdminAnalysis"
+                        component={AdminAnalysisPage}
+                    ></Route>
+                    <Route
+                        path="/AdminAnalysis/:user_id"
                         component={AdminAnalysisPage}
                     ></Route>
                 </Switch>

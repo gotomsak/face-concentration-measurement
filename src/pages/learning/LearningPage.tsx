@@ -30,7 +30,6 @@ import WebCameraComponent from "../../components/WebCameraComponent";
 import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import ConcentrationViewComponent from "../../components/learning/ConcentrationViewComponent";
 import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
-import { getIDLogs } from "../../apis/backendAPI/admin/getIDLogs";
 import { postConcentSplitSave } from "../../apis/backendAPI/postConcentSplitSave";
 import { getFrequency } from "../../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../../components/utils/SetFrequencyComponent";
