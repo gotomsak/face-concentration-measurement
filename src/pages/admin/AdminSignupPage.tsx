@@ -9,6 +9,7 @@ const AdminSignupPage: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [signupMessage, setSignupMessage] = useState("");
+    const [token, setToken] = useState("");
     // e.currentTarget.valueじゃないの？？？
     const formChange = (e: any) => {
         switch (e.target.name) {
@@ -21,6 +22,9 @@ const AdminSignupPage: React.FC = () => {
             case "password":
                 setPassword(e.target.value);
                 break;
+            case "token":
+                setToken(e.target.value);
+                break;
         }
     };
     const signupSubmit = () => {
@@ -28,6 +32,7 @@ const AdminSignupPage: React.FC = () => {
             username: username,
             email: email,
             password: password,
+            token: token,
         };
         adminSignup(user)
             .then((res) => {
@@ -67,6 +72,15 @@ const AdminSignupPage: React.FC = () => {
                         name="password"
                         onChange={formChange}
                         value={password}
+                    ></Input>
+                </p>
+                <p>
+                    <Input
+                        type="password"
+                        placeholder="token"
+                        name="token"
+                        onChange={formChange}
+                        value={token}
                     ></Input>
                 </p>
                 <p>

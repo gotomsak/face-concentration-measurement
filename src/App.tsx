@@ -21,7 +21,7 @@ function App() {
             <React.Fragment>
                 <Switch>
                     <Route exact path="/" component={TopPage}></Route>
-                    <Route path="/Admin" component={AdminTopPage}></Route>
+
                     <Route path="/Frequency" component={FrequencyPage}></Route>
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
@@ -33,6 +33,7 @@ function App() {
                     ></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
+                    <Route path="/Admin" component={AdminTopPage}></Route>
                     <Route
                         path="/AdminSignin"
                         component={AdminSigninPage}
