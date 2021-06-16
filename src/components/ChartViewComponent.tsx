@@ -150,4 +150,4 @@ const ChartViewComponent: React.FC<{ concViewData: any[] }> = ({
     );
 };
 
-export default ChartViewComponent;
+export default React.memo(ChartViewComponent);

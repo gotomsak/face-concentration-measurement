@@ -10,6 +10,7 @@ import ChartViewComponent from "../../components/ChartViewComponent";
 import ReactApexCharts from "react-apexcharts";
 import ApexCharts from "apexcharts";
 import { getRecAll } from "../../apis/backendAPI/analysis/getRecAll";
+import UserConcViewComponent from "../../components/analysis/UserConcViewComponent";
 
 const AnalysisPage: React.FC = () => {
     const [concViewData, setConcViewData] = useState<any>([]);
@@ -19,26 +20,17 @@ const AnalysisPage: React.FC = () => {
     const [maxFreqData, setMaxFreqData] = useState<any>([]);
     const [minFreqData, setMinFreqData] = useState<any>([]);
     const listRefConcent = useRef<any>([]);
-    // const listRef = useRef<any>([]);
-
-    // const setRes = useCallback(
-    //     (e) => {
-    //         setGetRecAllData(e.data);
-    //     },
-    //     [setGetRecAllData]
-    // );
 
     useLayoutEffect(() => {
         getRecAll().then((res: any) => {
             console.log(res.data);
-            // setGetRecAllData(res.data);
 
             res.data["concentration"].map((conc: any) => {
                 let cnt = 0;
                 let dataC3: any = [];
                 let dataC2: any = [];
                 let dataC1: any = [];
-                // workRef.current.concat([res.data["concentration"]["work"]]);
+
                 conc["concentration"]["c3"].map((element: any) => {
                     dataC3 = dataC3.concat([
                         {
@@ -90,87 +82,50 @@ const AnalysisPage: React.FC = () => {
                         },
                     ],
                 ];
-
-                // setConcViewData(newList);
-                // concViewData.push({
-                //     data: data,
-                // });
             });
 
             setMaxFreqData(res.data["maxFrequency"]);
             setMinFreqData(res.data["minFrequency"]);
             setConcViewData(listRefConcent.current);
-            // setWorkNames(workRef.current);
         });
     }, []);
 
-    useEffect(() => {
-        // console.log(concViewData);
-    }, [concViewData]);
+    // const renderWork = (work: string) => {
+    //     return <h1>{work}</h1>;
+    // };
+    // const renderFreq = (max_freq_id: string, min_freq_id: string) => {
+    //     const maxData = maxFreqData.filter((elem: any) => {
+    //         return max_freq_id === elem["id"];
+    //     });
+    //     const minData = minFreqData.filter((elem: any) => {
+    //         return min_freq_id === elem["id"];
+    //     });
 
-    const renderWork = (work: string) => {
-        return <h1>{work}</h1>;
-    };
-    const renderFreq = (max_freq_id: string, min_freq_id: string) => {
-        const maxData = maxFreqData.filter((elem: any) => {
-            return max_freq_id === elem["id"];
-        });
-        const minData = minFreqData.filter((elem: any) => {
-            return min_freq_id === elem["id"];
-        });
+    //     if (maxData[0] == undefined || minData[0] == undefined) {
+    //         return (
+    //             <div>
+    //                 <h3>frequency notfound</h3>
+    //             </div>
+    //         );
+    //     }
 
-        console.log(maxData);
-        console.log(minData);
-        if (maxData[0] == undefined || minData[0] == undefined) {
-            return (
-                <div>
-                    <h3>frequency notfound</h3>
-                </div>
-            );
-        }
+    //     return (
+    //         <div>
+    //             <h3>maxBlink: {maxData[0].max_frequency_data.max_blink}</h3>
+    //             <h3>
+    //                 maxFaveMove: {maxData[0].max_frequency_data.max_face_move}
+    //             </h3>
+    //             <h3>minBlink: {minData[0].min_frequency_data.min_blink}</h3>
+    //             <h3>
+    //                 minFaveMove: {minData[0].min_frequency_data.min_face_move}
+    //             </h3>
+    //         </div>
+    //     );
+    // };
 
-        return (
-            <div>
-                <h3>maxBlink: {maxData[0].max_frequency_data.max_blink}</h3>
-                <h3>
-                    maxFaveMove: {maxData[0].max_frequency_data.max_face_move}
-                </h3>
-                <h3>minBlink: {minData[0].min_frequency_data.min_blink}</h3>
-                <h3>
-                    minFaveMove: {minData[0].min_frequency_data.min_face_move}
-                </h3>
-            </div>
-        );
-    };
-    // const MemoChartViewComponent = React.memo((concViewData: any) => (
-    //     <ChartViewComponent concViewData={concViewData}></ChartViewComponent>
-    // ));
     return (
         <div>
-            {/* <ChartViewComponent
-                concViewData={concViewData}
-            ></ChartViewComponent> */}
-
-            {/* {getRecAllData["concentration"].map((data: any) => {
-                let cnt = 0;
-                let list: any = [];
-                data["concentration"]["c3"].map((element: any) => {
-                    console.log(element);
-                    list = list.concat({
-                        x: data["concentration"]["date"][cnt],
-                        y: element,
-                    });
-                    cnt += 1;
-                });
-                console.log(list);
-                return (
-                    <ChartViewComponent
-                        concViewData={list}
-                    ></ChartViewComponent>
-                );
-            })} */}
-
-            {concViewData.map((elem: any) => {
+            {/* {concViewData.map((elem: any) => {
                 console.log(elem);
 
                 return (
@@ -186,20 +141,12 @@ const AnalysisPage: React.FC = () => {
                         ></ChartViewComponent>
                     </div>
                 );
-            })}
-            {/* <ChartViewComponent
+            })} */}
+            <UserConcViewComponent
                 concViewData={concViewData}
-            ></ChartViewComponent> */}
-            {/* {check()} */}
-
-            {/* {recAllView(getRecAllData)} */}
-            {/* <MemoChartViewComponent concViewData={}></MemoChartViewComponent> */}
-
-            {/* <div>
-                <ConcentrationViewComponent
-                    concData1={concData}
-                ></ConcentrationViewComponent>
-            </div> */}
+                maxFreqData={maxFreqData}
+                minFreqData={minFreqData}
+            ></UserConcViewComponent>
         </div>
     );
 };
