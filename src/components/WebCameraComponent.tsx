@@ -18,7 +18,8 @@ const WebCameraComponent: React.FC<{
     start: boolean;
     stop: boolean;
     frequency: string | null;
-}> = ({ start, stop, frequency }) => {
+    downloadData: boolean;
+}> = ({ start, stop, frequency, downloadData }) => {
     const videoRef = createRef<HTMLVideoElement>();
     const canvas1Ref = createRef<HTMLCanvasElement>();
     const canvas2Ref = createRef<HTMLCanvasElement>();
@@ -26,7 +27,7 @@ const WebCameraComponent: React.FC<{
     const [check, setCheck] = useState(0);
     // const [cntTime, setCntTime] = useState(0);
     const dispatch = useDispatch();
-
+    const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
     const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
     const [canvas1, setCanvas1] = useState<HTMLCanvasElement>();
     const [canvas2, setCanvas2] = useState<HTMLCanvasElement>();
@@ -149,6 +150,14 @@ const WebCameraComponent: React.FC<{
                         type: "facePointReset",
                     });
                 });
+                if (downloadData) {
+                    const a = document.createElement("a");
+                    const url = URL.createObjectURL(getBlobData());
+                    document.body.appendChild(a);
+                    a.download = "recodeFile.mp4";
+                    a.href = url;
+                    a.click();
+                }
             }
         }
     }, [stop]);
@@ -160,6 +169,24 @@ const WebCameraComponent: React.FC<{
                 video: { width: 640, height: 480 },
             });
         }
+    };
+
+    // MediaRecorderが更新されるたび，blob配列にdataを保存
+    useEffect(() => {
+        if (recorder !== null) {
+            recorder!.ondataavailable = (e) => {
+                recordedChunks.push(e.data);
+            };
+        }
+    }, [recorder]);
+
+    // blobdataを取得
+    const getBlobData = () => {
+        const _chunks = recordedChunks.splice(0, recordedChunks.length); // バッファを空にする
+        const b = new Blob(_chunks, {
+            type: "video/mp4",
+        });
+        return b;
     };
 
     return (

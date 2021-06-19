@@ -49,6 +49,7 @@ function MathWorkPage() {
                 start={cameraStart}
                 stop={cameraStop}
                 frequency={null}
+                downloadData={false}
             ></WebCameraComponent>
         </div>
     );

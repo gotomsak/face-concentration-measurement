@@ -175,6 +175,7 @@ function GymPage() {
                 start={cameraStart}
                 stop={cameraStop}
                 frequency={null}
+                downloadData={false}
                 // setBlobData={setBlobData}
                 // setWebSocketData={webSocketDataAdd}
                 // method1={method1}
