@@ -179,6 +179,7 @@ const ConcentrationEstimateComponent: React.FC<{
                 const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
                 const c3 = getConcentrationSynthesis(c1, c2, w);
                 const date = new Date();
+                date.setHours(date.getHours() + 9);
 
                 dispatch({
                     type: "concSet",
