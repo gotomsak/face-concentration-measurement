@@ -159,4 +159,4 @@ const QuestionComponent: React.FC<{ finishHandler: any }> = ({
     );
 };
 
-export default QuestionComponent;
+export default React.memo(QuestionComponent);

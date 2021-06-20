@@ -202,4 +202,4 @@ const MathWorkPage: React.FC = () => {
     );
 };
 
-export default MathWorkPage;
+export default React.memo(MathWorkPage);
