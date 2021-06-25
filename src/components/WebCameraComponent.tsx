@@ -32,7 +32,7 @@ const WebCameraComponent: React.FC<{
     const [canvas1, setCanvas1] = useState<HTMLCanvasElement>();
     const [canvas2, setCanvas2] = useState<HTMLCanvasElement>();
     const [streamState, setStreamState] = useState<MediaStream | null>(null);
-    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
+    const [intervalID, setIntervalID] = useState<number>();
     useEffect(() => {
         if (videoRef.current !== null) {
             setCheck(1);
@@ -118,7 +118,7 @@ const WebCameraComponent: React.FC<{
             recorder!.start(200);
             if (frequency === null) {
                 setIntervalID(
-                    setInterval(() => {
+                    window.setInterval(() => {
                         postFacePoint({
                             id: store.getState().facePointIDReducer,
                             face_point_all: store.getState().facePointReducer,
@@ -140,7 +140,7 @@ const WebCameraComponent: React.FC<{
             streamState?.getTracks()[0].stop();
             recorder!.stop();
             if (frequency === null) {
-                clearInterval(Number(intervalID));
+                clearInterval(intervalID);
                 postFacePoint({
                     id: store.getState().facePointIDReducer,
                     face_point_all: store.getState().facePointReducer,
