@@ -9,9 +9,8 @@ const MinFrequencyComponent: React.FC<{ setFinishCheck: any }> = ({
     const [windowTimer, setWindowTimer] = useState(0);
     const refWindowTimer = useRef(windowTimer);
     const [startTime, setStartTime] = useState("");
-    const [windowTimeFlag, setWindowTimeFlag] = useState<NodeJS.Timeout | null>(
-        null
-    );
+    const [windowTimeFlag, setWindowTimeFlag] =
+        useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         refWindowTimer.current = windowTimer;
@@ -35,4 +34,4 @@ const MinFrequencyComponent: React.FC<{ setFinishCheck: any }> = ({
     );
 };
 
-export default MinFrequencyComponent;
+export default React.memo(MinFrequencyComponent);

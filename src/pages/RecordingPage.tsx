@@ -13,6 +13,7 @@ import { Conc } from "../reducers/concReducer";
 import { postConcentration } from "../apis/backendAPI/postConcentration";
 import { getID } from "../apis/backendAPI/getID";
 import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -27,12 +28,14 @@ import { solvedIDsReducer } from "../reducers/learning/solvedIDsReducer";
 import { concIDReducer } from "../reducers/concIDReducer";
 import { postConcentSplitSave } from "../apis/backendAPI/postConcentSplitSave";
 import ConcentTextViewComponent from "../components/ConcentTextViewComponent";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
     const dispatch = useDispatch();
     const [stop, setStop] = useState(false);
     const [openTip, setOpenTip] = useState<boolean>(false);
+    const [downloadData, setDownloadData] = useState<boolean>(false);
 
     const [id, setID] = useState<string>("idを発行してください");
     const [frequencys, setFrequencys] = useState<any>();
@@ -78,6 +81,11 @@ const RecordingPage: React.FC = () => {
     };
     const handleClickButton = (): void => {
         setOpenTip(true);
+    };
+    const downloadDataHandleChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setDownloadData(event.target.checked);
     };
 
     const createID = () => {
@@ -199,6 +207,7 @@ const RecordingPage: React.FC = () => {
                 start={start}
                 stop={stop}
                 frequency={null}
+                downloadData={downloadData}
             ></WebCameraComponent>
 
             <p>
@@ -290,7 +299,22 @@ const RecordingPage: React.FC = () => {
                     )}
                 </div>
             </p>
-
+            <p>
+                <div className={classes.fID}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={downloadData}
+                                onChange={downloadDataHandleChange}
+                                inputProps={{
+                                    "aria-label": "primary checkbox",
+                                }}
+                            />
+                        }
+                        label="動画ダウンロード"
+                    />
+                </div>
+            </p>
             <p>
                 <div className={classes.fID}>
                     {/* <div className={classes.tID}> */}

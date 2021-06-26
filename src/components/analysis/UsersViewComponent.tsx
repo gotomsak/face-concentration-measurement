@@ -65,7 +65,7 @@ const UsersViewComponent: React.FC = () => {
         });
     }, []);
     return (
-        <div style={{ height: 400, width: "80%" }}>
+        <div style={{ height: "100%", width: "50%" }}>
             <DataGrid
                 rows={usersViewData}
                 columns={usersViewCol}

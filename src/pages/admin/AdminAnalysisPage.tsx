@@ -18,6 +18,7 @@ import UsersViewComponent from "../../components/analysis/UsersViewComponent";
 // import { UserInfoCol } from "./interfaces";
 import { useHistory } from "react-router";
 import UserConcViewComponent from "../../components/analysis/UserConcViewComponent";
+import { AdminAnalysisPageStyle } from "../../Styles";
 
 const AdminAnalysisPage: React.FC = (props: any) => {
     const [concViewData, setConcViewData] = useState<any>([]);
@@ -27,10 +28,11 @@ const AdminAnalysisPage: React.FC = (props: any) => {
     const [recDataCheck, setRecDataCheck] = useState<boolean>(false);
     const [freqViewData, setFreqViewData] = useState<any>([]);
     const [renderUserID, setRenderUserID] = useState<boolean>(false);
+    const [concNotFound, setConcNotFound] = useState<boolean>(false);
 
     const listRefConcent = useRef<any>([]);
     const history = useHistory();
-
+    const classes = AdminAnalysisPageStyle();
     // useEffect(() => {
     //     console.log(concViewData);
     //     console.log(props);
@@ -43,7 +45,11 @@ const AdminAnalysisPage: React.FC = (props: any) => {
             setRenderUserID(true);
             adminGetRecAll(props.match.params.user_id).then((res: any) => {
                 console.log(res.data);
-
+                if (res.data["concentration"] === null) {
+                    setConcNotFound(true);
+                    console.log("null");
+                    return;
+                }
                 res.data["concentration"].map((conc: any) => {
                     let cnt = 0;
                     let dataC3: any = [];
@@ -114,13 +120,19 @@ const AdminAnalysisPage: React.FC = (props: any) => {
     useLayoutEffect(() => {}, []);
 
     return (
-        <div>
+        <div className={classes.root}>
             {renderUserID ? (
-                <UserConcViewComponent
-                    concViewData={concViewData}
-                    maxFreqData={maxFreqData}
-                    minFreqData={minFreqData}
-                ></UserConcViewComponent>
+                concNotFound ? (
+                    <div>
+                        <h1>notData</h1>
+                    </div>
+                ) : (
+                    <UserConcViewComponent
+                        concViewData={concViewData}
+                        maxFreqData={maxFreqData}
+                        minFreqData={minFreqData}
+                    ></UserConcViewComponent>
+                )
             ) : (
                 <UsersViewComponent></UsersViewComponent>
             )}
