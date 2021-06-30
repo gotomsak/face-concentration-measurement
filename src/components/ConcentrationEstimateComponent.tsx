@@ -115,42 +115,46 @@ const ConcentrationEstimateComponent: React.FC<{
 
             if (frequency === "max") {
                 if (
-                    store.getState().maxFaceMoveReducer < PointSum ||
+                    store.getState().maxFaceMoveReducer <
+                        PointSum / separationNum ||
                     store.getState().maxFaceMoveReducer === null
                 ) {
                     dispatch({
                         type: "maxFaceMoveSet",
-                        maxFaceMove: PointSum,
+                        maxFaceMove: PointSum / separationNum,
                     });
                 }
 
                 if (
-                    store.getState().maxBlinkReducer < BlinkSum ||
+                    store.getState().maxBlinkReducer <
+                        BlinkSum / separationNum ||
                     store.getState().maxBlinkReducer === null
                 )
                     dispatch({
                         type: "maxBlinkSet",
-                        maxBlink: BlinkSum,
+                        maxBlink: BlinkSum / separationNum,
                     });
             }
             if (frequency == "min") {
                 if (
-                    store.getState().minFaceMoveReducer > PointSum ||
+                    store.getState().minFaceMoveReducer >
+                        PointSum / separationNum ||
                     store.getState().minFaceMoveReducer === null
                 ) {
                     dispatch({
                         type: "minFaceMoveSet",
-                        minFaceMove: PointSum,
+                        minFaceMove: PointSum / separationNum,
                     });
                 }
 
                 if (
-                    store.getState().minBlinkReducer > BlinkSum ||
+                    store.getState().minBlinkReducer >
+                        BlinkSum / separationNum ||
                     store.getState().minBlinkReducer === null
                 )
                     dispatch({
                         type: "minBlinkSet",
-                        minBlink: BlinkSum,
+                        minBlink: BlinkSum / separationNum,
                     });
             }
 
@@ -165,18 +169,22 @@ const ConcentrationEstimateComponent: React.FC<{
                 });
 
                 const c1 = getConcentration(
-                    BlinkSum,
+                    BlinkSum / separationNum,
                     store.getState().maxBlinkReducer,
                     store.getState().minBlinkReducer
                 );
 
                 const c2 = getConcentration(
-                    PointSum,
+                    PointSum / separationNum,
                     store.getState().maxFaceMoveReducer - 100,
                     store.getState().minFaceMoveReducer
                 );
 
-                const w = getWeight(yawSum, pitchSum, rollSum, separationNum);
+                const w = getWeight(
+                    yawSum / separationNum,
+                    pitchSum / separationNum,
+                    rollSum / separationNum
+                );
                 const c3 = getConcentrationSynthesis(c1, c2, w);
                 const date = new Date();
                 date.setHours(date.getHours() + 9);
