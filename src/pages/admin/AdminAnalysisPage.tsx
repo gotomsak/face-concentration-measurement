@@ -17,8 +17,10 @@ import { AdminGetUserAllRes } from "../../apis/backendAPI/admin/interfaces";
 import UsersViewComponent from "../../components/analysis/UsersViewComponent";
 // import { UserInfoCol } from "./interfaces";
 import { useHistory } from "react-router";
-import UserConcViewComponent from "../../components/analysis/UserConcViewComponent";
+import UserConcAllViewComponent from "../../components/analysis/UserConcAllViewComponent";
 import { AdminAnalysisPageStyle } from "../../Styles";
+import UserLogViewComponent from "../../components/analysis/UserLogViewComponent";
+import UserConcViewComponent from "../../components/analysis/UserConcViewComponent";
 
 const AdminAnalysisPage: React.FC = (props: any) => {
     const [concViewData, setConcViewData] = useState<any>([]);
@@ -29,110 +31,37 @@ const AdminAnalysisPage: React.FC = (props: any) => {
     const [freqViewData, setFreqViewData] = useState<any>([]);
     const [renderUserID, setRenderUserID] = useState<boolean>(false);
     const [concNotFound, setConcNotFound] = useState<boolean>(false);
+    const [userID, setUserID] = useState<number | undefined>(undefined);
+    const [concID, setConcID] = useState<string | undefined>(undefined);
 
     const listRefConcent = useRef<any>([]);
     const history = useHistory();
     const classes = AdminAnalysisPageStyle();
-    // useEffect(() => {
-    //     console.log(concViewData);
-    //     console.log(props);
-    // }, [concViewData]);
-    // useEffect(() => {
-    //     console.log(props);
-    // }, [props]);
+
     useEffect(() => {
+        console.log(props.match.params);
+
+        // changeUserID(props);
         if (props.match.params.user_id !== undefined) {
-            setRenderUserID(true);
-            adminGetRecAll(props.match.params.user_id).then((res: any) => {
-                console.log(res.data);
-                if (res.data["concentration"] === null) {
-                    setConcNotFound(true);
-                    console.log("null");
-                    return;
-                }
-                res.data["concentration"].map((conc: any) => {
-                    let cnt = 0;
-                    let dataC3: any = [];
-                    let dataC2: any = [];
-                    let dataC1: any = [];
-
-                    conc["concentration"]["c3"].map((element: any) => {
-                        dataC3 = dataC3.concat([
-                            {
-                                x: new Date(
-                                    conc["concentration"]["date"][cnt]
-                                ).getTime(),
-                                y: element,
-                            },
-                        ]);
-                        cnt += 1;
-                    });
-                    cnt = 0;
-                    conc["concentration"]["c2"].map((element: any) => {
-                        dataC2 = dataC2.concat([
-                            {
-                                x: new Date(
-                                    conc["concentration"]["date"][cnt]
-                                ).getTime(),
-                                y: element,
-                            },
-                        ]);
-                        cnt += 1;
-                    });
-                    cnt = 0;
-                    conc["concentration"]["c1"].map((element: any) => {
-                        dataC1 = dataC1.concat([
-                            {
-                                x: new Date(
-                                    conc["concentration"]["date"][cnt]
-                                ).getTime(),
-                                y: element,
-                            },
-                        ]);
-                        cnt += 1;
-                    });
-
-                    listRefConcent.current = [
-                        ...listRefConcent.current,
-                        [
-                            {
-                                work: conc["work"],
-                                max_freq_id:
-                                    conc["concentration"]["max_freq_id"],
-                                min_freq_id:
-                                    conc["concentration"]["min_freq_id"],
-                                datas: [
-                                    { name: "c3", data: dataC3 },
-                                    { name: "c2", data: dataC2 },
-                                    { name: "c1", data: dataC1 },
-                                ],
-                            },
-                        ],
-                    ];
-                });
-
-                setMaxFreqData(res.data["maxFrequency"]);
-                setMinFreqData(res.data["minFrequency"]);
-                setConcViewData(listRefConcent.current);
-            });
+            // setRenderUserID(true);
+            setUserID(props.match.params.user_id);
+        }
+        if (props.match.params.conc_id !== undefined) {
+            // setRenderUserID(true);
+            setConcID(props.match.params.conc_id);
         }
     }, [props]);
-    useLayoutEffect(() => {}, []);
 
     return (
         <div className={classes.root}>
-            {renderUserID ? (
-                concNotFound ? (
-                    <div>
-                        <h1>notData</h1>
-                    </div>
-                ) : (
-                    <UserConcViewComponent
-                        concViewData={concViewData}
-                        maxFreqData={maxFreqData}
-                        minFreqData={minFreqData}
-                    ></UserConcViewComponent>
-                )
+            {concID !== undefined ? (
+                <UserConcViewComponent concID={concID}></UserConcViewComponent>
+            ) : userID !== undefined ? (
+                // <UserConcAllViewComponent
+                //     userID={userID}
+                // ></UserConcAllViewComponent>
+
+                <UserLogViewComponent userID={userID}></UserLogViewComponent>
             ) : (
                 <UsersViewComponent></UsersViewComponent>
             )}

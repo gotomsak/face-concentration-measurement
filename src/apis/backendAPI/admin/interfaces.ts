@@ -10,3 +10,12 @@ export interface AdminGetUserAllRes {
     username?: string;
     email?: string;
 }
+
+export interface AdminGetIDLogUserRes {
+    ID: number;
+    CreatedAt: Date;
+    conc_data_id: string;
+    user_id: number;
+    DeletedAt: Date;
+    UpdateAt: Date;
+}

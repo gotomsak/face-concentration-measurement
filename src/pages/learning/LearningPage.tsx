@@ -119,7 +119,41 @@ const LearningPage: React.FC = () => {
     }, [finish]);
 
     useEffect(() => {
-        if (cameraState === true) {
+        // if (cameraState === true) {
+        //     getID({
+        //         type: "gotoSys",
+        //         work: "learning",
+        //         memo: "基本情報のE-learning",
+        //         measurement: "gotoConc",
+        //         user_id: Number(localStorage.getItem("user_id")),
+        //         concentration: store.getState().concReducer,
+        //     }).then((res) => {
+        //         console.log(res);
+        //         console.log(res.data.conc_id);
+        //         console.log(res.data.face_point_id);
+        //         // setID(res.data.conc_id);
+        //         dispatch({
+        //             type: "concIDSet",
+        //             conc_id: res.data.conc_id,
+        //         });
+        //         dispatch({
+        //             type: "facePointIDSet",
+        //             face_point_id: res.data.face_point_id,
+        //         });
+        //     });
+        // }
+    }, [cameraState]);
+
+    useEffect(() => {
+        if (startCheck === true) {
+            console.log("startした");
+            if (cameraState == true) {
+                setIntervalID(setInterval(sendConcentSplit, 10000));
+            }
+            const getQuestionIdsPost: GetQuestionIdsPost = {
+                solved_ids: store.getState().solvedIDsReducer,
+                question_ids: store.getState().questionIDsReducer,
+            };
             getID({
                 type: "gotoSys",
                 work: "learning",
@@ -141,19 +175,6 @@ const LearningPage: React.FC = () => {
                     face_point_id: res.data.face_point_id,
                 });
             });
-        }
-    }, [cameraState]);
-
-    useEffect(() => {
-        if (startCheck === true) {
-            console.log("startした");
-            if (cameraState == true) {
-                setIntervalID(setInterval(sendConcentSplit, 10000));
-            }
-            const getQuestionIdsPost: GetQuestionIdsPost = {
-                solved_ids: store.getState().solvedIDsReducer,
-                question_ids: store.getState().questionIDsReducer,
-            };
             getQuestionIds(getQuestionIdsPost).then((res) => {
                 dispatch({
                     type: "questionIDsSet",

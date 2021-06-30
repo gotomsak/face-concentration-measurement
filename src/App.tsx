@@ -48,6 +48,10 @@ function App() {
                         component={AdminAnalysisPage}
                     ></Route>
                     <Route
+                        path="/AdminAnalysis/:user_id/:conc_id"
+                        component={AdminAnalysisPage}
+                    ></Route>
+                    <Route
                         path="/AdminAnalysis/:user_id"
                         component={AdminAnalysisPage}
                     ></Route>

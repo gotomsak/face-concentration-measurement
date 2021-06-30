@@ -44,6 +44,7 @@ const UsersViewComponent: React.FC = () => {
     ]);
     const history = useHistory();
     const [usersViewData, setUsersViewData] = useState<UsersView[]>([]);
+
     const userIDtoID = (listData: AdminGetUserAllRes[]) => {
         const newListData: UsersView[] = listData.map(
             (value: AdminGetUserAllRes): UsersView => {
@@ -56,6 +57,7 @@ const UsersViewComponent: React.FC = () => {
         );
         return newListData;
     };
+
     useLayoutEffect(() => {
         adminGetUserAll().then((res: any) => {
             const changeData = userIDtoID(res.data["users_info"]);
@@ -64,6 +66,7 @@ const UsersViewComponent: React.FC = () => {
             // res.data[]
         });
     }, []);
+
     return (
         <div style={{ height: "100%", width: "50%" }}>
             <DataGrid
