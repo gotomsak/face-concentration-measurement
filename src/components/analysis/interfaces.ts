@@ -13,11 +13,11 @@ export interface concViewDataType {
 }
 
 export interface maxFreqViewDataType {
-    max_blink: number;
-    max_face_move: number;
+    max_blink: number | null;
+    max_face_move: number | null;
 }
 
 export interface minFreqViewDataType {
-    min_blink: number;
-    min_face_move: number;
+    min_blink: number | null;
+    min_face_move: number | null;
 }

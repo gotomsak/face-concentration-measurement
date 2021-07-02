@@ -19,11 +19,13 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
     const [minFreqViewData, setMinFreqViewData] = useState<minFreqViewDataType>(
         { min_blink: 0, min_face_move: 0 }
     );
+
     useEffect(() => {
         adminGetRecUserDate(concID).then((res: any) => {
             const resConc = res.data.concentration;
             const resMaxFreq = res.data.maxFrequency;
             const resMinFreq = res.data.minFrequency;
+            console.log(res.data);
 
             setWork(resConc.work);
             setMaxFreqData(resMaxFreq);
@@ -76,19 +78,19 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
                 { name: "c1", data: dataC1 },
             ]);
 
-            const maxData = resMaxFreq.filter((elem: any) => {
-                return resConc.concentration.max_freq_id === elem["id"];
-            });
-            if (maxData[0] !== undefined) {
-                setMaxFreqViewData(maxData[0].max_frequency_data);
-            }
+            // const maxData = resMaxFreq.filter((elem: any) => {
+            //     return resConc.concentration.max_freq_id === elem["id"];
+            // });
+            // if (maxData[0] !== undefined) {
+            //     setMaxFreqViewData(maxData[0].max_frequency_data);
+            // }
 
-            const minData = resMinFreq.filter((elem: any) => {
-                return resConc.concentration.min_freq_id === elem["id"];
-            });
-            if (minData[0] !== undefined) {
-                setMinFreqViewData(minData[0].min_frequency_data);
-            }
+            // const minData = resMinFreq.filter((elem: any) => {
+            //     return resConc.concentration.min_freq_id === elem["id"];
+            // });
+            // if (minData[0] !== undefined) {
+            //     setMinFreqViewData(minData[0].min_frequency_data);
+            // }
         });
     }, []);
     // useEffect(() => {
@@ -125,12 +127,13 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
             <h1>{work}</h1>
 
             <FreqViewComponent
-                maxFreqViewData={maxFreqViewData}
-                minFreqViewData={minFreqViewData}
-                // maxFreqData={maxFreqData}
-                // minFreqData={minFreqData}
-                // maxFreqID={maxFreqID}
-                // minFreqID={minFreqID}
+                // maxFreqViewData={maxFreqViewData}
+                // minFreqViewData={minFreqViewData}
+
+                maxFreqData={maxFreqData}
+                minFreqData={minFreqData}
+                maxFreqID={maxFreqID}
+                minFreqID={minFreqID}
             ></FreqViewComponent>
             {/* {renderFreq(
                                 elem[0]["max_freq_id"],
