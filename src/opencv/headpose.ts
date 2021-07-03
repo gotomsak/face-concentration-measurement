@@ -131,11 +131,17 @@ export const getWeight = (yaw: any, pitch: any, roll: any) => {
     const pitchThreshold = 12.5;
     const yawThreshold = 20;
     const rollThreshold = 15;
-    return Math.abs(
+    let result = Math.abs(
         1 -
             (Math.abs(yaw / yawThreshold) +
                 Math.abs(Math.abs(pitch) - 170) / pitchThreshold +
                 Math.abs(roll / rollThreshold)) /
                 3
     );
+    if (result > 1) {
+        result = 1;
+    } else if (result < 0) {
+        result = 0;
+    }
+    return result;
 };
