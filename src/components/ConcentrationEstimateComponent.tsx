@@ -173,10 +173,11 @@ const ConcentrationEstimateComponent: React.FC<{
                     store.getState().maxBlinkReducer,
                     store.getState().minBlinkReducer
                 );
+                console.log("c2 pointsum" + PointSum / separationNum);
 
                 const c2 = getConcentration(
                     PointSum / separationNum,
-                    store.getState().maxFaceMoveReducer - 100,
+                    store.getState().maxFaceMoveReducer,
                     store.getState().minFaceMoveReducer
                 );
 
@@ -209,16 +210,21 @@ const ConcentrationEstimateComponent: React.FC<{
     };
 
     const PreprocessingData = (newData: any, oldData: any) => {
+        console.log(newData.facePoint);
         if (oldData.length > 0 && oldData.slice(-1)[0] !== undefined) {
-            let AllPointSum = 0;
-            for (var i = 0; i < oldData.slice(-1)[0]["facePoint"].length; i++) {
-                AllPointSum += difference(
-                    oldData.slice(-1)[0]["facePoint"][i],
-                    newData.facePoint[i]
-                );
-            }
+            // let AllPointSum = 0;
+            // for (var i = 0; i < oldData.slice(-1)[0]["facePoint"].length; i++) {
+            //     AllPointSum += difference(
+            //         oldData.slice(-1)[0]["facePoint"][i],
+            //         newData.facePoint[i]
+            //     );
+            // }
             // console.log(AllPointSum);
-            sectionFaceMove.push(AllPointSum);
+            const noseDifference = difference(
+                oldData.slice(-1)[0]["facePoint"][0],
+                newData.facePoint[0]
+            );
+            sectionFaceMove.push(noseDifference);
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,

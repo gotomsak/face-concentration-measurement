@@ -49,7 +49,7 @@ const FreqViewComponent: React.FC<{
             {maxFreqViewData.max_blink !== null ? (
                 <div>
                     <h3>maxBlink: {maxFreqViewData.max_blink}</h3>
-                    <h3>maxFaveMove: {maxFreqViewData.max_face_move}</h3>
+                    <h3>maxFaceMove: {maxFreqViewData.max_face_move}</h3>
                 </div>
             ) : (
                 <h3>frequency notfound</h3>
@@ -57,7 +57,7 @@ const FreqViewComponent: React.FC<{
             {minFreqViewData.min_blink !== null ? (
                 <div>
                     <h3>minBlink: {minFreqViewData.min_blink}</h3>
-                    <h3>minFaveMove: {minFreqViewData.min_face_move}</h3>
+                    <h3>minFaceMove: {minFreqViewData.min_face_move}</h3>
                 </div>
             ) : (
                 <h3>frequency notfound</h3>
