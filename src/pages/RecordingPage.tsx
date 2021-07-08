@@ -29,6 +29,12 @@ import { concIDReducer } from "../reducers/concIDReducer";
 import { postConcentSplitSave } from "../apis/backendAPI/postConcentSplitSave";
 import ConcentTextViewComponent from "../components/ConcentTextViewComponent";
 import Checkbox from "@material-ui/core/Checkbox";
+import { GetEar } from "../apis/backendAPI/ear/interfaces";
+import { getEar } from "../apis/backendAPI/ear/getEar";
+import SetEarComponent from "../components/utils/SetEarComponent";
+import { getEnvironment } from "../apis/backendAPI/environment/getEnvironment";
+import SetEnvironment from "../components/utils/SetEnvironment";
+import { GetEnvironment } from "../apis/backendAPI/environment/interfaces";
 
 const RecordingPage: React.FC = () => {
     const [start, setStart] = useState(false);
@@ -36,8 +42,9 @@ const RecordingPage: React.FC = () => {
     const [stop, setStop] = useState(false);
     const [openTip, setOpenTip] = useState<boolean>(false);
     const [downloadData, setDownloadData] = useState<boolean>(false);
-
+    const [environments, setEnvironments] = useState<GetEnvironment[]>([]);
     const [id, setID] = useState<string>("idを発行してください");
+    const [ears, setEars] = useState<GetEar[]>([]);
     const [frequencys, setFrequencys] = useState<any>();
     const [viewC3, setViewC3] = useState(0);
     const [viewC2, setViewC2] = useState(0);
@@ -60,10 +67,18 @@ const RecordingPage: React.FC = () => {
     const [typeParam, setTypeParam] = useState("gotoSys");
 
     useEffect(() => {
-        getFrequency().then((res: any) => {
-            setFrequencys(res);
+        // getFrequency().then((res: any) => {
+        //     setFrequencys(res);
 
+        //     console.log(res);
+        // });
+        // getEar().then((res: any) => {
+        //     setEars(res.data["earData"]);
+        // });
+
+        getEnvironment().then((res) => {
             console.log(res);
+            setEnvironments(res.data.environments);
         });
         store.subscribe(() => {
             console.log(store.getState().concReducer.c3.slice(-1)[0]);
@@ -207,6 +222,7 @@ const RecordingPage: React.FC = () => {
                 start={start}
                 stop={stop}
                 frequency={null}
+                ear={false}
                 downloadData={downloadData}
             ></WebCameraComponent>
 
@@ -290,15 +306,27 @@ const RecordingPage: React.FC = () => {
 
             <p>
                 <div className={classes.fID}>
-                    {frequencys ? (
+                    <SetEnvironment
+                        environments={environments}
+                    ></SetEnvironment>
+                    {/* {frequencys ? (
                         <SetFrequencyComponent
                             frequencys={frequencys}
                         ></SetFrequencyComponent>
                     ) : (
                         <div></div>
-                    )}
+                    )} */}
                 </div>
             </p>
+            {/* <p>
+                <div className={classes.fID}>
+                    {ears ? (
+                        <SetEarComponent ears={ears}></SetEarComponent>
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
+            </p> */}
             <p>
                 <div className={classes.fID}>
                     <FormControlLabel

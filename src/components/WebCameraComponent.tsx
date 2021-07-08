@@ -18,8 +18,9 @@ const WebCameraComponent: React.FC<{
     start: boolean;
     stop: boolean;
     frequency: string | null;
+    ear: boolean;
     downloadData: boolean;
-}> = ({ start, stop, frequency, downloadData }) => {
+}> = ({ start, stop, frequency, ear, downloadData }) => {
     const videoRef = createRef<HTMLVideoElement>();
     const canvas1Ref = createRef<HTMLCanvasElement>();
     const canvas2Ref = createRef<HTMLCanvasElement>();
@@ -116,7 +117,7 @@ const WebCameraComponent: React.FC<{
     useEffect(() => {
         if (start === true) {
             recorder!.start(200);
-            if (frequency === null) {
+            if (frequency === null && ear === false) {
                 setIntervalID(
                     window.setInterval(() => {
                         postFacePoint({
@@ -139,7 +140,7 @@ const WebCameraComponent: React.FC<{
         if (stop === true) {
             streamState?.getTracks()[0].stop();
             recorder!.stop();
-            if (frequency === null) {
+            if (frequency === null && ear === false) {
                 clearInterval(intervalID);
                 postFacePoint({
                     id: store.getState().facePointIDReducer,
@@ -198,6 +199,7 @@ const WebCameraComponent: React.FC<{
                     canvas2={canvas2}
                     start={start}
                     faceapi={faceapi}
+                    ear={ear}
                     frequency={frequency}
                 ></ConcentrationEstimateComponent>
                 <video

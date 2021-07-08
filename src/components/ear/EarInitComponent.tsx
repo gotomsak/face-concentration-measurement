@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./MaxFrequencyComponent.css";
-// import ReadyViewComponent from "../../utils/ReadyViewComponent";
 
-const MaxFrequencyComponent: React.FC<{
+const EarInitComponent: React.FC<{
     setFinishCheck: any;
 }> = ({ setFinishCheck }) => {
-    // const [startCheck, setStartCheck] = useState(false);
     const [windowTimer, setWindowTimer] = useState(0);
     const refWindowTimer = useRef(windowTimer);
-    const [startTime, setStartTime] = useState("");
     const [windowTimeFlag, setWindowTimeFlag] = useState<NodeJS.Timeout | null>(
         null
     );
 
     useEffect(() => {
         refWindowTimer.current = windowTimer;
-        if (windowTimer == 60) {
+        if (windowTimer === 5) {
             clearInterval(windowTimeFlag!);
             setFinishCheck(true);
         }
     }, [windowTimer]);
+
     useEffect(() => {
         setWindowTimeFlag(
             setInterval(() => {
@@ -29,14 +26,10 @@ const MaxFrequencyComponent: React.FC<{
     }, []);
 
     return (
-        <div className="MaxFrequencyContainer">
-            <div className="b_frec_max">
-                <div className="swing">
-                    <h1 id="randomMove2"></h1>
-                </div>
-            </div>
+        <div>
+            <h1>瞬きしないでください</h1>
         </div>
     );
 };
 
-export default React.memo(MaxFrequencyComponent);
+export default EarInitComponent;

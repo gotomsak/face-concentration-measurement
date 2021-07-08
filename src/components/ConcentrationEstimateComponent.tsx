@@ -21,29 +21,9 @@ const ConcentrationEstimateComponent: React.FC<{
     canvas2: any;
     start: any;
     faceapi: any;
+    ear: boolean;
     frequency: string | null;
-    // maxSectionFacePointRef: any;
-    // minSectionFacePointRef: any;
-    // maxSectionBlinkRef: any;
-    // minSectionBlinkRef: any;
-    // maxSectionYawRef: any;
-    // maxSectionPitchRef: any;
-    // maxSectionRollRef: any;
-}> = ({
-    video,
-    canvas1,
-    canvas2,
-    start,
-    faceapi,
-    frequency,
-    // maxSectionFacePointRef,
-    // minSectionFacePointRef,
-    // maxSectionBlinkRef,
-    // minSectionBlinkRef,
-    // maxSectionYawRef,
-    // maxSectionPitchRef,
-    // maxSectionRollRef,
-}) => {
+}> = ({ video, canvas1, canvas2, start, faceapi, ear, frequency }) => {
     const dispatch = useDispatch();
 
     const { loaded, cv } = useOpenCv();
@@ -56,13 +36,6 @@ const ConcentrationEstimateComponent: React.FC<{
 
     const [msSeparation, setMsSeparation] = useState(1000);
     const [separationNum, setSeparationNum] = useState(5);
-    // const maxSectionFacePointRef = useRef(0);
-    // const minSectionFacePointRef = useRef(0);
-    // const maxSectionBlinkRef = useRef(0);
-    // const minSectionBlinkRef = useRef(0);
-    // const maxSectionYawRef = useRef(0);
-    // const maxSectionPitchRef = useRef(0);
-    // const maxSectionRollRef = useRef(0);
 
     useEffect(() => {
         if (cv) {
@@ -73,7 +46,7 @@ const ConcentrationEstimateComponent: React.FC<{
     }, [cv]);
 
     useEffect(() => {
-        if (start == true) {
+        if (start) {
             setInterval(() => {
                 detect(faceapi, video, canvas1, canvas2, cvnew).then((res) => {
                     if (res === undefined) {
@@ -158,7 +131,7 @@ const ConcentrationEstimateComponent: React.FC<{
                     });
             }
 
-            if (frequency == null) {
+            if (frequency === null && ear === false) {
                 let yawSum = 0;
                 let pitchSum = 0;
                 let rollSum = 0;
@@ -225,13 +198,32 @@ const ConcentrationEstimateComponent: React.FC<{
                 newData.facePoint[0]
             );
             sectionFaceMove.push(noseDifference);
+            if (ear) {
+                if (store.getState().earLeftInitReducer < newData.ear.left) {
+                    dispatch({
+                        type: "earLeftInitSet",
+                        earLeftInit: newData.ear.left,
+                    });
+                }
+                if (store.getState().earRightInitReducer < newData.ear.right) {
+                    dispatch({
+                        type: "earRightInitSet",
+                        earRightInit: newData.ear.right,
+                    });
+                }
+            }
+            console.log(
+                "concentrationEstimate: " + store.getState().earLeftReducer
+            );
+
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,
-                0.25,
-                0.25
+                store.getState().earLeftReducer,
+                store.getState().earRightReducer
             );
             sectionBlink.push(blinkBool);
+
             sectionAngle.push(newData.angle);
         }
     };

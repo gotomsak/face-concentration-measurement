@@ -289,6 +289,7 @@ const LearningPage: React.FC = () => {
                 start={cameraStart}
                 stop={cameraStop}
                 frequency={null}
+                ear={false}
                 downloadData={false}
             ></WebCameraComponent>
             <ConcentTextViewComponent

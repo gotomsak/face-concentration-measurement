@@ -190,6 +190,7 @@ const MathWorkPage: React.FC = () => {
                 start={cameraStart}
                 stop={cameraStop}
                 frequency={null}
+                ear={false}
                 downloadData={downloadData}
             ></WebCameraComponent>
             <ConcentTextViewComponent

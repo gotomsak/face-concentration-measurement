@@ -19,6 +19,34 @@ export const TopPageStyle = makeStyles({
     },
 });
 
+export const EarInitPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+
+        width: "100%",
+        height: "100%",
+    },
+    head: {
+        // width: "100%",
+        // height: "10%",
+        // display: "flex",
+        // flexDirection: "column",
+        // // justifyContent: "center",
+    },
+    menu: {
+        padding: "40px",
+        display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "center",
+        width: "100%",
+        // height: "10%",
+    },
+});
+
 export const FrequencyPageStyle = makeStyles({
     root: {
         display: "flex",
