@@ -20,27 +20,41 @@ const EarInitPage: React.FC = () => {
     const history = useHistory();
 
     const classes = EarInitPageStyle();
+    useEffect(() => {
+        store.subscribe(() => {
+            if (
+                store.getState().earRightInitReducer.ear_right_init_t !== null
+            ) {
+                const date = new Date();
+                date.setHours(date.getHours() + 9);
+                initEar({
+                    user_id: Number(localStorage.getItem("user_id")),
+                    left_ear_list:
+                        store.getState().earLeftInitReducer.ear_left_init_list,
+                    left_ear_t:
+                        store.getState().earLeftInitReducer.ear_left_init_t,
+                    right_ear_list:
+                        store.getState().earRightInitReducer
+                            .ear_right_init_list,
+                    right_ear_t:
+                        store.getState().earRightInitReducer.ear_right_init_t,
+                    date: date,
+                })
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+        });
+    }, []);
 
     useEffect(() => {
-        const date = new Date();
-        date.setHours(date.getHours() + 9);
-
         if (finishCheck === true) {
             setCameraStop(true);
             setCameraStart(false);
             setStartCheck(false);
-            initEar({
-                user_id: Number(localStorage.getItem("user_id")),
-                left_ear: store.getState().earLeftInitReducer,
-                right_ear: store.getState().earRightInitReducer,
-                date: date,
-            })
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
         }
     }, [finishCheck]);
 

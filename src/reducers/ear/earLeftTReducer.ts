@@ -1,12 +1,12 @@
-export const earRightReducer = (
+export const earLeftTReducer = (
     state: number | null = 0.25,
     action: any
 ): any => {
     switch (action.type) {
-        case "earRightSet":
-            state = action.earRight;
+        case "earLeftTSet":
+            state = action.earLeftT;
             return state;
-        case "earRightReset":
+        case "earLeftTReset":
             return 0.25;
         default:
             return state;

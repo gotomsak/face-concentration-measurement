@@ -37,12 +37,12 @@ const SetEnvironment: React.FC<{ environments: GetEnvironment[] }> = ({
                                     ear_id: element.id,
                                 });
                                 dispatch({
-                                    type: "earRightSet",
-                                    earRight: element.ear.right_ear,
+                                    type: "earRightTSet",
+                                    earRightT: element.ear.right_ear_t,
                                 });
                                 dispatch({
-                                    type: "earLeftSet",
-                                    earLeft: element.ear.left_ear,
+                                    type: "earLeftTSet",
+                                    earLeftT: element.ear.left_ear_t,
                                 });
                                 dispatch({
                                     type: "maxBlinkSet",

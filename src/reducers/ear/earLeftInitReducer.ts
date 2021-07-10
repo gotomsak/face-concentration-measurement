@@ -1,13 +1,25 @@
+interface ELI {
+    ear_left_init_list: any[];
+    ear_left_init_t: null | number;
+}
 export const earLeftInitReducer = (
-    state: number | null = 0,
+    state: ELI = { ear_left_init_list: [], ear_left_init_t: null },
     action: any
 ): any => {
     switch (action.type) {
         case "earLeftInitSet":
-            state = action.earLeftInit;
+            state.ear_left_init_list = state.ear_left_init_list.concat([
+                action.ear_left_init_list,
+            ]);
             return state;
+
+        case "earLeftInitTSet":
+            state.ear_left_init_t = action.ear_left_init_t;
+            return state;
+
         case "earLeftInitReset":
-            return 0;
+            return [];
+
         default:
             return state;
     }

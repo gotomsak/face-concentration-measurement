@@ -81,7 +81,6 @@ const RecordingPage: React.FC = () => {
             setEnvironments(res.data.environments);
         });
         store.subscribe(() => {
-            console.log(store.getState().concReducer.c3.slice(-1)[0]);
             setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
             setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
             setViewC1(store.getState().concReducer.c1.slice(-1)[0]);

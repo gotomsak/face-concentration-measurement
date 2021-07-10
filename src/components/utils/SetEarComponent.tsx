@@ -34,23 +34,23 @@ const SetEarComponent: React.FC<{ ears: GetEar[] }> = ({ ears }) => {
                     onInputChange={(e, value) => {
                         ears.forEach((element: GetEar) => {
                             if (element.date.toString() === value) {
-                                console.log(store.getState().earLeftReducer);
+                                console.log(store.getState().earLeftTReducer);
                                 console.log(element.id);
                                 dispatch({
                                     type: "earIDSet",
                                     ear_id: element.id,
                                 });
                                 dispatch({
-                                    type: "earRightSet",
-                                    earRight: element.right_ear,
+                                    type: "earRightTSet",
+                                    earRightT: element.right_ear_t,
                                 });
                                 dispatch({
-                                    type: "earLeftSet",
-                                    earLeft: element.left_ear,
+                                    type: "earLeftTSet",
+                                    earLeftT: element.left_ear_t,
                                 });
                             }
                         });
-                        console.log(store.getState().earLeftReducer);
+                        console.log(store.getState().earLeftTReducer);
                     }}
                 />
             </div>

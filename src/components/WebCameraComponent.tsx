@@ -198,6 +198,7 @@ const WebCameraComponent: React.FC<{
                     canvas1={canvas1}
                     canvas2={canvas2}
                     start={start}
+                    stop={stop}
                     faceapi={faceapi}
                     ear={ear}
                     frequency={frequency}

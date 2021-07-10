@@ -6,7 +6,7 @@ import { solve } from "../opencv/solve";
 import { detect } from "../opencv/detect";
 import { difference } from "../opencv/difference";
 import { setServers } from "dns";
-import { blinkCount } from "../opencv/ear";
+import { blinkCount, eyeT } from "../opencv/ear";
 import {
     getConcentration,
     getConcentrationSynthesis,
@@ -19,11 +19,12 @@ const ConcentrationEstimateComponent: React.FC<{
     video: any;
     canvas1: any;
     canvas2: any;
-    start: any;
+    start: boolean;
+    stop: boolean;
     faceapi: any;
     ear: boolean;
     frequency: string | null;
-}> = ({ video, canvas1, canvas2, start, faceapi, ear, frequency }) => {
+}> = ({ video, canvas1, canvas2, start, stop, faceapi, ear, frequency }) => {
     const dispatch = useDispatch();
 
     const { loaded, cv } = useOpenCv();
@@ -36,6 +37,8 @@ const ConcentrationEstimateComponent: React.FC<{
 
     const [msSeparation, setMsSeparation] = useState(1000);
     const [separationNum, setSeparationNum] = useState(5);
+    const [earRightList, setEarRightList] = useState<any>([]);
+    const [earLeftList, setEarLeftList] = useState<any>([]);
 
     useEffect(() => {
         if (cv) {
@@ -73,6 +76,25 @@ const ConcentrationEstimateComponent: React.FC<{
             }, msSeparation);
         }
     }, [start]);
+    useEffect(() => {
+        if (stop && ear) {
+            const earRT = eyeT(
+                store.getState().earRightInitReducer.ear_right_init_list
+            );
+            console.log(earRT);
+            const earLT = eyeT(
+                store.getState().earLeftInitReducer.ear_left_init_list
+            );
+            dispatch({
+                type: "earLeftInitTSet",
+                ear_left_init_t: earLT,
+            });
+            dispatch({
+                type: "earRightInitTSet",
+                ear_right_init_t: earRT,
+            });
+        }
+    }, [stop]);
 
     const ConcentrationCalculation = () => {
         if (sectionFaceMove.length >= separationNum) {
@@ -199,28 +221,32 @@ const ConcentrationEstimateComponent: React.FC<{
             );
             sectionFaceMove.push(noseDifference);
             if (ear) {
-                if (store.getState().earLeftInitReducer < newData.ear.left) {
-                    dispatch({
-                        type: "earLeftInitSet",
-                        earLeftInit: newData.ear.left,
-                    });
-                }
-                if (store.getState().earRightInitReducer < newData.ear.right) {
-                    dispatch({
-                        type: "earRightInitSet",
-                        earRightInit: newData.ear.right,
-                    });
-                }
+                // earLeftList.push(newData.ear.left);
+                // earRightList.push(newData.ear.right);
+
+                // if (store.getState().earLeftInitReducer < newData.ear.left) {
+                dispatch({
+                    type: "earLeftInitSet",
+                    ear_left_init_list: newData.ear.left,
+                });
+                // }
+                // if (store.getState().earRightInitReducer < newData.ear.right) {
+                dispatch({
+                    type: "earRightInitSet",
+                    ear_right_init_list: newData.ear.right,
+                });
+                // }
             }
             console.log(
-                "concentrationEstimate: " + store.getState().earLeftReducer
+                "concentrationEstimate: " + store.getState().earLeftTReducer
             );
+            console.log("newEarleft: " + newData.ear.left.toString());
 
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,
-                store.getState().earLeftReducer,
-                store.getState().earRightReducer
+                store.getState().earLeftTReducer,
+                store.getState().earRightTReducer
             );
             sectionBlink.push(blinkBool);
 
