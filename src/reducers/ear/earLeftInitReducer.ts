@@ -17,8 +17,10 @@ export const earLeftInitReducer = (
             state.ear_left_init_t = action.ear_left_init_t;
             return state;
 
-        case "earLeftInitReset":
-            return [];
+        case "earLeftInitAllReset":
+            state.ear_left_init_list = [];
+            state.ear_left_init_t = null;
+            return state;
 
         default:
             return state;

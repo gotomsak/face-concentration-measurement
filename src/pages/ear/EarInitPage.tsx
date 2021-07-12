@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import WebCameraComponent from "../../components/WebCameraComponent";
 import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
@@ -20,35 +21,7 @@ const EarInitPage: React.FC = () => {
     const history = useHistory();
 
     const classes = EarInitPageStyle();
-    useEffect(() => {
-        store.subscribe(() => {
-            if (
-                store.getState().earRightInitReducer.ear_right_init_t !== null
-            ) {
-                const date = new Date();
-                date.setHours(date.getHours() + 9);
-                initEar({
-                    user_id: Number(localStorage.getItem("user_id")),
-                    left_ear_list:
-                        store.getState().earLeftInitReducer.ear_left_init_list,
-                    left_ear_t:
-                        store.getState().earLeftInitReducer.ear_left_init_t,
-                    right_ear_list:
-                        store.getState().earRightInitReducer
-                            .ear_right_init_list,
-                    right_ear_t:
-                        store.getState().earRightInitReducer.ear_right_init_t,
-                    date: date,
-                })
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            }
-        });
-    }, []);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (finishCheck === true) {
@@ -57,6 +30,30 @@ const EarInitPage: React.FC = () => {
             setStartCheck(false);
         }
     }, [finishCheck]);
+
+    useEffect(() => {
+        if (cameraStop) {
+            const date = new Date();
+            date.setHours(date.getHours() + 9);
+            initEar({
+                user_id: Number(localStorage.getItem("user_id")),
+                left_ear_list:
+                    store.getState().earLeftInitReducer.ear_left_init_list,
+                left_ear_t: store.getState().earLeftInitReducer.ear_left_init_t,
+                right_ear_list:
+                    store.getState().earRightInitReducer.ear_right_init_list,
+                right_ear_t:
+                    store.getState().earRightInitReducer.ear_right_init_t,
+                date: date,
+            })
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [cameraStop]);
 
     const changeMethod = (e: any) => {
         if (e.target.name == "camera") {
@@ -82,6 +79,8 @@ const EarInitPage: React.FC = () => {
 
     const nextButton = (e: any) => {
         history.push("/");
+        dispatch({ type: "earLeftInitAllReset" });
+        dispatch({ type: "earRightInitAllReset" });
     };
 
     return (
