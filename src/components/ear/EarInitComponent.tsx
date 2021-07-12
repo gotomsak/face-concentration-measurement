@@ -11,7 +11,7 @@ const EarInitComponent: React.FC<{
 
     useEffect(() => {
         refWindowTimer.current = windowTimer;
-        if (windowTimer === 5) {
+        if (windowTimer === 7) {
             clearInterval(windowTimeFlag!);
             setFinishCheck(true);
         }
