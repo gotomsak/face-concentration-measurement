@@ -14,6 +14,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 // import opencv from "./opencv/opencv.js";
 import store from "..";
+import { gridColumnsTotalWidthSelector } from "@material-ui/data-grid";
 
 const ConcentrationEstimateComponent: React.FC<{
     video: any;
@@ -56,7 +57,7 @@ const ConcentrationEstimateComponent: React.FC<{
                         sectionFaceMove.push(
                             store.getState().maxFaceMoveReducer
                         );
-                        sectionBlink.push(store.getState().maxBlinkReducer);
+                        sectionBlink.push(true);
                         sectionAngle.push({
                             yaw: store.getState().maxYawReducer,
                             pitch: store.getState().maxPitchReducer,
@@ -81,7 +82,7 @@ const ConcentrationEstimateComponent: React.FC<{
             const earRT = eyeT(
                 store.getState().earRightInitReducer.ear_right_init_list
             );
-            console.log(earRT);
+            // console.log(earRT);
             const earLT = eyeT(
                 store.getState().earLeftInitReducer.ear_left_init_list
             );
@@ -102,7 +103,7 @@ const ConcentrationEstimateComponent: React.FC<{
                 (sum: any, value: any) => sum + value,
                 0
             );
-            console.log("pointSum: " + PointSum.toString());
+            console.log(sectionBlink);
             const BlinkSum = sectionBlink.reduce(
                 (sum: any, value: any) => sum + (value == true ? 1 : 0),
                 0
@@ -162,13 +163,13 @@ const ConcentrationEstimateComponent: React.FC<{
                     pitchSum += value.pitch;
                     rollSum += value.roll;
                 });
-
+                // console.log(BlinkSum);
                 const c1 = getConcentration(
                     BlinkSum / separationNum,
                     store.getState().maxBlinkReducer,
                     store.getState().minBlinkReducer
                 );
-                console.log("c2 pointsum" + PointSum / separationNum);
+                // console.log("c2 pointsum" + PointSum / separationNum);
 
                 const c2 = getConcentration(
                     PointSum / separationNum,
@@ -196,7 +197,7 @@ const ConcentrationEstimateComponent: React.FC<{
                         face_point: store.getState().facePointReducer,
                     },
                 });
-                console.log(store.getState().concReducer);
+                // console.log(store.getState().concReducer);
             }
             sectionFaceMove.shift();
             sectionAngle.shift();
@@ -205,7 +206,7 @@ const ConcentrationEstimateComponent: React.FC<{
     };
 
     const PreprocessingData = (newData: any, oldData: any) => {
-        console.log(newData.facePoint);
+        // console.log(newData.facePoint);
         if (oldData.length > 0 && oldData.slice(-1)[0] !== undefined) {
             // let AllPointSum = 0;
             // for (var i = 0; i < oldData.slice(-1)[0]["facePoint"].length; i++) {
@@ -241,7 +242,9 @@ const ConcentrationEstimateComponent: React.FC<{
                 "concentrationEstimate: " + store.getState().earLeftTReducer
             );
             console.log("newEarleft: " + newData.ear.left.toString());
-
+            console.log("earLeftTRedu: " + store.getState().earLeftTReducer);
+            console.log("newEarright: " + newData.ear.right.toString());
+            console.log("earRightTRedu: " + store.getState().earRightTReducer);
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,

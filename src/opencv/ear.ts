@@ -9,21 +9,21 @@ export function ear(eye: any) {
 }
 
 export const blinkCount = (
-    leftEye: any,
-    rightEye: any,
-    leftEyeT: any,
-    rightEyeT: any
+    leftEye: number,
+    rightEye: number,
+    leftEyeT: number,
+    rightEyeT: number
 ) => {
-    let blinkBool = false;
-    let blinked = false;
-
+    console.log("right: " + rightEye.toString());
+    console.log("left: " + leftEye.toString());
     if (rightEye < rightEyeT && leftEye < leftEyeT) {
-        blinked = true;
+        console.log("mabatakisita");
+        return true;
     }
-    return blinked;
+    return false;
 };
 
-//閾値 = 開眼度の平均 - 標準偏差 - 0.05 <- 0.05はなし
+//閾値 = 開眼度の平均 - 標準偏差 - 0.05 <- 0.05はなし?
 export const eyeT = (eye: any[]) => {
     const average =
         eye.reduce((previous: any, current: any) => {
@@ -41,7 +41,6 @@ export const eyeT = (eye: any[]) => {
         }) / eye.length;
 
     const standardDeviation = Math.sqrt(variance);
-    console.log(standardDeviation);
 
     return average - standardDeviation;
 };

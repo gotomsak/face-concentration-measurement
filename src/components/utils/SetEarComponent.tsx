@@ -34,8 +34,6 @@ const SetEarComponent: React.FC<{ ears: GetEar[] }> = ({ ears }) => {
                     onInputChange={(e, value) => {
                         ears.forEach((element: GetEar) => {
                             if (element.date.toString() === value) {
-                                console.log(store.getState().earLeftTReducer);
-                                console.log(element.id);
                                 dispatch({
                                     type: "earIDSet",
                                     ear_id: element.id,

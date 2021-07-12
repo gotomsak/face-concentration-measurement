@@ -7,7 +7,6 @@ const ConcentrationViewComponent: React.FC<{
     const [concView1, setConcView1] = useState("");
 
     useEffect(() => {
-        console.log("check");
         const last = concData1[concData1.length - 1];
         if (concData1.length === 0 || last === "0") {
             setConcView1("NoConcData");

@@ -146,7 +146,7 @@ const WebCameraComponent: React.FC<{
                     id: store.getState().facePointIDReducer,
                     face_point_all: store.getState().facePointReducer,
                 }).then((res: any) => {
-                    console.log(res);
+                    // console.log(res);
                     dispatch({
                         type: "facePointReset",
                     });

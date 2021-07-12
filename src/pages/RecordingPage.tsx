@@ -77,7 +77,7 @@ const RecordingPage: React.FC = () => {
         // });
 
         getEnvironment().then((res) => {
-            console.log(res);
+            // console.log(res);
             setEnvironments(res.data.environments);
         });
         store.subscribe(() => {
@@ -87,8 +87,6 @@ const RecordingPage: React.FC = () => {
             setViewW(store.getState().concReducer.w.slice(-1)[0]);
         });
     }, []);
-
-    console.log("nandeyanen");
 
     const handleCloseTip = (): void => {
         setOpenTip(false);
@@ -124,8 +122,8 @@ const RecordingPage: React.FC = () => {
                 face_point_id: res.data.face_point_id,
             });
         });
-        console.log(store.getState().facePointIDReducer);
-        console.log(store.getState().concIDReducer);
+        // console.log(store.getState().facePointIDReducer);
+        // console.log(store.getState().concIDReducer);
         console.log(typeParam);
     };
 

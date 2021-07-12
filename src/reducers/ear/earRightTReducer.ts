@@ -3,10 +3,10 @@ export const earRightTReducer = (
     action: any
 ): any => {
     switch (action.type) {
-        case "earRightSet":
+        case "earRightTSet":
             state = action.earRightT;
             return state;
-        case "earRightReset":
+        case "earRightTReset":
             return 0.25;
         default:
             return state;
