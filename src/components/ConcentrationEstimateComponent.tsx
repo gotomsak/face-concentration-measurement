@@ -40,6 +40,7 @@ const ConcentrationEstimateComponent: React.FC<{
     const [separationNum, setSeparationNum] = useState(5);
     const [earRightList, setEarRightList] = useState<any>([]);
     const [earLeftList, setEarLeftList] = useState<any>([]);
+    const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
     useEffect(() => {
         if (cv) {
@@ -51,30 +52,34 @@ const ConcentrationEstimateComponent: React.FC<{
 
     useEffect(() => {
         if (start) {
-            setInterval(() => {
-                detect(faceapi, video, canvas1, canvas2, cvnew).then((res) => {
-                    if (res === undefined) {
-                        sectionFaceMove.push(
-                            store.getState().maxFaceMoveReducer
-                        );
-                        sectionBlink.push(true);
-                        sectionAngle.push({
-                            yaw: store.getState().maxYawReducer,
-                            pitch: store.getState().maxPitchReducer,
-                            roll: store.getState().maxRollReducer,
-                        });
-                    } else {
-                        PreprocessingData(res, oldData);
-                    }
-                    dispatch({
-                        type: "facePointSet",
-                        face_point: res?.facePointAll,
-                    });
+            setIntervalID(
+                setInterval(() => {
+                    detect(faceapi, video, canvas1, canvas2, cvnew).then(
+                        (res) => {
+                            if (res === undefined) {
+                                sectionFaceMove.push(
+                                    store.getState().maxFaceMoveReducer
+                                );
+                                sectionBlink.push(true);
+                                sectionAngle.push({
+                                    yaw: store.getState().maxYawReducer,
+                                    pitch: store.getState().maxPitchReducer,
+                                    roll: store.getState().maxRollReducer,
+                                });
+                            } else {
+                                PreprocessingData(res, oldData);
+                            }
+                            dispatch({
+                                type: "facePointSet",
+                                face_point: res?.facePointAll,
+                            });
 
-                    oldData.push(res);
-                    ConcentrationCalculation();
-                });
-            }, msSeparation);
+                            oldData.push(res);
+                            ConcentrationCalculation();
+                        }
+                    );
+                }, msSeparation)
+            );
         }
     }, [start]);
     useEffect(() => {
@@ -94,6 +99,9 @@ const ConcentrationEstimateComponent: React.FC<{
                 type: "earRightInitTSet",
                 ear_right_init_t: earRT,
             });
+        }
+        if (stop) {
+            clearInterval(Number(intervalID));
         }
     }, [stop]);
 

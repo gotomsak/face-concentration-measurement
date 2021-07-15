@@ -196,6 +196,9 @@ const RecordingPage: React.FC = () => {
                 concentration: store.getState().concReducer,
             }).then((res: any) => {
                 console.log(res);
+                dispatch({
+                    type: "concReset",
+                });
             });
             setStart(false);
             setStop(false);
