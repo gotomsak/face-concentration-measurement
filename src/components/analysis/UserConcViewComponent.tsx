@@ -78,7 +78,7 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
     }, []);
 
     return (
-        <div>
+        <div style={{ whiteSpace: "pre-line" }}>
             <h1>{work}</h1>
             <h1>{memo}</h1>
 
