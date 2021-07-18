@@ -35,8 +35,10 @@ import SetEarComponent from "../components/utils/SetEarComponent";
 import { getEnvironment } from "../apis/backendAPI/environment/getEnvironment";
 import SetEnvironment from "../components/utils/SetEnvironment";
 import { GetEnvironment } from "../apis/backendAPI/environment/interfaces";
+import Box from "@material-ui/core/Box";
+import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
-const RecordingPage: React.FC = () => {
+const RecordingPage: React.FC = (props: any) => {
     const [start, setStart] = useState(false);
     const dispatch = useDispatch();
     const [stop, setStop] = useState(false);
@@ -44,8 +46,8 @@ const RecordingPage: React.FC = () => {
     const [downloadData, setDownloadData] = useState<boolean>(false);
     const [environments, setEnvironments] = useState<GetEnvironment[]>([]);
     const [id, setID] = useState<string>("idを発行してください");
-    const [ears, setEars] = useState<GetEar[]>([]);
-    const [frequencys, setFrequencys] = useState<any>();
+    // const [ears, setEars] = useState<GetEar[]>([]);
+    // const [frequencys, setFrequencys] = useState<any>();
     const [viewC3, setViewC3] = useState(0);
     const [viewC2, setViewC2] = useState(0);
     const [viewC1, setViewC1] = useState(0);
@@ -67,15 +69,6 @@ const RecordingPage: React.FC = () => {
     const [typeParam, setTypeParam] = useState("gotoSys");
 
     useEffect(() => {
-        // getFrequency().then((res: any) => {
-        //     setFrequencys(res);
-
-        //     console.log(res);
-        // });
-        // getEar().then((res: any) => {
-        //     setEars(res.data["earData"]);
-        // });
-
         getEnvironment().then((res) => {
             // console.log(res);
             setEnvironments(res.data.environments);
@@ -98,6 +91,9 @@ const RecordingPage: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setDownloadData(event.target.checked);
+    };
+    const memoChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMemo(e.target.value);
     };
 
     const createID = () => {
@@ -127,7 +123,7 @@ const RecordingPage: React.FC = () => {
         console.log(typeParam);
     };
 
-    const classes = RecordingPageStyle();
+    const classes: ClassNameMap = RecordingPageStyle();
     const recordButton = () => {
         if (stop === true) {
             return (
@@ -226,145 +222,89 @@ const RecordingPage: React.FC = () => {
                 downloadData={downloadData}
             ></WebCameraComponent>
 
-            <p>
-                <div className={classes.fID}>
-                    <div className={classes.tID}>
-                        <RecordingPageButton onClick={createID}>
-                            id発行
-                        </RecordingPageButton>
-                        <FormControl variant="outlined">
-                            <OutlinedInput
-                                type="text"
-                                value={id}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <Tooltip
-                                            arrow
-                                            open={openTip}
-                                            onClose={handleCloseTip}
-                                            disableHoverListener
-                                            placement="top"
-                                            title="Copied!"
-                                        >
-                                            <CopyToClipBoard text={id}>
-                                                <IconButton
-                                                    disabled={id === ""}
-                                                    onClick={handleClickButton}
-                                                >
-                                                    <AssignmentIcon />
-                                                </IconButton>
-                                            </CopyToClipBoard>
-                                        </Tooltip>
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        <TextField
-                            label="作業名"
-                            variant="outlined"
-                            value={work}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                setWork(e.target.value);
-                            }}
-                        ></TextField>
+            <div className={classes.fID}>
+                {/* <div className={classes.tID}> */}
+                <TextField
+                    label="作業名"
+                    variant="outlined"
+                    value={work}
+                    onChange={memoChangeHandler}
+                ></TextField>
+            </div>
 
-                        <TextField
-                            label="メモ"
-                            variant="outlined"
-                            value={memo}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                setMemo(e.target.value);
-                            }}
-                        ></TextField>
-
-                        {/* <TextField value={id} variant="outlined" /> */}
-                        {/* <div className={classes.tID}>{id}</div> */}
-                        {/* <Autocomplete
-                            id="combo-box-demo"
-                            options={works}
-                            getOptionLabel={(option) => option.type}
-                            style={{ width: 300 }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="システムの選択"
-                                    variant="outlined"
-                                />
-                            )}
-                            onInputChange={(e, value) => {
-                                console.log(value);
-                                setWork(value);
-                            }}
-                        /> */}
-                    </div>
-                </div>
-            </p>
-
-            <p>
-                <div className={classes.fID}>
-                    <SetEnvironment
-                        environments={environments}
-                    ></SetEnvironment>
-                    {/* {frequencys ? (
-                        <SetFrequencyComponent
-                            frequencys={frequencys}
-                        ></SetFrequencyComponent>
-                    ) : (
-                        <div></div>
-                    )} */}
-                </div>
-            </p>
-            {/* <p>
-                <div className={classes.fID}>
-                    {ears ? (
-                        <SetEarComponent ears={ears}></SetEarComponent>
-                    ) : (
-                        <div></div>
-                    )}
-                </div>
-            </p> */}
-            <p>
-                <div className={classes.fID}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                checked={downloadData}
-                                onChange={downloadDataHandleChange}
-                                inputProps={{
-                                    "aria-label": "primary checkbox",
-                                }}
-                            />
-                        }
-                        label="動画ダウンロード"
+            <div className={classes.fID}>
+                <div className={classes.textFieldMemo}>
+                    <TextField
+                        multiline
+                        label="メモ"
+                        variant="outlined"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setMemo(e.target.value);
+                        }}
                     />
                 </div>
-            </p>
-            <p>
-                <div className={classes.fID}>
-                    {/* <div className={classes.tID}> */}
-                    {recordButton()}
-                    {/* {sendButtonVisible()} */}
-                    {/* </div>  */}
-                </div>
-            </p>
+            </div>
+
+            <div className={classes.fID}>
+                <SetEnvironment environments={environments}></SetEnvironment>
+            </div>
+
+            <div className={classes.fID}>
+                <RecordingPageButton onClick={createID}>
+                    id発行
+                </RecordingPageButton>
+                <FormControl variant="outlined">
+                    <OutlinedInput
+                        type="text"
+                        value={id}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <Tooltip
+                                    arrow
+                                    open={openTip}
+                                    onClose={handleCloseTip}
+                                    disableHoverListener
+                                    placement="top"
+                                    title="Copied!"
+                                >
+                                    <CopyToClipBoard text={id}>
+                                        <IconButton
+                                            disabled={id === ""}
+                                            onClick={handleClickButton}
+                                        >
+                                            <AssignmentIcon />
+                                        </IconButton>
+                                    </CopyToClipBoard>
+                                </Tooltip>
+                            </InputAdornment>
+                        }
+                    />
+                </FormControl>
+            </div>
+
+            <div className={classes.fID}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={downloadData}
+                            onChange={downloadDataHandleChange}
+                            inputProps={{
+                                "aria-label": "primary checkbox",
+                            }}
+                        />
+                    }
+                    label="動画ダウンロード"
+                />
+            </div>
+
+            <div className={classes.fID}>{recordButton()}</div>
+
             <ConcentTextViewComponent
                 viewC3={viewC3}
                 viewC2={viewC2}
                 viewC1={viewC1}
                 viewW={viewW}
             ></ConcentTextViewComponent>
-
-            {/* <ChartViewComponent></ChartViewComponent> */}
-
-            {/* <div>
-                <ConcentrationViewComponent
-                    concData1={concData}
-                ></ConcentrationViewComponent>
-            </div> */}
         </div>
     );
 };
