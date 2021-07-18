@@ -14,6 +14,7 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
     const [minFreqID, setMinFreqID] = useState<string>("");
     const [concViewData, setConcViewData] = useState<concViewDataType[]>([]);
     const [facePointAll, setFacePointAll] = useState();
+    const [memo, setMemo] = useState();
 
     useEffect(() => {
         adminGetRecUserDate(concID).then((res: any) => {
@@ -27,6 +28,7 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
             setMinFreqData(resMinFreq);
             setMaxFreqID(resConc.concentration.max_freq_id);
             setMinFreqID(resConc.concentration.min_freq_id);
+            setMemo(resConc.memo);
             let cnt = 0;
             let dataC3: any = [];
             let dataC2: any = [];
@@ -78,6 +80,7 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
     return (
         <div>
             <h1>{work}</h1>
+            <h1>{memo}</h1>
 
             <FreqViewComponent
                 maxFreqData={maxFreqData}
