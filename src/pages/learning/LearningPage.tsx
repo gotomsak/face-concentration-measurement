@@ -4,6 +4,7 @@ import React, {
     useRef,
     useReducer,
     useCallback,
+    memo,
 } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -214,6 +215,7 @@ const LearningPage: React.FC = () => {
             type: "gotoSys",
             id: store.getState().concIDReducer,
             measurement: "gotoConc",
+            memo: "",
             concentration: store.getState().concReducer,
         }).then((res: any) => {
             console.log(res);

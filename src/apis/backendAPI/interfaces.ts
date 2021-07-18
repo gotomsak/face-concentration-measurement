@@ -12,6 +12,7 @@ export interface PostConcentSplitSave {
     type: string;
     id: string;
     measurement: string;
+    memo: string;
     concentration: any[];
 }
 

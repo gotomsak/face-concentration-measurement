@@ -92,9 +92,6 @@ const RecordingPage: React.FC = (props: any) => {
     ) => {
         setDownloadData(event.target.checked);
     };
-    const memoChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMemo(e.target.value);
-    };
 
     const createID = () => {
         getID({
@@ -170,6 +167,7 @@ const RecordingPage: React.FC = (props: any) => {
             type: typeParam,
             measurement: "gotoConc",
             concentration: store.getState().concReducer,
+            memo: memo,
             id: id,
         }).then((res: any) => {
             console.log(res);
@@ -228,7 +226,9 @@ const RecordingPage: React.FC = (props: any) => {
                     label="作業名"
                     variant="outlined"
                     value={work}
-                    onChange={memoChangeHandler}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setWork(e.target.value);
+                    }}
                 ></TextField>
             </div>
 
@@ -238,11 +238,27 @@ const RecordingPage: React.FC = (props: any) => {
                         multiline
                         label="メモ"
                         variant="outlined"
+                        value={memo}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             setMemo(e.target.value);
                         }}
                     />
                 </div>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                        const date = new Date();
+                        // 書き起こすと日本時間になるのでdate.setHours(date.getHours() + 9);はしない
+                        if (memo === "") {
+                            setMemo(date.toString());
+                        } else {
+                            setMemo(memo + "\n" + date.toString());
+                        }
+                    }}
+                >
+                    timestamp
+                </Button>
             </div>
 
             <div className={classes.fID}>

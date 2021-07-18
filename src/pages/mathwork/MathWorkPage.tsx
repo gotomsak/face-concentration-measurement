@@ -123,6 +123,7 @@ const MathWorkPage: React.FC = () => {
         postConcentSplitSave({
             type: "gotoSys",
             id: store.getState().concIDReducer,
+            memo: "",
             measurement: "gotoConc",
             concentration: store.getState().concReducer,
         }).then((res: any) => {
