@@ -7,8 +7,10 @@ export interface Conc {
     w: any[];
     date: any[];
     face_point_id: string;
+    ear_id: string;
     max_freq_id: string;
     min_freq_id: string;
+    environment_id: string;
 }
 
 export const concReducer = (
@@ -19,8 +21,10 @@ export const concReducer = (
         w: [],
         date: [],
         face_point_id: "",
+        ear_id: "",
         max_freq_id: "",
         min_freq_id: "",
+        environment_id: "",
     },
     action: any
 ): any => {
@@ -32,6 +36,10 @@ export const concReducer = (
             state.w = state.w.concat([action.conc.w]);
             state.date = state.date.concat([action.conc.date]);
 
+            return state;
+
+        case "earIDSet":
+            state.ear_id = action.ear_id;
             return state;
 
         case "maxFreqIDSet":
@@ -49,6 +57,10 @@ export const concReducer = (
 
         case "facePointIDSet":
             state.face_point_id = action.face_point_id;
+            return state;
+
+        case "environmentIDSet":
+            state.environment_id = action.environment_id;
             return state;
 
         case "concReset":

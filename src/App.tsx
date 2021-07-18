@@ -15,14 +15,20 @@ import AdminSigninPage from "./pages/admin/AdminSigninPage";
 import AdminSignupPage from "./pages/admin/AdminSignupPage";
 import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
 import QuestionnairePage from "./pages/learning/QuestionnairePage";
+import EarInitPage from "./pages/ear/EarInitPage";
+import EnvironmentPage from "./pages/EnvironmentPage";
 function App() {
     return (
         <div className="App">
             <React.Fragment>
                 <Switch>
                     <Route exact path="/" component={TopPage}></Route>
-
+                    <Route path="/EarInit" component={EarInitPage}></Route>
                     <Route path="/Frequency" component={FrequencyPage}></Route>
+                    <Route
+                        path="/Environment"
+                        component={EnvironmentPage}
+                    ></Route>
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>

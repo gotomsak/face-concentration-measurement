@@ -27,12 +27,16 @@ import {
 } from "@material-ui/core";
 import { SourceCode } from "eslint";
 import { FrequencyPageStyle } from "../../Styles";
+import SetEarComponent from "../../components/utils/SetEarComponent";
+import { GetEar } from "../../apis/backendAPI/ear/interfaces";
+import { getEar } from "../../apis/backendAPI/ear/getEar";
 
 function FrequencyPage() {
     const [startCheck, setStartCheck] = useState(false);
     const [cameraState, setCameraState] = useState(false);
     // データが取り終わった時のステート
     const [finishCheck, setFinishCheck] = useState(false);
+    const [ears, setEars] = useState<GetEar[]>([]);
 
     // 終了メッセージが表示されたあとのステート
     // const [finishFlag, setFinishFlag] = useState(false);
@@ -72,32 +76,40 @@ function FrequencyPage() {
         }
     }, [finishCheck]);
 
-    // useEffect(() => {
-    //     if (finishCheck === true) {
-    //     }
-    // }, [finishCheck]);
-
+    useEffect(() => {
+        getEar().then((res: any) => {
+            console.log(res);
+            setEars(res.data["earData"]);
+        });
+    }, []);
     const initMaxFrequencyValue = (): InitMaxFrequency => {
+        const date = new Date();
+        date.setHours(date.getHours() + 9);
+
         return {
             user_id: Number(localStorage.getItem("user_id")),
             max_frequency_data: {
                 max_blink: Number(store.getState().maxBlinkReducer),
                 max_face_move: Number(store.getState().maxFaceMoveReducer),
+                ear_id: store.getState().concReducer.ear_id,
                 face_point_all: store.getState().facePointReducer,
             },
-            environment: environment,
+            date: date,
         };
     };
 
     const initMinFrequencyValue = (): InitMinFrequency => {
+        const date = new Date();
+        date.setHours(date.getHours() + 9);
         return {
             user_id: Number(localStorage.getItem("user_id")),
             min_frequency_data: {
                 min_blink: Number(store.getState().minBlinkReducer),
                 min_face_move: Number(store.getState().minFaceMoveReducer),
+                ear_id: store.getState().concReducer.ear_id,
                 face_point_all: store.getState().facePointReducer,
             },
-            environment: environment,
+            date: date,
         };
     };
 
@@ -108,14 +120,6 @@ function FrequencyPage() {
     const readyViewText = () => {
         return (
             <div>
-                <TextField
-                    label="環境"
-                    variant="outlined"
-                    onChange={(e: any) => {
-                        setEnvironment(e.target.value);
-                    }}
-                />
-
                 <RadioGroup
                     aria-label="frequency"
                     name="frequency"
@@ -134,12 +138,7 @@ function FrequencyPage() {
                     />
                 </RadioGroup>
 
-                {/* <Button onClick={recordSelect} color="secondary" value={"max"}>
-                    最高頻度を算出
-                </Button>
-                <Button onClick={recordSelect} color="secondary" value={"min"}>
-                    最低頻度を算出
-                </Button> */}
+                <SetEarComponent ears={ears}></SetEarComponent>
             </div>
         );
     };
@@ -201,6 +200,7 @@ function FrequencyPage() {
                 start={cameraStart}
                 stop={cameraStop}
                 frequency={frequency}
+                ear={false}
                 downloadData={false}
             ></WebCameraComponent>
         </div>

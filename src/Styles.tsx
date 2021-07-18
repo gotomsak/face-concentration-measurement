@@ -19,6 +19,34 @@ export const TopPageStyle = makeStyles({
     },
 });
 
+export const EarInitPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+
+        width: "100%",
+        height: "100%",
+    },
+    head: {
+        // width: "100%",
+        // height: "10%",
+        // display: "flex",
+        // flexDirection: "column",
+        // // justifyContent: "center",
+    },
+    menu: {
+        padding: "40px",
+        display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "center",
+        width: "100%",
+        // height: "10%",
+    },
+});
+
 export const FrequencyPageStyle = makeStyles({
     root: {
         display: "flex",
@@ -62,7 +90,8 @@ export const MathWorkPageStyle = makeStyles({
         width: "80%",
     },
 });
-export const RecordingPageStyle = makeStyles({
+
+export const RecordingPageStyle = makeStyles((theme) => ({
     root: {
         display: "flex",
         flexDirection: "column",
@@ -75,24 +104,48 @@ export const RecordingPageStyle = makeStyles({
         // flexDirection: "row",
         justifyContent: "center",
         textAlign: "center",
-        width: "100%",
+        width: "auto",
+        height: "auto",
+        margin: "10px",
     },
     tID: {
         display: "flex",
-        width: "50%",
-        height: 50,
+        // width: "80%",
+        // height: 50,
         justifyContent: "space-evenly",
         // WebkitJustifyContent: "center",
 
         alignItems: "center",
     },
+    textFieldMemo: {
+        height: "auto",
+        position: "relative",
+        "& .MuiTextField-root": {
+            margin: theme.spacing(1),
+            width: 200,
+            height: "auto",
+            "& .MuiOutlinedInput-multiline": {
+                // height: "auto",
+                "& textarea": {
+                    minHeight: 15,
+                    // height: "auto",
+                    // maxHeight: "50px",
+                    // "& .MuiOutlinedInput-inputMultiline": { height: 50 },
+                },
+            },
+        },
+        // margin: "10px",
+
+        // width: 1000,
+    },
+
     setFreqComp: {
         display: "flex",
         justifyContent: "space-evenly",
 
         // justifyContent: "space-evenly",
     },
-});
+}));
 export const TopPageButton = styled(Button)({
     height: 50,
     width: 200,

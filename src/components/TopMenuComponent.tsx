@@ -16,10 +16,28 @@ const TopMenuComponent: React.FC = () => {
             <p>
                 <TopPageButton
                     onClick={() => {
+                        history.push("/EarInit");
+                    }}
+                >
+                    EAR初期化
+                </TopPageButton>
+            </p>
+            <p>
+                <TopPageButton
+                    onClick={() => {
                         history.push("/Frequency");
                     }}
                 >
                     頻度初期化
+                </TopPageButton>
+            </p>
+            <p>
+                <TopPageButton
+                    onClick={() => {
+                        history.push("/Environment");
+                    }}
+                >
+                    環境設定
                 </TopPageButton>
             </p>
             <p>

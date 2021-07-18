@@ -92,11 +92,12 @@ const AnalysisPage: React.FC = () => {
 
     return (
         <div>
-            {/* <UserConcAllViewComponent
-                concViewData={concViewData}
-                maxFreqData={maxFreqData}
-                minFreqData={minFreqData}
-            ></UserConcAllViewComponent> */}
+            <UserConcAllViewComponent
+                userID={Number(localStorage.getItem("user_id"))}
+                // concViewData={concViewData}
+                // maxFreqData={maxFreqData}
+                // minFreqData={minFreqData}
+            ></UserConcAllViewComponent>
         </div>
     );
 };

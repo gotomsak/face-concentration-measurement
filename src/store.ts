@@ -20,7 +20,11 @@ import { maxPitchReducer } from "./reducers/frequency/maxPitchReducer";
 import { facePointReducer } from "./reducers/frequency/facePointReducer";
 import { facePointIDReducer } from "./reducers/facePointIDReducer";
 import { concIDReducer } from "./reducers/concIDReducer";
-
+import { earLeftTReducer } from "./reducers/ear/earLeftTReducer";
+import { earRightTReducer } from "./reducers/ear/earRightTReducer";
+import { earLeftInitReducer } from "./reducers/ear/earLeftInitReducer";
+import { earRightInitReducer } from "./reducers/ear/earRightInitReducer";
+// import { earIDReducer } from "./reducers/ear/earIDReducer";
 export default function createStore(histroy: any) {
     return reduxCreateStore(
         combineReducers({
@@ -30,6 +34,11 @@ export default function createStore(histroy: any) {
             questionIDsReducer,
             solvedIDsReducer,
             ansResultSectionIDReducer,
+            earLeftTReducer,
+            earRightTReducer,
+            earLeftInitReducer,
+            earRightInitReducer,
+            // earIDReducer,
             maxBlinkReducer,
             minBlinkReducer,
             maxFaceMoveReducer,

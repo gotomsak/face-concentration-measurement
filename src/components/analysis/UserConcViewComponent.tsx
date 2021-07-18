@@ -13,23 +13,22 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
     const [maxFreqID, setMaxFreqID] = useState<string>("");
     const [minFreqID, setMinFreqID] = useState<string>("");
     const [concViewData, setConcViewData] = useState<concViewDataType[]>([]);
-    const [maxFreqViewData, setMaxFreqViewData] = useState<maxFreqViewDataType>(
-        { max_blink: 0, max_face_move: 0 }
-    );
-    const [minFreqViewData, setMinFreqViewData] = useState<minFreqViewDataType>(
-        { min_blink: 0, min_face_move: 0 }
-    );
+    const [facePointAll, setFacePointAll] = useState();
+    const [memo, setMemo] = useState();
+
     useEffect(() => {
         adminGetRecUserDate(concID).then((res: any) => {
             const resConc = res.data.concentration;
             const resMaxFreq = res.data.maxFrequency;
             const resMinFreq = res.data.minFrequency;
+            console.log(res.data);
 
             setWork(resConc.work);
             setMaxFreqData(resMaxFreq);
             setMinFreqData(resMinFreq);
             setMaxFreqID(resConc.concentration.max_freq_id);
             setMinFreqID(resConc.concentration.min_freq_id);
+            setMemo(resConc.memo);
             let cnt = 0;
             let dataC3: any = [];
             let dataC2: any = [];
@@ -75,74 +74,23 @@ const UserConcViewComponent: React.FC<{ concID: string }> = ({ concID }) => {
                 { name: "c2", data: dataC2 },
                 { name: "c1", data: dataC1 },
             ]);
-
-            const maxData = resMaxFreq.filter((elem: any) => {
-                return resConc.concentration.max_freq_id === elem["id"];
-            });
-            if (maxData[0] !== undefined) {
-                setMaxFreqViewData(maxData[0].max_frequency_data);
-            }
-
-            const minData = resMinFreq.filter((elem: any) => {
-                return resConc.concentration.min_freq_id === elem["id"];
-            });
-            if (minData[0] !== undefined) {
-                setMinFreqViewData(minData[0].min_frequency_data);
-            }
         });
     }, []);
-    // useEffect(() => {
-    //     console.log(maxFreqData);
-    // }, [maxFreqData]);
-
-    // useEffect(() => {
-    //     if (maxFreqData.length !== 0 && maxFreqID !== "") {
-    //         const maxData = maxFreqData.filter((elem: any) => {
-    //             console.log(elem["id"]);
-    //             console.log(maxFreqID);
-    //             return maxFreqID === elem["id"];
-    //         });
-    //         console.log(maxFreqData);
-    //         console.log(maxData);
-    //         console.log(maxFreqID);
-
-    //         setMaxFreqViewData(maxData[0].max_frequency_data);
-    //     }
-    // }, [maxFreqData]);
-
-    // useEffect(() => {
-    //     if (minFreqData.length !== 0 && minFreqID !== "") {
-    //         const minData = minFreqData.filter((elem: any) => {
-    //             return minFreqID === elem["id"];
-    //         });
-    //         console.log(minData);
-    //         setMinFreqViewData(minData[0].min_frequency_data);
-    //     }
-    // }, [minFreqData]);
 
     return (
-        <div>
+        <div style={{ whiteSpace: "pre-line" }}>
             <h1>{work}</h1>
+            <h1>{memo}</h1>
 
             <FreqViewComponent
-                maxFreqViewData={maxFreqViewData}
-                minFreqViewData={minFreqViewData}
-                // maxFreqData={maxFreqData}
-                // minFreqData={minFreqData}
-                // maxFreqID={maxFreqID}
-                // minFreqID={minFreqID}
+                maxFreqData={maxFreqData}
+                minFreqData={minFreqData}
+                maxFreqID={maxFreqID}
+                minFreqID={minFreqID}
             ></FreqViewComponent>
-            {/* {renderFreq(
-                                elem[0]["max_freq_id"],
-                                elem[0]["min_freq_id"]
-                            )} */}
 
             <ConcViewComponent concViewData={concViewData}></ConcViewComponent>
             {console.log(maxFreqData)}
-
-            {/* <ChartViewComponent
-                                concViewData={elem[0]["datas"]}
-                            ></ChartViewComponent> */}
         </div>
     );
 };
