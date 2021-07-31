@@ -124,13 +124,22 @@ const RecordingPage: React.FC = (props: any) => {
     const recordButton = () => {
         if (stop === true) {
             return (
-                <RecordingPageButton
-                    onClick={() => {
-                        history.push("/");
-                    }}
-                >
-                    topに戻る
-                </RecordingPageButton>
+                <div>
+                    <RecordingPageButton
+                        onClick={() => {
+                            sendConcentSplit();
+                        }}
+                    >
+                        メモの追記の送信
+                    </RecordingPageButton>
+                    <RecordingPageButton
+                        onClick={() => {
+                            history.push("/");
+                        }}
+                    >
+                        topに戻る
+                    </RecordingPageButton>
+                </div>
             );
         }
         if (start === false) {
