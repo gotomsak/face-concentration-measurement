@@ -4,10 +4,8 @@ export const TopPageStyle = makeStyles({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        // textAlign: "center",
+
         alignItems: "center",
-        width: "100%",
-        height: "100%",
     },
     menu: {
         display: "flex",
