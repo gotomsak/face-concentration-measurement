@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import MarkDownViewComponent from "../../components/learning/MarkDownViewComponent";
+import MarkDownViewComponent from "../components/learning/MarkDownViewComponent";
 
 import raw from "raw.macro";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { findByLabelText } from "@testing-library/react";
 
-const markdown = raw("../../README.md");
-function ManualPage() {
+const markdown = raw("../manual/README.md");
+const ManualPage: React.FC = () => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
@@ -22,6 +22,6 @@ function ManualPage() {
             <MarkDownViewComponent text={markdown}></MarkDownViewComponent>
         </div>
     );
-}
+};
 
 export default ManualPage;

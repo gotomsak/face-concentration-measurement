@@ -17,6 +17,7 @@ import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
 import QuestionnairePage from "./pages/learning/QuestionnairePage";
 import EarInitPage from "./pages/ear/EarInitPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
+import ManualPage from "./pages/ManualPage";
 function App() {
     return (
         <div className="App">
@@ -37,6 +38,7 @@ function App() {
                         path="/Questionnaire"
                         component={QuestionnairePage}
                     ></Route>
+                    <Route path="/Manual" component={ManualPage}></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
                     <Route path="/Admin" component={AdminTopPage}></Route>

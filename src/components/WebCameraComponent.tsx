@@ -155,7 +155,9 @@ const WebCameraComponent: React.FC<{
                     const a = document.createElement("a");
                     const url = URL.createObjectURL(getBlobData());
                     document.body.appendChild(a);
-                    a.download = "recodeFile.mp4";
+                    const date = new Date();
+                    date.setHours(date.getHours() + 9);
+                    a.download = date.toString() + ".mp4";
                     a.href = url;
                     a.click();
                 }

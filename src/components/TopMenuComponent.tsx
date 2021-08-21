@@ -78,7 +78,13 @@ const TopMenuComponent: React.FC = () => {
                 </TopPageButton>
             </p>
             <p>
-                <TopPageButton>使い方</TopPageButton>
+                <TopPageButton
+                    onClick={() => {
+                        history.push("/Manual");
+                    }}
+                >
+                    使い方
+                </TopPageButton>
             </p>
             <p>
                 <TopPageButton
