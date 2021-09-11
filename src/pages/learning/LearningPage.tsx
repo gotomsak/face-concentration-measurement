@@ -56,10 +56,6 @@ const LearningPage: React.FC = () => {
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
-    const [viewC3, setViewC3] = useState(0);
-    const [viewC2, setViewC2] = useState(0);
-    const [viewC1, setViewC1] = useState(0);
-    const [viewW, setViewW] = useState(0);
     const [frequencys, setFrequencys] = useState<any>();
 
     useEffect(() => {
@@ -68,14 +64,6 @@ const LearningPage: React.FC = () => {
             setFrequencys(res);
 
             console.log(res);
-        });
-
-        store.subscribe(() => {
-            console.log(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
-            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
-            setViewW(store.getState().concReducer.w.slice(-1)[0]);
         });
     }, []);
 
@@ -294,12 +282,7 @@ const LearningPage: React.FC = () => {
                 ear={false}
                 downloadData={false}
             ></WebCameraComponent>
-            <ConcentTextViewComponent
-                viewC3={viewC3}
-                viewC2={viewC2}
-                viewC1={viewC1}
-                viewW={viewW}
-            ></ConcentTextViewComponent>
+            <ConcentTextViewComponent></ConcentTextViewComponent>
         </div>
     );
 };

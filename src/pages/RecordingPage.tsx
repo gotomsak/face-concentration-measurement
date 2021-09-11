@@ -73,12 +73,6 @@ const RecordingPage: React.FC = (props: any) => {
             // console.log(res);
             setEnvironments(res.data.environments);
         });
-        store.subscribe(() => {
-            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
-            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
-            setViewW(store.getState().concReducer.w.slice(-1)[0]);
-        });
     }, []);
 
     const handleCloseTip = (): void => {
@@ -228,7 +222,9 @@ const RecordingPage: React.FC = (props: any) => {
                 ear={false}
                 downloadData={downloadData}
             ></WebCameraComponent>
-
+            <div className={classes.fID}>
+                <ConcentTextViewComponent></ConcentTextViewComponent>
+            </div>
             <div className={classes.fID}>
                 {/* <div className={classes.tID}> */}
                 <TextField
@@ -323,13 +319,6 @@ const RecordingPage: React.FC = (props: any) => {
             </div>
 
             <div className={classes.fID}>{recordButton()}</div>
-
-            <ConcentTextViewComponent
-                viewC3={viewC3}
-                viewC2={viewC2}
-                viewC1={viewC1}
-                viewW={viewW}
-            ></ConcentTextViewComponent>
         </div>
     );
 };
