@@ -1,4 +1,5 @@
 import { Button, makeStyles, styled } from "@material-ui/core";
+
 export const TopPageStyle = makeStyles({
     root: {
         display: "flex",
@@ -97,6 +98,11 @@ export const RecordingPageStyle = makeStyles((theme) => ({
         // width: "100%",
         // height: "100%",
     },
+    rBPB: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     fID: {
         display: "flex",
         // flexDirection: "row",
@@ -110,7 +116,7 @@ export const RecordingPageStyle = makeStyles((theme) => ({
         display: "flex",
         // width: "80%",
         // height: 50,
-        justifyContent: "space-evenly",
+        justifyContent: "center",
         // WebkitJustifyContent: "center",
 
         alignItems: "center",
@@ -143,6 +149,16 @@ export const RecordingPageStyle = makeStyles((theme) => ({
 
         // justifyContent: "space-evenly",
     },
+    concentTextView: { display: "flex", justifyContent: "space-evenly" },
+    arcGauge: {
+        // position: "absolute",
+
+        width: 200,
+        height: 100,
+    },
+    // gaugeChart: {
+    //     height: 50,
+    // },
 }));
 export const TopPageButton = styled(Button)({
     height: 50,
@@ -182,5 +198,33 @@ export const AdminAnalysisPageStyle = makeStyles({
     },
     userconcview: {
         boxSizing: "border-box",
+    },
+});
+
+export const EnvironmentPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+
+        width: "100%",
+        height: "100%",
+    },
+    head: {
+        // width: "100%",
+        // height: "10%",
+        // display: "flex",
+        // flexDirection: "column",
+        // // justifyContent: "center",
+    },
+    menu: {
+        padding: "40px",
+        display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "center",
+        width: "100%",
+        // height: "10%",
     },
 });

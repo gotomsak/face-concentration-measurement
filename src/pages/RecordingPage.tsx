@@ -222,21 +222,82 @@ const RecordingPage: React.FC = (props: any) => {
                 ear={false}
                 downloadData={downloadData}
             ></WebCameraComponent>
+
             <div className={classes.fID}>
                 <ConcentTextViewComponent></ConcentTextViewComponent>
             </div>
+
+            <div className={classes.tID}>
+                <div className={classes.fID}>
+                    {/* <div className={classes.tID}> */}
+                    <TextField
+                        label="作業名"
+                        variant="outlined"
+                        value={work}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setWork(e.target.value);
+                        }}
+                    ></TextField>
+                </div>
+
+                <div className={classes.fID}>
+                    <SetEnvironment
+                        environments={environments}
+                        reFreq={false}
+                    ></SetEnvironment>
+                </div>
+
+                <div className={classes.fID}>
+                    <div className={classes.rBPB}>
+                        <RecordingPageButton onClick={createID}>
+                            id発行
+                        </RecordingPageButton>
+                    </div>
+                    <FormControl variant="outlined">
+                        <OutlinedInput
+                            type="text"
+                            value={id}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Tooltip
+                                        arrow
+                                        open={openTip}
+                                        onClose={handleCloseTip}
+                                        disableHoverListener
+                                        placement="top"
+                                        title="Copied!"
+                                    >
+                                        <CopyToClipBoard text={id}>
+                                            <IconButton
+                                                disabled={id === ""}
+                                                onClick={handleClickButton}
+                                            >
+                                                <AssignmentIcon />
+                                            </IconButton>
+                                        </CopyToClipBoard>
+                                    </Tooltip>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                </div>
+            </div>
             <div className={classes.fID}>
-                {/* <div className={classes.tID}> */}
-                <TextField
-                    label="作業名"
-                    variant="outlined"
-                    value={work}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setWork(e.target.value);
-                    }}
-                ></TextField>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={downloadData}
+                            onChange={downloadDataHandleChange}
+                            inputProps={{
+                                "aria-label": "primary checkbox",
+                            }}
+                        />
+                    }
+                    label="動画ダウンロード"
+                />
             </div>
 
+            <div className={classes.fID}>{recordButton()}</div>
             <div className={classes.fID}>
                 <div className={classes.textFieldMemo}>
                     <TextField
@@ -265,60 +326,6 @@ const RecordingPage: React.FC = (props: any) => {
                     timestamp
                 </Button>
             </div>
-
-            <div className={classes.fID}>
-                <SetEnvironment environments={environments}></SetEnvironment>
-            </div>
-
-            <div className={classes.fID}>
-                <RecordingPageButton onClick={createID}>
-                    id発行
-                </RecordingPageButton>
-                <FormControl variant="outlined">
-                    <OutlinedInput
-                        type="text"
-                        value={id}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <Tooltip
-                                    arrow
-                                    open={openTip}
-                                    onClose={handleCloseTip}
-                                    disableHoverListener
-                                    placement="top"
-                                    title="Copied!"
-                                >
-                                    <CopyToClipBoard text={id}>
-                                        <IconButton
-                                            disabled={id === ""}
-                                            onClick={handleClickButton}
-                                        >
-                                            <AssignmentIcon />
-                                        </IconButton>
-                                    </CopyToClipBoard>
-                                </Tooltip>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </div>
-
-            <div className={classes.fID}>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={downloadData}
-                            onChange={downloadDataHandleChange}
-                            inputProps={{
-                                "aria-label": "primary checkbox",
-                            }}
-                        />
-                    }
-                    label="動画ダウンロード"
-                />
-            </div>
-
-            <div className={classes.fID}>{recordButton()}</div>
         </div>
     );
 };
