@@ -34,7 +34,10 @@ import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
 import { postConcentSplitSave } from "../../apis/backendAPI/postConcentSplitSave";
 import { getFrequency } from "../../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../../components/utils/SetFrequencyComponent";
+import SetEnvironment from "../../components/utils/SetEnvironment";
 import ConcentTextViewComponent from "../../components/ConcentTextViewComponent";
+import { getEnvironment } from "../../apis/backendAPI/environment/getEnvironment";
+import { environments } from "../../apis/backendAPI/admin/interfaces";
 
 const LearningPage: React.FC = () => {
     const history = useHistory();
@@ -48,6 +51,7 @@ const LearningPage: React.FC = () => {
     const [cameraState, setCameraState] = useState(false);
     const [cameraStart, setCameraStart] = useState(false);
     const [cameraStop, setCameraStop] = useState(false);
+    const [environments, setEnvironments] = useState<environments[]>([]);
     // 問題が10問とき終わったときのstate
     const [finish, setFinish] = useState(false);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
@@ -56,14 +60,16 @@ const LearningPage: React.FC = () => {
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
-    const [frequencys, setFrequencys] = useState<any>();
-
     useEffect(() => {
         setStartTime(getNowTimeString());
-        getFrequency().then((res: any) => {
-            setFrequencys(res);
+        // getFrequency().then((res: any) => {
+        //     setFrequencys(res);
 
-            console.log(res);
+        //     console.log(res);
+        // });
+        getEnvironment().then((res) => {
+            // console.log(res);
+            setEnvironments(res.data.environments);
         });
     }, []);
 
@@ -265,13 +271,10 @@ const LearningPage: React.FC = () => {
                         readyViewText={readyViewText()}
                     ></ReadyViewComponent>
 
-                    {frequencys ? (
-                        <SetFrequencyComponent
-                            frequencys={frequencys}
-                        ></SetFrequencyComponent>
-                    ) : (
-                        <div></div>
-                    )}
+                    <SetEnvironment
+                        environments={environments}
+                        reFreq={false}
+                    ></SetEnvironment>
                 </div>
             )}
 

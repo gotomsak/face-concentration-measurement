@@ -1,13 +1,13 @@
-export const maxBlinkReducer = (
+export const minFaceAngleReducer = (
     state: number | null = null,
     action: any
 ): any => {
     switch (action.type) {
-        case "maxBlinkSet":
-            state = action.maxBlink;
+        case "minFaceAngleSet":
+            state = action.face_angle;
             return state;
-        case "maxBlinkReset":
-            return null;
+        case "minFaceAngleReset":
+            return 0;
         default:
             return state;
     }

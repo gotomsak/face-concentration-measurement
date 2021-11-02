@@ -8,7 +8,7 @@ const FinishViewComponent: React.FC<{ nextButton: any }> = ({ nextButton }) => {
 
     return (
         <div>
-            <h1>10問終了しました</h1>
+            <h1>終了しました</h1>
             <Button onClick={nextButton} color="secondary">
                 次へ
             </Button>

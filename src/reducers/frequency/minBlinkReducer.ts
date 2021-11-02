@@ -7,7 +7,7 @@ export const minBlinkReducer = (
             state = action.minBlink;
             return state;
         case "minBlinkReset":
-            return 0;
+            return null;
         default:
             return state;
     }

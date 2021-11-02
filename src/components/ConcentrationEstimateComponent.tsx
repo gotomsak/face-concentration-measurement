@@ -67,15 +67,33 @@ const ConcentrationEstimateComponent: React.FC<{
                                     roll: store.getState().maxRollReducer,
                                 });
                             } else {
+                                const startProcessing = performance.now();
                                 PreprocessingData(res, oldData);
+                                const endProcessing = performance.now();
+                                console.log(
+                                    "processiong: " +
+                                        (
+                                            endProcessing - startProcessing
+                                        ).toString()
+                                );
                             }
                             dispatch({
                                 type: "facePointSet",
                                 face_point: res?.facePointAll,
                             });
+                            dispatch({
+                                type: "faceAngleSet",
+                                face_angle: res?.angle,
+                            });
 
                             oldData.push(res);
+                            const startConcent = performance.now();
                             ConcentrationCalculation();
+                            const endConcent = performance.now();
+                            console.log(
+                                "concent: " +
+                                    (endConcent - startConcent).toString()
+                            );
                         }
                     );
                 }, msSeparation)
@@ -202,7 +220,6 @@ const ConcentrationEstimateComponent: React.FC<{
                         w: w,
                         c3: c3,
                         date: date,
-                        face_point: store.getState().facePointReducer,
                     },
                 });
                 // console.log(store.getState().concReducer);
@@ -253,6 +270,7 @@ const ConcentrationEstimateComponent: React.FC<{
             console.log("earLeftTRedu: " + store.getState().earLeftTReducer);
             console.log("newEarright: " + newData.ear.right.toString());
             console.log("earRightTRedu: " + store.getState().earRightTReducer);
+
             const blinkBool = blinkCount(
                 newData.ear.left,
                 newData.ear.right,

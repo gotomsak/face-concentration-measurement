@@ -4,10 +4,12 @@ import { TextField } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { RecordingPageStyle } from "../../Styles";
 import { GetEnvironment } from "../../apis/backendAPI/environment/interfaces";
+import { environments } from "../../apis/backendAPI/admin/interfaces";
 
-const SetEnvironment: React.FC<{ environments: GetEnvironment[] }> = ({
-    environments,
-}) => {
+const SetEnvironment: React.FC<{
+    environments: environments[];
+    reFreq: boolean;
+}> = ({ environments, reFreq }) => {
     const dispatch = useDispatch();
     const classes = RecordingPageStyle();
     return (
@@ -16,7 +18,7 @@ const SetEnvironment: React.FC<{ environments: GetEnvironment[] }> = ({
                 <Autocomplete
                     id="combo-box-demo"
                     options={environments}
-                    getOptionLabel={(option: GetEnvironment) =>
+                    getOptionLabel={(option: environments) =>
                         option.name.toString()
                     }
                     style={{ width: 300 }}
@@ -28,7 +30,7 @@ const SetEnvironment: React.FC<{ environments: GetEnvironment[] }> = ({
                         />
                     )}
                     onInputChange={(e, value) => {
-                        environments.forEach((element: GetEnvironment) => {
+                        environments.forEach((element: environments) => {
                             if (element.name.toString() === value) {
                                 // console.log(store.getState().earLeftReducer);
                                 console.log(element.id);
@@ -80,6 +82,49 @@ const SetEnvironment: React.FC<{ environments: GetEnvironment[] }> = ({
                                     type: "environmentIDSet",
                                     environment_id: element.id,
                                 });
+                                if (reFreq) {
+                                    console.log("freqdesu");
+                                    console.log(
+                                        element.max_freq.max_frequency_data
+                                            .face_point_all
+                                    );
+                                    dispatch({
+                                        type: "maxFacePointSet",
+                                        face_point:
+                                            element.max_freq.max_frequency_data
+                                                .face_point_all,
+                                    });
+                                    dispatch({
+                                        type: "minFacePointSet",
+                                        face_point:
+                                            element.min_freq.min_frequency_data
+                                                .face_point_all,
+                                    });
+                                    if (
+                                        element.max_freq.max_frequency_data
+                                            .face_angle_all !== undefined
+                                    ) {
+                                        dispatch({
+                                            type: "maxFaceAngleSet",
+                                            face_angle:
+                                                element.max_freq
+                                                    .max_frequency_data
+                                                    .face_angle_all,
+                                        });
+                                    }
+                                    if (
+                                        element.min_freq.min_frequency_data
+                                            .face_angle_all !== undefined
+                                    ) {
+                                        dispatch({
+                                            type: "minFaceAngleSet",
+                                            face_angle:
+                                                element.min_freq
+                                                    .min_frequency_data
+                                                    .face_angle_all,
+                                        });
+                                    }
+                                }
                             }
                         });
                         // console.log(store.getState().earLeftReducer);

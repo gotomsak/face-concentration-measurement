@@ -123,6 +123,7 @@ const WebCameraComponent: React.FC<{
                         postFacePoint({
                             id: store.getState().facePointIDReducer,
                             face_point_all: store.getState().facePointReducer,
+                            face_angle_all: store.getState().faceAngleReducer,
                         }).then((res: any) => {
                             console.log(res);
                             dispatch({
@@ -145,10 +146,14 @@ const WebCameraComponent: React.FC<{
                 postFacePoint({
                     id: store.getState().facePointIDReducer,
                     face_point_all: store.getState().facePointReducer,
+                    face_angle_all: store.getState().faceAngleReducer,
                 }).then((res: any) => {
                     // console.log(res);
                     dispatch({
                         type: "facePointReset",
+                    });
+                    dispatch({
+                        type: "faceAngleReset",
                     });
                 });
                 if (downloadData) {

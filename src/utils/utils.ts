@@ -17,3 +17,9 @@ export const getNowTimeString = (): string => {
 
 export const range = (start: number, end: number) =>
     Array.from({ length: end - start + 1 }, (v, k) => k + start);
+
+export const getDate = () => {
+    const date = new Date();
+    date.setHours(date.getHours() + 9);
+    return date;
+};

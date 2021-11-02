@@ -114,12 +114,12 @@ const UserConcAllViewComponent: React.FC<{ userID: number | undefined }> = ({
                     return (
                         <div>
                             {renderWork(elem[0]["work"])}
-                            <FreqViewComponent
+                            {/* <FreqViewComponent
                                 maxFreqData={maxFreqData}
                                 minFreqData={minFreqData}
                                 maxFreqID={elem[0]["max_freq_id"]}
                                 minFreqID={elem[0]["min_freq_id"]}
-                            ></FreqViewComponent>
+                            ></FreqViewComponent> */}
                             {/* {renderFreq(
                                 elem[0]["max_freq_id"],
                                 elem[0]["min_freq_id"]

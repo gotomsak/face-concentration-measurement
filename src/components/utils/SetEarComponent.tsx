@@ -10,14 +10,18 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles, styled, Button, TextField } from "@material-ui/core";
 
 import { useSelector, useDispatch } from "react-redux";
-import { RecordingPageStyle, RecordingPageButton } from "../../Styles";
+import {
+    RecordingPageStyle,
+    RecordingPageButton,
+    EnvironmentPageStyle,
+} from "../../Styles";
 import store from "../..";
 import { GetEar, InitEar } from "../../apis/backendAPI/ear/interfaces";
 const SetEarComponent: React.FC<{ ears: GetEar[] }> = ({ ears }) => {
     const dispatch = useDispatch();
-    const classes = RecordingPageStyle();
+
     return (
-        <div className={classes.setFreqComp}>
+        <div>
             <div>
                 <Autocomplete
                     id="combo-box-demo"
