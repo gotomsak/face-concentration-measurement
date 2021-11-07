@@ -1,4 +1,10 @@
-import { Button, makeStyles, styled } from "@material-ui/core";
+import {
+    Button,
+    makeStyles,
+    styled,
+    createStyles,
+    Theme,
+} from "@material-ui/core";
 
 export const TopPageStyle = makeStyles({
     root: {
@@ -17,6 +23,28 @@ export const TopPageStyle = makeStyles({
         height: "auto",
     },
 });
+
+export const LearningPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+
+        alignItems: "center",
+    },
+});
+
+export const QuestionViewComponentStyle = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            flexGrow: 1,
+            margin: theme.spacing(2),
+        },
+        paper: {
+            color: theme.palette.text.secondary,
+        },
+    })
+);
 
 export const EarInitPageStyle = makeStyles({
     root: {

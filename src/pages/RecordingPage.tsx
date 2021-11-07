@@ -268,9 +268,7 @@ const RecordingPage: React.FC = (props: any) => {
                 downloadData={downloadData}
             ></WebCameraComponent>
 
-            <div className={classes.fID}>
-                <ConcentTextViewComponent></ConcentTextViewComponent>
-            </div>
+            <ConcentTextViewComponent></ConcentTextViewComponent>
 
             <div className={classes.tID}>
                 <div className={classes.fID}>

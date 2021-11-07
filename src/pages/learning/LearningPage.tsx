@@ -38,6 +38,8 @@ import SetEnvironment from "../../components/utils/SetEnvironment";
 import ConcentTextViewComponent from "../../components/ConcentTextViewComponent";
 import { getEnvironment } from "../../apis/backendAPI/environment/getEnvironment";
 import { environments } from "../../apis/backendAPI/admin/interfaces";
+import { ClassNameMap } from "@material-ui/styles";
+import { LearningPageStyle } from "../../Styles";
 
 const LearningPage: React.FC = () => {
     const history = useHistory();
@@ -59,6 +61,8 @@ const LearningPage: React.FC = () => {
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
+
+    const classes: ClassNameMap = LearningPageStyle();
 
     useEffect(() => {
         setStartTime(getNowTimeString());
@@ -244,7 +248,7 @@ const LearningPage: React.FC = () => {
         history.push("/questionnaire");
     };
     return (
-        <div className="LearningPageContainer">
+        <div className={classes.root}>
             {startCheck ? (
                 questionID > 0 && (
                     <div>

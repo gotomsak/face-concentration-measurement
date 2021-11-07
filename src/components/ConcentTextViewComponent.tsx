@@ -41,31 +41,33 @@ const ConcentTextViewComponent: React.FC<{}> = () => {
         });
     }, []);
     return (
-        <div className={classes.concentTextView}>
-            <div>
-                <div className={classes.arcGauge}>
-                    <ArcGaugeComponent value={ViewC1}></ArcGaugeComponent>
+        <div className={classes.fID}>
+            <div className={classes.concentTextView}>
+                <div>
+                    <div className={classes.arcGauge}>
+                        <ArcGaugeComponent value={ViewC1}></ArcGaugeComponent>
+                    </div>
+                    <h3>c1</h3>
                 </div>
-                <h3>c1</h3>
-            </div>
-            <div>
-                <div className={classes.arcGauge}>
-                    <ArcGaugeComponent value={ViewC2}></ArcGaugeComponent>
+                <div>
+                    <div className={classes.arcGauge}>
+                        <ArcGaugeComponent value={ViewC2}></ArcGaugeComponent>
+                    </div>
+                    <h3>c2</h3>
                 </div>
-                <h3>c2</h3>
-            </div>
-            <div>
-                <div className={classes.arcGauge}>
-                    <ArcGaugeComponent value={ViewW}></ArcGaugeComponent>
-                </div>
+                <div>
+                    <div className={classes.arcGauge}>
+                        <ArcGaugeComponent value={ViewW}></ArcGaugeComponent>
+                    </div>
 
-                <h3>w</h3>
-            </div>
-            <div>
-                <div className={classes.arcGauge}>
-                    <ArcGaugeComponent value={ViewC3}></ArcGaugeComponent>
+                    <h3>w</h3>
                 </div>
-                <h3>C</h3>
+                <div>
+                    <div className={classes.arcGauge}>
+                        <ArcGaugeComponent value={ViewC3}></ArcGaugeComponent>
+                    </div>
+                    <h3>C</h3>
+                </div>
             </div>
         </div>
     );
