@@ -8,7 +8,7 @@ import { Input, InputLabel, Button } from "@material-ui/core";
 import "./SigninPage.css";
 import MenuBtnComponent from "../components/learning/MenuBtnComponent";
 
-function SigninPage() {
+const SigninPage: React.FC = () => {
     const history = useHistory();
     const [errorMessage, setErrorMessage] = useState("");
     const [email, setEmail] = useState("");
@@ -101,5 +101,5 @@ function SigninPage() {
             )}
         </div>
     );
-}
+};
 export default SigninPage;

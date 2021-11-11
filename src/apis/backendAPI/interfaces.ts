@@ -19,6 +19,7 @@ export interface PostConcentSplitSave {
 export interface PostFacePointSave {
     id: string;
     face_point_all: any[];
+    face_angle_all: any[];
 }
 
 export interface GetIDPost {

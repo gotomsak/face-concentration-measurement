@@ -93,6 +93,7 @@ function FrequencyPage() {
                 max_face_move: Number(store.getState().maxFaceMoveReducer),
                 ear_id: store.getState().concReducer.ear_id,
                 face_point_all: store.getState().facePointReducer,
+                face_angle_all: store.getState().faceAngleReducer,
             },
             date: date,
         };
@@ -108,6 +109,7 @@ function FrequencyPage() {
                 min_face_move: Number(store.getState().minFaceMoveReducer),
                 ear_id: store.getState().concReducer.ear_id,
                 face_point_all: store.getState().facePointReducer,
+                face_angle_all: store.getState().faceAngleReducer,
             },
             date: date,
         };

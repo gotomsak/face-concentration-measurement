@@ -4,7 +4,7 @@ import { User } from "../apis/backendAPI/interfaces";
 import { Input, Button } from "@material-ui/core";
 import "./SignupPage.css";
 
-function SignupPage() {
+const SignupPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -86,6 +86,6 @@ function SignupPage() {
             </div>
         </div>
     );
-}
+};
 
 export default SignupPage;

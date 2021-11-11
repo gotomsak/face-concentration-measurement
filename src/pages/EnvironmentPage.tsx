@@ -9,14 +9,22 @@ import {
     MaxFrequency,
     MinFrequency,
 } from "../apis/backendAPI/frequency/interfaces";
+
 import { Button } from "@material-ui/core";
 import { saveEnvironment } from "../apis/backendAPI/environment/saveEnvironment";
 import { TextField } from "@material-ui/core";
 import store from "..";
+import { EnvironmentPageStyle } from "../Styles";
+import Alert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router";
+
 const EnvironmentPage: React.FC = () => {
     const [frequencys, setFrequencys] = useState<GetFrequency>();
     const [ears, setEars] = useState<GetEar[]>([]);
     const [environment, setEnvironment] = useState("");
+    const classes = EnvironmentPageStyle();
+    const [createdCheck, setCreatedCheck] = useState<boolean>(false);
+    const history = useHistory();
     useLayoutEffect(() => {
         getFrequency().then((res) => {
             console.log(res);
@@ -27,6 +35,13 @@ const EnvironmentPage: React.FC = () => {
             setEars(res.data["earData"]);
         });
     }, []);
+    useEffect(() => {
+        if (createdCheck === true) {
+            setTimeout(() => {
+                setCreatedCheck(false);
+            }, 3000);
+        }
+    }, [createdCheck]);
     const createEnvironment = (e: any) => {
         if (e.currentTarget.value == 1) {
             const date = new Date();
@@ -40,11 +55,12 @@ const EnvironmentPage: React.FC = () => {
                 date: date,
             }).then((res) => {
                 console.log(res);
+                setCreatedCheck(true);
             });
         }
     };
     return (
-        <div>
+        <div className={classes.root}>
             <h1>EnvironmentCreate</h1>
             <TextField
                 label="環境名"
@@ -61,6 +77,26 @@ const EnvironmentPage: React.FC = () => {
             <Button onClick={createEnvironment} color="secondary" value={1}>
                 create
             </Button>
+            <Button
+                onClick={() => {
+                    history.push("/");
+                }}
+                color="secondary"
+            >
+                topに戻る
+            </Button>
+            {createdCheck ? (
+                <Alert
+                    severity="success"
+                    onClick={() => {
+                        setCreatedCheck(false);
+                    }}
+                >
+                    登録しました
+                </Alert>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };

@@ -123,6 +123,7 @@ const WebCameraComponent: React.FC<{
                         postFacePoint({
                             id: store.getState().facePointIDReducer,
                             face_point_all: store.getState().facePointReducer,
+                            face_angle_all: store.getState().faceAngleReducer,
                         }).then((res: any) => {
                             console.log(res);
                             dispatch({
@@ -145,17 +146,23 @@ const WebCameraComponent: React.FC<{
                 postFacePoint({
                     id: store.getState().facePointIDReducer,
                     face_point_all: store.getState().facePointReducer,
+                    face_angle_all: store.getState().faceAngleReducer,
                 }).then((res: any) => {
                     // console.log(res);
                     dispatch({
                         type: "facePointReset",
+                    });
+                    dispatch({
+                        type: "faceAngleReset",
                     });
                 });
                 if (downloadData) {
                     const a = document.createElement("a");
                     const url = URL.createObjectURL(getBlobData());
                     document.body.appendChild(a);
-                    a.download = "recodeFile.mp4";
+                    const date = new Date();
+                    date.setHours(date.getHours() + 9);
+                    a.download = date.toString() + ".mp4";
                     a.href = url;
                     a.click();
                 }

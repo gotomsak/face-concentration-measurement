@@ -10,6 +10,12 @@ export async function detect(
     canvas2: HTMLCanvasElement,
     cv: any
 ) {
+    // performance.measure(
+    //     "myPerformance", // 計測名
+    //     "myPerformanceStart", // 計測開始点
+    //     "myPerformanceEnd" // 計測終了点
+    // );
+    const start = performance.now();
     //  webカメラの映像から顔認識を行う
     const useTinyModel = true;
     const detection = await faceapi
@@ -46,7 +52,8 @@ export async function detect(
         );
 
     faceapi.draw.drawFaceLandmarks(canvas1, resizedDetection);
-
+    const end = performance.now();
+    console.log("faceApi: " + (end - start).toString());
     // 以後使用するランドマーク座標
     const landmarks = resizedDetection.landmarks;
     const nose = landmarks.getNose()[3];
@@ -64,6 +71,7 @@ export async function detect(
     const reser = ear(rightEyeAll);
     // console.log(resel)
     // console.log(reser)
+    const startOpenCv = performance.now();
     const ress = solve(
         {
             nose,
@@ -89,6 +97,10 @@ export async function detect(
         cv,
         canvas2
     );
+    const endOpenCv = performance.now();
+
+    console.log("opencv: " + (endOpenCv - startOpenCv).toString());
+    // const end = performance.now();
 
     return {
         facePoint: [

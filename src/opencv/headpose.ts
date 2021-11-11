@@ -1,7 +1,7 @@
 export function headpose(
     { rvec, tvec, cameraMatrix, distCoeffs, imagePoints }: any,
     cv: any,
-    canvas: HTMLCanvasElement
+    canvas: HTMLCanvasElement | null
 ) {
     const noseEndPoint2DZ = new cv.Mat();
     const noseEndPoint2DY = new cv.Mat();
@@ -40,9 +40,6 @@ export function headpose(
         jaco
     );
 
-    // const canvas2 = document.getElementById('canvas2') as HTMLCanvasElement;
-    const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
-
     const position = {
         nose: {
             x: imagePoints.data64F[0],
@@ -62,31 +59,35 @@ export function headpose(
         },
     };
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas == null) {
+        const context: CanvasRenderingContext2D = canvas!.getContext("2d")!;
+        context.clearRect(0, 0, canvas!.width, canvas!.height);
 
-    context.beginPath();
-    context.lineWidth = 2;
-    context.strokeStyle = "rgb(255, 0, 0)";
-    context.moveTo(position.nose.x, position.nose.y);
-    context.lineTo(position.z.x, position.z.y);
-    context.stroke();
-    context.closePath();
+        context.beginPath();
+        context.lineWidth = 2;
+        context.strokeStyle = "rgb(255, 0, 0)";
+        context.moveTo(position.nose.x, position.nose.y);
+        context.lineTo(position.z.x, position.z.y);
+        context.stroke();
+        context.closePath();
 
-    context.beginPath();
-    context.lineWidth = 2;
-    context.strokeStyle = "rgb(0, 0, 255)";
-    context.moveTo(position.nose.x, position.nose.y);
-    context.lineTo(position.x.x, position.x.y);
-    context.stroke();
-    context.closePath();
+        context.beginPath();
+        context.lineWidth = 2;
+        context.strokeStyle = "rgb(0, 0, 255)";
+        context.moveTo(position.nose.x, position.nose.y);
+        context.lineTo(position.x.x, position.x.y);
+        context.stroke();
+        context.closePath();
 
-    context.beginPath();
-    context.lineWidth = 2;
-    context.strokeStyle = "rgb(0, 255, 0)";
-    context.moveTo(position.nose.x, position.nose.y);
-    context.lineTo(position.y.x, position.y.y);
-    context.stroke();
-    context.closePath();
+        context.beginPath();
+        context.lineWidth = 2;
+        context.strokeStyle = "rgb(0, 255, 0)";
+        context.moveTo(position.nose.x, position.nose.y);
+        context.lineTo(position.y.x, position.y.y);
+        context.stroke();
+        context.closePath();
+    }
+    // const canvas2 = document.getElementById('canvas2') as HTMLCanvasElement;
 
     const rmat = new cv.Mat();
     cv.Rodrigues(rvec, rmat);

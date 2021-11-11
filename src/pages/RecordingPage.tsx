@@ -37,14 +37,22 @@ import SetEnvironment from "../components/utils/SetEnvironment";
 import { GetEnvironment } from "../apis/backendAPI/environment/interfaces";
 import Box from "@material-ui/core/Box";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
+import { environments } from "../apis/backendAPI/admin/interfaces";
+import { saveJinsMemeData } from "../apis/backendAPI/jinsmeme/saveJinsMemeData";
+import { time } from "console";
 
+interface Times {
+    startTime: Date | null;
+    endTime: Date | null;
+}
 const RecordingPage: React.FC = (props: any) => {
     const [start, setStart] = useState(false);
     const dispatch = useDispatch();
     const [stop, setStop] = useState(false);
     const [openTip, setOpenTip] = useState<boolean>(false);
     const [downloadData, setDownloadData] = useState<boolean>(false);
-    const [environments, setEnvironments] = useState<GetEnvironment[]>([]);
+    const [jinsMemeData, setJinsMemeData] = useState<boolean>(false);
+    const [environments, setEnvironments] = useState<environments[]>([]);
     const [id, setID] = useState<string>("idを発行してください");
     // const [ears, setEars] = useState<GetEar[]>([]);
     // const [frequencys, setFrequencys] = useState<any>();
@@ -54,6 +62,12 @@ const RecordingPage: React.FC = (props: any) => {
     const [viewW, setViewW] = useState(0);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
     const history = useHistory();
+    const [times, setTimes] = useState<Times>({
+        startTime: null,
+        endTime: null,
+    });
+    // const [startTime, setStartTime] = useState<Date | null>(null);
+    // const [endTime, setEndTime] = useState<Date | null>(null);
     // const [work, setWork] = useState([
     //     {
     //         type: "other",
@@ -73,12 +87,6 @@ const RecordingPage: React.FC = (props: any) => {
             // console.log(res);
             setEnvironments(res.data.environments);
         });
-        store.subscribe(() => {
-            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
-            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
-            setViewW(store.getState().concReducer.w.slice(-1)[0]);
-        });
     }, []);
 
     const handleCloseTip = (): void => {
@@ -91,6 +99,12 @@ const RecordingPage: React.FC = (props: any) => {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setDownloadData(event.target.checked);
+    };
+
+    const jinsMemeDataHandleChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setJinsMemeData(event.target.checked);
     };
 
     const createID = () => {
@@ -124,13 +138,22 @@ const RecordingPage: React.FC = (props: any) => {
     const recordButton = () => {
         if (stop === true) {
             return (
-                <RecordingPageButton
-                    onClick={() => {
-                        history.push("/");
-                    }}
-                >
-                    topに戻る
-                </RecordingPageButton>
+                <div>
+                    <RecordingPageButton
+                        onClick={() => {
+                            sendConcentSplit();
+                        }}
+                    >
+                        メモの追記の送信
+                    </RecordingPageButton>
+                    <RecordingPageButton
+                        onClick={() => {
+                            history.push("/");
+                        }}
+                    >
+                        topに戻る
+                    </RecordingPageButton>
+                </div>
             );
         }
         if (start === false) {
@@ -140,6 +163,13 @@ const RecordingPage: React.FC = (props: any) => {
                         setStart(true);
                         setStop(false);
                         setIntervalID(setInterval(sendConcentSplit, 10000));
+                        if (jinsMemeData) {
+                            const date = new Date();
+                            date.setHours(date.getHours() + 9);
+                            times.startTime = date;
+
+                            // setStartTime(date);
+                        }
                     }}
                 >
                     開始
@@ -153,6 +183,14 @@ const RecordingPage: React.FC = (props: any) => {
                         setStart(false);
                         setStop(true);
                         clearInterval(Number(intervalID));
+                        if (jinsMemeData) {
+                            const date = new Date();
+                            date.setHours(date.getHours() + 9);
+                            times.endTime = date;
+                            // setEndTime(date);
+                            saveJinsMemeDataSend();
+                        }
+
                         sendConcentSplit();
                     }}
                 >
@@ -160,6 +198,16 @@ const RecordingPage: React.FC = (props: any) => {
                 </RecordingPageButton>
             );
         }
+    };
+    const saveJinsMemeDataSend = () => {
+        saveJinsMemeData({
+            user_id: Number(localStorage.getItem("user_id")),
+            conc_id: store.getState().concIDReducer,
+            start_time: times.startTime,
+            end_time: times.endTime,
+        }).then((res: any) => {
+            console.log(res);
+        });
     };
 
     const sendConcentSplit = () => {
@@ -220,18 +268,93 @@ const RecordingPage: React.FC = (props: any) => {
                 downloadData={downloadData}
             ></WebCameraComponent>
 
-            <div className={classes.fID}>
-                {/* <div className={classes.tID}> */}
-                <TextField
-                    label="作業名"
-                    variant="outlined"
-                    value={work}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setWork(e.target.value);
-                    }}
-                ></TextField>
-            </div>
+            <ConcentTextViewComponent></ConcentTextViewComponent>
 
+            <div className={classes.tID}>
+                <div className={classes.fID}>
+                    {/* <div className={classes.tID}> */}
+                    <TextField
+                        label="作業名"
+                        variant="outlined"
+                        value={work}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            setWork(e.target.value);
+                        }}
+                    ></TextField>
+                </div>
+
+                <div className={classes.fID}>
+                    <SetEnvironment
+                        environments={environments}
+                        reFreq={false}
+                    ></SetEnvironment>
+                </div>
+
+                <div className={classes.fID}>
+                    <div className={classes.rBPB}>
+                        <RecordingPageButton onClick={createID}>
+                            id発行
+                        </RecordingPageButton>
+                    </div>
+                    <FormControl variant="outlined">
+                        <OutlinedInput
+                            type="text"
+                            value={id}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <Tooltip
+                                        arrow
+                                        open={openTip}
+                                        onClose={handleCloseTip}
+                                        disableHoverListener
+                                        placement="top"
+                                        title="Copied!"
+                                    >
+                                        <CopyToClipBoard text={id}>
+                                            <IconButton
+                                                disabled={id === ""}
+                                                onClick={handleClickButton}
+                                            >
+                                                <AssignmentIcon />
+                                            </IconButton>
+                                        </CopyToClipBoard>
+                                    </Tooltip>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                </div>
+            </div>
+            <div className={classes.fID}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={downloadData}
+                            onChange={downloadDataHandleChange}
+                            inputProps={{
+                                "aria-label": "primary checkbox",
+                            }}
+                        />
+                    }
+                    label="動画ダウンロード"
+                />
+            </div>
+            {/* <div className={classes.fID}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={jinsMemeData}
+                            onChange={jinsMemeDataHandleChange}
+                            inputProps={{
+                                "aria-label": "primary checkbox",
+                            }}
+                        />
+                    }
+                    label="jinsMemeを使う"
+                />
+            </div> */}
+
+            <div className={classes.fID}>{recordButton()}</div>
             <div className={classes.fID}>
                 <div className={classes.textFieldMemo}>
                     <TextField
@@ -260,67 +383,6 @@ const RecordingPage: React.FC = (props: any) => {
                     timestamp
                 </Button>
             </div>
-
-            <div className={classes.fID}>
-                <SetEnvironment environments={environments}></SetEnvironment>
-            </div>
-
-            <div className={classes.fID}>
-                <RecordingPageButton onClick={createID}>
-                    id発行
-                </RecordingPageButton>
-                <FormControl variant="outlined">
-                    <OutlinedInput
-                        type="text"
-                        value={id}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <Tooltip
-                                    arrow
-                                    open={openTip}
-                                    onClose={handleCloseTip}
-                                    disableHoverListener
-                                    placement="top"
-                                    title="Copied!"
-                                >
-                                    <CopyToClipBoard text={id}>
-                                        <IconButton
-                                            disabled={id === ""}
-                                            onClick={handleClickButton}
-                                        >
-                                            <AssignmentIcon />
-                                        </IconButton>
-                                    </CopyToClipBoard>
-                                </Tooltip>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </div>
-
-            <div className={classes.fID}>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={downloadData}
-                            onChange={downloadDataHandleChange}
-                            inputProps={{
-                                "aria-label": "primary checkbox",
-                            }}
-                        />
-                    }
-                    label="動画ダウンロード"
-                />
-            </div>
-
-            <div className={classes.fID}>{recordButton()}</div>
-
-            <ConcentTextViewComponent
-                viewC3={viewC3}
-                viewC2={viewC2}
-                viewC1={viewC1}
-                viewW={viewW}
-            ></ConcentTextViewComponent>
         </div>
     );
 };

@@ -34,7 +34,12 @@ import ReadyViewComponent from "../../components/utils/ReadyViewComponent";
 import { postConcentSplitSave } from "../../apis/backendAPI/postConcentSplitSave";
 import { getFrequency } from "../../apis/backendAPI/frequency/getFrequency";
 import SetFrequencyComponent from "../../components/utils/SetFrequencyComponent";
+import SetEnvironment from "../../components/utils/SetEnvironment";
 import ConcentTextViewComponent from "../../components/ConcentTextViewComponent";
+import { getEnvironment } from "../../apis/backendAPI/environment/getEnvironment";
+import { environments } from "../../apis/backendAPI/admin/interfaces";
+import { ClassNameMap } from "@material-ui/styles";
+import { LearningPageStyle } from "../../Styles";
 
 const LearningPage: React.FC = () => {
     const history = useHistory();
@@ -48,6 +53,7 @@ const LearningPage: React.FC = () => {
     const [cameraState, setCameraState] = useState(false);
     const [cameraStart, setCameraStart] = useState(false);
     const [cameraStop, setCameraStop] = useState(false);
+    const [environments, setEnvironments] = useState<environments[]>([]);
     // 問題が10問とき終わったときのstate
     const [finish, setFinish] = useState(false);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
@@ -56,26 +62,18 @@ const LearningPage: React.FC = () => {
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState(0);
 
-    const [viewC3, setViewC3] = useState(0);
-    const [viewC2, setViewC2] = useState(0);
-    const [viewC1, setViewC1] = useState(0);
-    const [viewW, setViewW] = useState(0);
-    const [frequencys, setFrequencys] = useState<any>();
+    const classes: ClassNameMap = LearningPageStyle();
 
     useEffect(() => {
         setStartTime(getNowTimeString());
-        getFrequency().then((res: any) => {
-            setFrequencys(res);
+        // getFrequency().then((res: any) => {
+        //     setFrequencys(res);
 
-            console.log(res);
-        });
-
-        store.subscribe(() => {
-            console.log(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
-            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
-            setViewW(store.getState().concReducer.w.slice(-1)[0]);
+        //     console.log(res);
+        // });
+        getEnvironment().then((res) => {
+            // console.log(res);
+            setEnvironments(res.data.environments);
         });
     }, []);
 
@@ -250,7 +248,7 @@ const LearningPage: React.FC = () => {
         history.push("/questionnaire");
     };
     return (
-        <div className="LearningPageContainer">
+        <div className={classes.root}>
             {startCheck ? (
                 questionID > 0 && (
                     <div>
@@ -277,13 +275,10 @@ const LearningPage: React.FC = () => {
                         readyViewText={readyViewText()}
                     ></ReadyViewComponent>
 
-                    {frequencys ? (
-                        <SetFrequencyComponent
-                            frequencys={frequencys}
-                        ></SetFrequencyComponent>
-                    ) : (
-                        <div></div>
-                    )}
+                    <SetEnvironment
+                        environments={environments}
+                        reFreq={false}
+                    ></SetEnvironment>
                 </div>
             )}
 
@@ -294,12 +289,7 @@ const LearningPage: React.FC = () => {
                 ear={false}
                 downloadData={false}
             ></WebCameraComponent>
-            <ConcentTextViewComponent
-                viewC3={viewC3}
-                viewC2={viewC2}
-                viewC1={viewC1}
-                viewW={viewW}
-            ></ConcentTextViewComponent>
+            <ConcentTextViewComponent></ConcentTextViewComponent>
         </div>
     );
 };

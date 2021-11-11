@@ -24,6 +24,12 @@ import { earLeftTReducer } from "./reducers/ear/earLeftTReducer";
 import { earRightTReducer } from "./reducers/ear/earRightTReducer";
 import { earLeftInitReducer } from "./reducers/ear/earLeftInitReducer";
 import { earRightInitReducer } from "./reducers/ear/earRightInitReducer";
+import { maxFacePointReducer } from "./reducers/frequency/maxFacePointReducer";
+import { minFacePointReducer } from "./reducers/frequency/minFacePointReducer";
+import { faceAngleReducer } from "./reducers/faceAngleReducer";
+import { minFaceAngleReducer } from "./reducers/frequency/minFaceAngleReducer";
+import { maxFaceAngleReducer } from "./reducers/frequency/maxFaceAngleReducer";
+
 // import { earIDReducer } from "./reducers/ear/earIDReducer";
 export default function createStore(histroy: any) {
     return reduxCreateStore(
@@ -47,8 +53,13 @@ export default function createStore(histroy: any) {
             maxRollReducer,
             maxPitchReducer,
             facePointReducer,
+            faceAngleReducer,
             facePointIDReducer,
             concIDReducer,
+            maxFacePointReducer,
+            minFacePointReducer,
+            maxFaceAngleReducer,
+            minFaceAngleReducer,
 
             router: connectRouter(histroy),
         }),

@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Switch, Route } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import TopPage from "./pages/TopPage";
 import RecordingPage from "./pages/RecordingPage";
 import MathWorkPage from "./pages/mathwork/MathWorkPage";
@@ -17,12 +17,15 @@ import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
 import QuestionnairePage from "./pages/learning/QuestionnairePage";
 import EarInitPage from "./pages/ear/EarInitPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
+import ManualPage from "./pages/ManualPage";
+
 function App() {
     return (
         <div className="App">
             <React.Fragment>
                 <Switch>
                     <Route exact path="/" component={TopPage}></Route>
+                    <Route path="/callback" component={TopPage}></Route>
                     <Route path="/EarInit" component={EarInitPage}></Route>
                     <Route path="/Frequency" component={FrequencyPage}></Route>
                     <Route
@@ -37,6 +40,7 @@ function App() {
                         path="/Questionnaire"
                         component={QuestionnairePage}
                     ></Route>
+                    <Route path="/Manual" component={ManualPage}></Route>
                     <Route path="/Signup" component={SignupPage} />
                     <Route path="/Signin" component={SigninPage} />
                     <Route path="/Admin" component={AdminTopPage}></Route>

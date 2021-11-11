@@ -37,14 +37,6 @@ const MathWorkPage: React.FC = () => {
 
             console.log(res);
         });
-
-        store.subscribe(() => {
-            console.log(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC3(store.getState().concReducer.c3.slice(-1)[0]);
-            setViewC2(store.getState().concReducer.c2.slice(-1)[0]);
-            setViewC1(store.getState().concReducer.c1.slice(-1)[0]);
-            setViewW(store.getState().concReducer.w.slice(-1)[0]);
-        });
     }, []);
 
     useEffect(() => {
@@ -194,12 +186,7 @@ const MathWorkPage: React.FC = () => {
                 ear={false}
                 downloadData={downloadData}
             ></WebCameraComponent>
-            <ConcentTextViewComponent
-                viewC3={viewC3}
-                viewC2={viewC2}
-                viewC1={viewC1}
-                viewW={viewW}
-            ></ConcentTextViewComponent>
+            <ConcentTextViewComponent></ConcentTextViewComponent>
         </div>
     );
 };
