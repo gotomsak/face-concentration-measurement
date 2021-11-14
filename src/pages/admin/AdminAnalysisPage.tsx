@@ -9,7 +9,7 @@ import React, {
 import ChartViewComponent from "../../components/ChartViewComponent";
 import ReactApexCharts from "react-apexcharts";
 import ApexCharts from "apexcharts";
-import { getRecAll } from "../../apis/backendAPI/analysis/getRecAll";
+
 // import { getIDLogs } from "../../apis/backendAPI/admin/Admin";
 import { adminGetUserAll } from "../../apis/backendAPI/admin/getUserAll";
 import { adminGetRecAll } from "../../apis/backendAPI/admin/getRecAll";
@@ -36,6 +36,9 @@ import {
     MinFrequency,
 } from "../../apis/backendAPI/frequency/interfaces";
 import { GetEnvironment } from "../../apis/backendAPI/environment/interfaces";
+import { adminGetIDLogUser } from "../../apis/backendAPI/admin/getIDLogUser";
+import { AdminGetIDLogUserRes } from "../../apis/backendAPI/admin/interfaces";
+
 
 const AdminAnalysisPage: React.FC = (props: any) => {
     const [concViewData, setConcViewData] = useState<any>([]);
@@ -59,10 +62,11 @@ const AdminAnalysisPage: React.FC = (props: any) => {
         useState<GetRecUserDateRes>();
     // const [facePointID, setFacePointID] = useState<string>("");
     const dispatch = useDispatch();
-
+    
     const listRefConcent = useRef<any>([]);
     const history = useHistory();
     const classes = AdminAnalysisPageStyle();
+    const [logData, setLogData] = useState()
 
     useEffect(() => {
         console.log(props.match.params);
@@ -77,6 +81,16 @@ const AdminAnalysisPage: React.FC = (props: any) => {
             setConcID(props.match.params.conc_id);
         }
     }, [props]);
+
+    useEffect(()=>{
+        if (userID !== undefined) {
+            adminGetIDLogUser(userID).then((res: any) => {
+                console.log(res);
+                setLogData(res.data["get_id_log_user"])
+                
+            });
+        }
+    },[userID])
 
     useEffect(() => {
         if (concID !== undefined) {
@@ -179,7 +193,7 @@ const AdminAnalysisPage: React.FC = (props: any) => {
                 //     userID={userID}
                 // ></UserConcAllViewComponent>
 
-                <UserLogViewComponent userID={userID}></UserLogViewComponent>
+                <UserLogViewComponent  logData={logData}></UserLogViewComponent>
             ) : (
                 <UsersViewComponent></UsersViewComponent>
             )}

@@ -12,8 +12,8 @@ interface UserLogView {
     conc_data_id: string;
 }
 
-const UserLogViewComponent: React.FC<{ userID: number | undefined }> = ({
-    userID,
+const UserLogViewComponent: React.FC<{ logData: any}> = ({
+    logData,
 }) => {
     // const [userLogData, setUserLogData] = useState();
     const [userLogViewCol, setUsersViewCol] = useState<GridColDef[]>([
@@ -33,16 +33,15 @@ const UserLogViewComponent: React.FC<{ userID: number | undefined }> = ({
 
     const [userLogViewData, setUserLogViewData] = useState<UserLogView[]>([]);
     const history = useHistory();
-    useLayoutEffect(() => {
-        if (userID !== undefined) {
-            adminGetIDLogUser(userID).then((res: any) => {
-                console.log(res);
-                setUserLogViewData(
-                    getIDLogUesrFormating(res.data["get_id_log_user"])
-                );
-            });
+    useEffect(() => {
+        if (logData !== undefined) {
+            console.log("yonda")
+            setUserLogViewData(
+                getIDLogUesrFormating(logData)
+            );
+            
         }
-    }, []);
+    }, [logData]);
 
     const getIDLogUesrFormating = (listData: AdminGetIDLogUserRes[]) => {
         console.log(listData);
@@ -61,7 +60,8 @@ const UserLogViewComponent: React.FC<{ userID: number | undefined }> = ({
     return (
         <div style={{ height: "100%", width: "70%" }}>
             {/* <DataGridNoRender></DataGridNoRender> */}
-            <DataGrid
+            {userLogViewData.length ? (
+                <DataGrid
                 rows={userLogViewData}
                 columns={userLogViewCol}
                 // checkboxSelection
@@ -81,6 +81,8 @@ const UserLogViewComponent: React.FC<{ userID: number | undefined }> = ({
                     );
                 }}
             />
+            ):(<div>nodata</div>)}
+            
         </div>
     );
 };
