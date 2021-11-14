@@ -35,7 +35,8 @@ function App() {
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>
-                    <Route path="/Analysis" component={AnalysisPage}></Route>
+                    <Route exact path="/Analysis" component={AnalysisPage}></Route>
+                    <Route path="/Analysis/:conc_id" component={AnalysisPage}></Route>
                     <Route
                         path="/Questionnaire"
                         component={QuestionnairePage}
