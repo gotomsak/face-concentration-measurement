@@ -2,83 +2,56 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
 import { useHistory } from "react-router";
-
+import { Button } from "@material-ui/core";
 import { adminGetIDLogUser } from "../../apis/backendAPI/admin/getIDLogUser";
 import { AdminGetIDLogUserRes } from "../../apis/backendAPI/admin/interfaces";
+import SelectQuestionViewComponent from "../../components/learning/SelectQuestionViewComponent";
+import { adminGetSelectQuestion } from "../../apis/backendAPI/admin/getSelectQuestion";
+import { adminGetQuestionAll } from "../../apis/backendAPI/admin/getQuestionAll";
+import SelectQuestionComponent from "../../components/learning/SelectQuestionComponent";
+import { AdminAnalysisPageStyle , AdminSelectQuestionPageStyle} from "../../Styles";
+import { GetQuestionIdQuery } from "../../apis/backendAPI/learning/interfaces";
 
-interface UserLogView {
-    id: number;
-    date: Date;
-    conc_data_id: string;
-}
-
-const AdminSelectQuestionPage: React.FC<{ logData: any }> = ({ logData }) => {
+const AdminSelectQuestionPage: React.FC = () => {
     // const [userLogData, setUserLogData] = useState();
-    const [userLogViewCol, setUsersViewCol] = useState<GridColDef[]>([
-        {
-            field: "id",
-            headerName: "ID",
-            width: 100,
-        },
-
-        { field: "date", headerName: "日付", width: 300 },
-        {
-            field: "conc_data_id",
-            headerName: "集中度データID",
-            width: 300,
-        },
-    ]);
-
-    const [userLogViewData, setUserLogViewData] = useState<UserLogView[]>([]);
-    const history = useHistory();
-    useEffect(() => {
-        if (logData !== undefined) {
-            console.log("yonda");
-            setUserLogViewData(getIDLogUesrFormating(logData));
-        }
-    }, [logData]);
-
-    const getIDLogUesrFormating = (listData: AdminGetIDLogUserRes[]) => {
-        console.log(listData);
-        const newListData: UserLogView[] = listData.map(
-            (value: AdminGetIDLogUserRes): UserLogView => {
-                return {
-                    id: value.ID,
-                    date: value.CreatedAt,
-                    conc_data_id: value.conc_data_id,
-                };
+    const [selectQuestion, setSelectQuestion] = useState(undefined)
+    const [questionCreate, setQuestionCreate] = useState(false)
+    const classes = AdminSelectQuestionPageStyle()    
+    
+    const [selectedQuestion, setSelectedQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
+    useEffect(()=>{
+        adminGetSelectQuestion().then((res:any)=>{
+            console.log(res)
+            if(res.data!==null){
+                setSelectQuestion(res.data) 
             }
-        );
-        return newListData;
-    };
+            
+        })
+        // adminGetQuestionAll().then((res:any)=>{
+        //     console.log(res)
+        // })
+    },[])
+
+    const createButton=()=>{
+        adminGetQuestionAll().then((res:any)=>{
+            console.log(res)
+        })
+    }
+
 
     return (
-        <div style={{ height: "100%", width: "70%" }}>
-            {/* <DataGridNoRender></DataGridNoRender> */}
-            {userLogViewData.length ? (
-                <DataGrid
-                    rows={userLogViewData}
-                    columns={userLogViewCol}
-                    // checkboxSelection
-                    onCellClick={(params: any) => {
-                        console.log(params);
-                        console.log(userLogViewData);
-                        console.log(history.location);
-                        console.log(
-                            history.location.pathname +
-                                "/" +
-                                params.row.conc_data_id
-                        );
-                        history.push(
-                            history.location.pathname +
-                                "/" +
-                                params.row.conc_data_id
-                        );
-                    }}
-                />
-            ) : (
-                <div>nodata</div>
+        <div className={classes.root}>
+            {questionCreate ? (
+                <div className={classes.select_question}>
+                    <SelectQuestionComponent ></SelectQuestionComponent>
+                </div>
+            ):(
+                <div className={classes.select_question}>
+                    <SelectQuestionViewComponent selectQuestionData={selectQuestion} selectedQuestion={selectedQuestion}></SelectQuestionViewComponent>
+                    <Button variant="contained" onClick={()=>{setQuestionCreate(true)}}>create</Button>
+                </div>    
             )}
+            
         </div>
     );
 };

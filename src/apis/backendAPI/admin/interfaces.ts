@@ -1,8 +1,9 @@
+import internal from "stream";
 import { Conc } from "../../../reducers/concReducer";
 import { GetEnvironment } from "../environment/interfaces";
 import { MaxFrequency, MinFrequency } from "../frequency/interfaces";
 // import { PostConcentrationSave } from "../interfaces";
-
+import { GridSelectionModel } from "@material-ui/data-grid";
 export interface AdminUser {
     username?: string;
     email: string;
@@ -58,4 +59,29 @@ export interface GetRecUserDateRes {
     environments: environments[];
     concentration: concentration;
     facePointAll: any;
+}
+
+export interface GetQuestionAllRes{
+    ID : number
+    CreatedAt: Date
+    DeletedAt: Date
+    UpdatedAt: Date
+    question: string
+    qimg_path: string
+    mistake1: string
+    mistake2: string
+    mistake3: string
+    ans: string
+    mimage_path1:string
+    mimage_path2:string
+    mimage_path3:string
+    aimg_path:string
+    season: string
+    question_num: string;
+    genre: string 
+}
+
+export interface AdminSaveSelectQuestion {
+    select_question_name: string
+    select_question_ids: GridSelectionModel 
 }

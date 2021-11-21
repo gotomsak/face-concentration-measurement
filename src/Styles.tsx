@@ -32,6 +32,12 @@ export const LearningPageStyle = makeStyles({
 
         alignItems: "center",
     },
+    select_question:{
+        height: "500px",
+        width: "80%",
+        minHeight: "500px",
+        maxWidth: "1450px"
+    },
 });
 
 export const QuestionViewComponentStyle = makeStyles((theme: Theme) =>
@@ -174,6 +180,7 @@ export const RecordingPageStyle = makeStyles((theme) => ({
     setFreqComp: {
         display: "flex",
         justifyContent: "space-evenly",
+        margin: "30px"
 
         // justifyContent: "space-evenly",
     },
@@ -249,6 +256,27 @@ export const AnalysisPageStyle = makeStyles({
     },
     userconcview: {
         boxSizing: "border-box",
+    },
+});
+
+export const AdminSelectQuestionPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+    },
+    select_question:{
+        height: "100%",
+        width: "80%",
+        maxWidth: "1450px"
+    },
+    question: {
+        height: "10%",
+        width: "80%",
     },
 });
 

@@ -18,6 +18,7 @@ import QuestionnairePage from "./pages/learning/QuestionnairePage";
 import EarInitPage from "./pages/ear/EarInitPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ManualPage from "./pages/ManualPage";
+import AdminCreateQuestionPage from "./pages/admin/AdminSelectQuestionPage";
 
 function App() {
     return (
@@ -66,6 +67,8 @@ function App() {
                         path="/AdminAnalysis/:user_id"
                         component={AdminAnalysisPage}
                     ></Route>
+                    <Route path="/AdminCreateQuestion" component={AdminCreateQuestionPage}></Route>
+                    {/* <Route path="/AdminCreateQuestion"></Route> */}
                 </Switch>
             </React.Fragment>
         </div>
