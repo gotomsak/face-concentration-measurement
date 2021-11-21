@@ -41,6 +41,8 @@ import { getEnvironment } from "../../apis/backendAPI/environment/getEnvironment
 import { environments } from "../../apis/backendAPI/admin/interfaces";
 import { ClassNameMap } from "@material-ui/styles";
 import { LearningPageStyle } from "../../Styles";
+import SelectQuestionViewComponent from "../../components/learning/SelectQuestionViewComponent";
+import { getSelectQuestion } from "../../apis/backendAPI/learning/getSelectQuestion";
 
 const LearningPage: React.FC = () => {
     const history = useHistory();
@@ -59,11 +61,11 @@ const LearningPage: React.FC = () => {
     const [finish, setFinish] = useState(false);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
-    const [selectQuestion, setSelectQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
-
+    const [selectedQuestion, setSelectedQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
+    const [selectQuestion, setSelectQuestion] = useState()
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
-    const [qCount, setQCount] = useState(0);
+    const [qCount, setQCount] = useState<number>(0);
 
     const classes: ClassNameMap = LearningPageStyle();
 
@@ -78,11 +80,17 @@ const LearningPage: React.FC = () => {
             // console.log(res);
             setEnvironments(res.data.environments);
         });
+        getSelectQuestion().then((res)=>{
+            if(res.data!==null){
+                setSelectQuestion(res.data) 
+            }
+        })
     }, []);
 
     useEffect(() => {
         console.log(qCount);
-        if (qCount > 9) {
+        console.log(store.getState().questionIDsReducer.length)
+        if (qCount !== 0 && qCount === store.getState().questionIDsReducer.length) {
             setFinish(true);
             if (cameraStart === true) {
                 setCameraStop(true);
@@ -90,7 +98,7 @@ const LearningPage: React.FC = () => {
 
             setStartCheck(false);
         }
-        if (next === true && qCount <= 9) {
+        if (next === true && qCount <= store.getState().questionIDsReducer.length) {
             const cnt = qCount + 1;
             setQuestionID(store.getState().questionIDsReducer[cnt]);
             setQCount(qCount + 1);
@@ -121,29 +129,7 @@ const LearningPage: React.FC = () => {
     }, [finish]);
 
     useEffect(() => {
-        // if (cameraState === true) {
-        //     getID({
-        //         type: "gotoSys",
-        //         work: "learning",
-        //         memo: "基本情報のE-learning",
-        //         measurement: "gotoConc",
-        //         user_id: Number(localStorage.getItem("user_id")),
-        //         concentration: store.getState().concReducer,
-        //     }).then((res) => {
-        //         console.log(res);
-        //         console.log(res.data.conc_id);
-        //         console.log(res.data.face_point_id);
-        //         // setID(res.data.conc_id);
-        //         dispatch({
-        //             type: "concIDSet",
-        //             conc_id: res.data.conc_id,
-        //         });
-        //         dispatch({
-        //             type: "facePointIDSet",
-        //             face_point_id: res.data.face_point_id,
-        //         });
-        //     });
-        // }
+   
     }, [cameraState]);
 
     useEffect(() => {
@@ -177,13 +163,15 @@ const LearningPage: React.FC = () => {
                     face_point_id: res.data.face_point_id,
                 });
             });
-            getQuestionIds(getQuestionIdsPost,selectQuestion).then((res) => {
+            getQuestionIds(getQuestionIdsPost,selectedQuestion).then((res) => {
+                console.log(res)
                 dispatch({
                     type: "questionIDsSet",
                     id: res.data["question_ids"],
                 });
                 dispatch({ type: "solvedIDsSet", id: res.data["solved_ids"] });
             });
+
         }
     }, [startCheck]);
 
@@ -198,6 +186,7 @@ const LearningPage: React.FC = () => {
         return {
             user_id: Number(localStorage.getItem("user_id")),
             answer_result_ids: store.getState().ansResultIDsReducer,
+            select_question_id: selectedQuestion.select_question_id,
             correct_answer_number: store.getState().correctNumberReducer,
             conc_id: store.getState().concIDReducer,
             start_time: startTime,
@@ -270,14 +259,16 @@ const LearningPage: React.FC = () => {
                     nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
-                <div>
+                <div style={{margin: "10px"}}>
                     <ReadyViewComponent
                         cameraState={cameraState}
                         changeMethod={changeMethod}
                         startCheckButton={startCheckButton}
                         readyViewText={readyViewText()}
                     ></ReadyViewComponent>
-                    
+                    <div className={classes.select_question}>
+                        <SelectQuestionViewComponent selectQuestionData={selectQuestion} selectedQuestion={selectedQuestion}></SelectQuestionViewComponent>
+                    </div>
                     <SetEnvironment
                         environments={environments}
                         reFreq={false}

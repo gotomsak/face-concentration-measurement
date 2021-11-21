@@ -32,6 +32,12 @@ export const LearningPageStyle = makeStyles({
 
         alignItems: "center",
     },
+    select_question:{
+        height: "500px",
+        width: "80%",
+        minHeight: "500px",
+        maxWidth: "1450px"
+    },
 });
 
 export const QuestionViewComponentStyle = makeStyles((theme: Theme) =>
@@ -174,6 +180,7 @@ export const RecordingPageStyle = makeStyles((theme) => ({
     setFreqComp: {
         display: "flex",
         justifyContent: "space-evenly",
+        margin: "30px"
 
         // justifyContent: "space-evenly",
     },

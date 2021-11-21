@@ -29,6 +29,7 @@ export interface CheckAnswerSectionPost {
     user_id: number;
     answer_result_ids: number[];
     correct_answer_number: number;
+    select_question_id: string;
     conc_id: string;
     start_time: string;
     end_time: string;

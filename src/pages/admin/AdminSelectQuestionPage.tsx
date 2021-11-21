@@ -10,12 +10,15 @@ import { adminGetSelectQuestion } from "../../apis/backendAPI/admin/getSelectQue
 import { adminGetQuestionAll } from "../../apis/backendAPI/admin/getQuestionAll";
 import SelectQuestionComponent from "../../components/learning/SelectQuestionComponent";
 import { AdminAnalysisPageStyle , AdminSelectQuestionPageStyle} from "../../Styles";
+import { GetQuestionIdQuery } from "../../apis/backendAPI/learning/interfaces";
 
 const AdminSelectQuestionPage: React.FC = () => {
     // const [userLogData, setUserLogData] = useState();
     const [selectQuestion, setSelectQuestion] = useState(undefined)
     const [questionCreate, setQuestionCreate] = useState(false)
     const classes = AdminSelectQuestionPageStyle()    
+    
+    const [selectedQuestion, setSelectedQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
     useEffect(()=>{
         adminGetSelectQuestion().then((res:any)=>{
             console.log(res)
@@ -44,7 +47,7 @@ const AdminSelectQuestionPage: React.FC = () => {
                 </div>
             ):(
                 <div className={classes.select_question}>
-                    <SelectQuestionViewComponent selectQuestionData={selectQuestion}></SelectQuestionViewComponent>
+                    <SelectQuestionViewComponent selectQuestionData={selectQuestion} selectedQuestion={selectedQuestion}></SelectQuestionViewComponent>
                     <Button variant="contained" onClick={()=>{setQuestionCreate(true)}}>create</Button>
                 </div>    
             )}
