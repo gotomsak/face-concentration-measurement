@@ -13,6 +13,7 @@ import {
     GetQuestionIdsPost,
     CheckAnswerSectionPost,
     SonConc,
+    GetQuestionIdQuery,
 } from "../../apis/backendAPI/learning/interfaces";
 import { getID } from "../../apis/backendAPI/getID";
 
@@ -57,6 +58,8 @@ const LearningPage: React.FC = () => {
     // 問題が10問とき終わったときのstate
     const [finish, setFinish] = useState(false);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
+
+    const [selectQuestion, setSelectQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
 
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
@@ -174,7 +177,7 @@ const LearningPage: React.FC = () => {
                     face_point_id: res.data.face_point_id,
                 });
             });
-            getQuestionIds(getQuestionIdsPost).then((res) => {
+            getQuestionIds(getQuestionIdsPost,selectQuestion).then((res) => {
                 dispatch({
                     type: "questionIDsSet",
                     id: res.data["question_ids"],
@@ -274,7 +277,7 @@ const LearningPage: React.FC = () => {
                         startCheckButton={startCheckButton}
                         readyViewText={readyViewText()}
                     ></ReadyViewComponent>
-
+                    
                     <SetEnvironment
                         environments={environments}
                         reFreq={false}

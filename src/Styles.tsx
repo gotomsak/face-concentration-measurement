@@ -252,6 +252,27 @@ export const AnalysisPageStyle = makeStyles({
     },
 });
 
+export const AdminSelectQuestionPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+    },
+    select_question:{
+        height: "100%",
+        width: "80%",
+        maxWidth: "1450px"
+    },
+    question: {
+        height: "10%",
+        width: "80%",
+    },
+});
+
 
 export const EnvironmentPageStyle = makeStyles({
     root: {

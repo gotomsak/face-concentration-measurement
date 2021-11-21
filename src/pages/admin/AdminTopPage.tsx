@@ -44,6 +44,15 @@ const AdminTopPage: React.FC = () => {
             <p>
                 <TopPageButton
                     onClick={() => {
+                        history.push("/AdminCreateQuestion");
+                    }}
+                >
+                    問題集作成
+                </TopPageButton>
+            </p>
+            <p>
+                <TopPageButton
+                    onClick={() => {
                         adminSignout()
                             .then((res) => {
                                 history.push("/AdminSignin");

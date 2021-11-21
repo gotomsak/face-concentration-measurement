@@ -9,6 +9,10 @@ export interface GetQuestionIdsPost {
     question_ids: number[];
 }
 
+
+export interface GetQuestionIdQuery{
+    select_question_id: string
+}
 export interface CheckAnswerPost {
     question_id: number;
     user_id: number;
@@ -75,4 +79,13 @@ export interface SonConc {
 
 export interface GetQuestionGymPost {
     now_level: number;
+}
+
+export interface GetSelectQuestionRes{
+    ID : number
+    CreatedAt: Date
+    DeletedAt: Date
+    UpdatedAt: Date
+    select_question_ids: string;
+    select_question_name: string;
 }
