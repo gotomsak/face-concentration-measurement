@@ -61,8 +61,11 @@ const LearningPage: React.FC = () => {
     const [finish, setFinish] = useState(false);
     const [intervalID, setIntervalID] = useState<NodeJS.Timeout>();
 
-    const [selectedQuestion, setSelectedQuestion] = useState<GetQuestionIdQuery>({select_question_id: "none"})
-    const [selectQuestion, setSelectQuestion] = useState()
+    const [selectedQuestion, setSelectedQuestion] =
+        useState<GetQuestionIdQuery>({ select_question_id: "none" });
+    const [selectQuestion, setSelectQuestion] = useState({
+        select_question: null,
+    });
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState<number>(0);
@@ -80,17 +83,20 @@ const LearningPage: React.FC = () => {
             // console.log(res);
             setEnvironments(res.data.environments);
         });
-        getSelectQuestion().then((res)=>{
-            if(res.data!==null){
-                setSelectQuestion(res.data) 
+        getSelectQuestion().then((res) => {
+            if (res.data !== null) {
+                setSelectQuestion(res.data);
             }
-        })
+        });
     }, []);
 
     useEffect(() => {
         console.log(qCount);
-        console.log(store.getState().questionIDsReducer.length)
-        if (qCount !== 0 && qCount === store.getState().questionIDsReducer.length) {
+        console.log(store.getState().questionIDsReducer.length);
+        if (
+            qCount !== 0 &&
+            qCount === store.getState().questionIDsReducer.length
+        ) {
             setFinish(true);
             if (cameraStart === true) {
                 setCameraStop(true);
@@ -98,7 +104,10 @@ const LearningPage: React.FC = () => {
 
             setStartCheck(false);
         }
-        if (next === true && qCount <= store.getState().questionIDsReducer.length) {
+        if (
+            next === true &&
+            qCount <= store.getState().questionIDsReducer.length
+        ) {
             const cnt = qCount + 1;
             setQuestionID(store.getState().questionIDsReducer[cnt]);
             setQCount(qCount + 1);
@@ -128,9 +137,7 @@ const LearningPage: React.FC = () => {
         }
     }, [finish]);
 
-    useEffect(() => {
-   
-    }, [cameraState]);
+    useEffect(() => {}, [cameraState]);
 
     useEffect(() => {
         if (startCheck === true) {
@@ -163,15 +170,14 @@ const LearningPage: React.FC = () => {
                     face_point_id: res.data.face_point_id,
                 });
             });
-            getQuestionIds(getQuestionIdsPost,selectedQuestion).then((res) => {
-                console.log(res)
+            getQuestionIds(getQuestionIdsPost, selectedQuestion).then((res) => {
+                console.log(res);
                 dispatch({
                     type: "questionIDsSet",
                     id: res.data["question_ids"],
                 });
                 dispatch({ type: "solvedIDsSet", id: res.data["solved_ids"] });
             });
-
         }
     }, [startCheck]);
 
@@ -259,7 +265,7 @@ const LearningPage: React.FC = () => {
                     nextButton={nextButton}
                 ></FinishViewComponent>
             ) : (
-                <div style={{margin: "10px"}}>
+                <div style={{ margin: "10px" }}>
                     <ReadyViewComponent
                         cameraState={cameraState}
                         changeMethod={changeMethod}
@@ -267,7 +273,10 @@ const LearningPage: React.FC = () => {
                         readyViewText={readyViewText()}
                     ></ReadyViewComponent>
                     <div className={classes.select_question}>
-                        <SelectQuestionViewComponent selectQuestionData={selectQuestion} selectedQuestion={selectedQuestion}></SelectQuestionViewComponent>
+                        <SelectQuestionViewComponent
+                            selectQuestionData={selectQuestion}
+                            selectedQuestion={selectedQuestion}
+                        ></SelectQuestionViewComponent>
                     </div>
                     <SetEnvironment
                         environments={environments}

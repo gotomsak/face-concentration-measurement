@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { AdminGetIDLogUserRes } from "../../apis/backendAPI/admin/interfaces";
 import { useHistory } from "react-router";
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
-import { GetQuestionIdQuery, GetSelectQuestionRes } from '../../apis/backendAPI/learning/interfaces';
-import { getQuestionIds } from '../../apis/backendAPI/learning/getQuestionIds';
-
+import {
+    GetQuestionIdQuery,
+    GetSelectQuestionRes,
+} from "../../apis/backendAPI/learning/interfaces";
+import { getQuestionIds } from "../../apis/backendAPI/learning/getQuestionIds";
 
 interface SelectQuestionView {
     id: number;
@@ -12,8 +14,13 @@ interface SelectQuestionView {
     select_question_name: string;
 }
 
-const SelectQuestionViewComponent: React.FC<{ selectQuestionData: any, selectedQuestion:GetQuestionIdQuery}> = ({ selectQuestionData, selectedQuestion }) => {
-    const [selectQuestionViewCol, setSelectQuestionViewCol] = useState<GridColDef[]>([
+const SelectQuestionViewComponent: React.FC<{
+    selectQuestionData: any;
+    selectedQuestion: GetQuestionIdQuery;
+}> = ({ selectQuestionData, selectedQuestion }) => {
+    const [selectQuestionViewCol, setSelectQuestionViewCol] = useState<
+        GridColDef[]
+    >([
         {
             field: "id",
             headerName: "ID",
@@ -30,14 +37,17 @@ const SelectQuestionViewComponent: React.FC<{ selectQuestionData: any, selectedQ
             width: 300,
         },
     ]);
-        
-    
-    const [selectQuestionViewData, setSelectQuestionViewData] = useState<SelectQuestionView[]>([]);
+
+    const [selectQuestionViewData, setSelectQuestionViewData] = useState<
+        SelectQuestionView[]
+    >([]);
     const history = useHistory();
     useEffect(() => {
-        if (selectQuestionData !== undefined) {
+        if (selectQuestionData.select_question !== null) {
             console.log("yonda");
-            setSelectQuestionViewData(getSelectQuestionFormating(selectQuestionData.select_question));
+            setSelectQuestionViewData(
+                getSelectQuestionFormating(selectQuestionData.select_question)
+            );
         }
     }, [selectQuestionData]);
 
@@ -56,15 +66,23 @@ const SelectQuestionViewComponent: React.FC<{ selectQuestionData: any, selectedQ
     };
 
     return (
-        <div style={{ height: "500px",minWidth: "700px", maxWidth: "700px", margin: "30px" }}>
+        <div
+            style={{
+                height: "500px",
+                minWidth: "700px",
+                maxWidth: "700px",
+                margin: "30px",
+            }}
+        >
             {/* <DataGridNoRender></DataGridNoRender> */}
             {selectQuestionViewData.length ? (
                 <DataGrid
                     rows={selectQuestionViewData}
                     columns={selectQuestionViewCol}
-                    onRowClick={(params:any)=>{
-                        console.log(params)
-                        selectedQuestion.select_question_id=params.row.select_question_ids
+                    onRowClick={(params: any) => {
+                        console.log(params);
+                        selectedQuestion.select_question_id =
+                            params.row.select_question_ids;
                     }}
                     // checkboxSelection
                     // onCellClick={(params: any) => {
@@ -87,7 +105,7 @@ const SelectQuestionViewComponent: React.FC<{ selectQuestionData: any, selectedQ
                 <div>nodata</div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default SelectQuestionViewComponent
+export default SelectQuestionViewComponent;
