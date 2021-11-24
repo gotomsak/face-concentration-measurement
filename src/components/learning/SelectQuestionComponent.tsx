@@ -14,6 +14,7 @@ import { adminGetQuestionAll } from "../../apis/backendAPI/admin/getQuestionAll"
 
 import { adminSaveSelectQuestion } from "../../apis/backendAPI/admin/saveSelectQuestion";
 import { TextField } from "@material-ui/core";
+import { GridSelectionModelChangeParams } from "@material-ui/data-grid";
 
 interface selectQuestion {
     id: number;
@@ -24,7 +25,9 @@ interface selectQuestion {
 
 const SelectQuestionComponent: React.FC = () => {
     const [questions, setQuestions] = useState(undefined);
-    const [selectedQuestion, setSelectedQuestion] = useState<number[]>([]);
+    const [selectedQuestion, setSelectedQuestion] = useState<
+        (number | string)[]
+    >([]);
     const [selectQuestionRow, setselectQuestionRow] = useState<
         selectQuestion[]
     >([]);
@@ -105,8 +108,17 @@ const SelectQuestionComponent: React.FC = () => {
                 pageSize={50}
                 rowsPerPageOptions={[50]}
                 checkboxSelection
-                onSelectionModelChange={(newSelect: any) => {
-                    setSelectedQuestion(newSelect);
+                onSelectionModelChange={(
+                    newSelect: GridSelectionModelChangeParams
+                ) => {
+                    const newListData: (number | string)[] =
+                        newSelect.selectionModel.map(
+                            (value: number | string): number | string => {
+                                return value;
+                            }
+                        );
+                    console.log(newListData);
+                    setSelectedQuestion(newListData);
                 }}
             />
             <div

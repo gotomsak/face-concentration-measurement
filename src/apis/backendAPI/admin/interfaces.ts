@@ -83,5 +83,5 @@ export interface GetQuestionAllRes {
 
 export interface AdminSaveSelectQuestion {
     select_question_name: string;
-    select_question_ids: number[];
+    select_question_ids: (number | string)[];
 }

@@ -18,7 +18,7 @@ import QuestionnairePage from "./pages/learning/QuestionnairePage";
 import EarInitPage from "./pages/ear/EarInitPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ManualPage from "./pages/ManualPage";
-import AdminCreateQuestionPage from "./pages/admin/AdminSelectQuestionPage";
+import AdminSelectQuestionPage from "./pages/admin/AdminSelectQuestionPage";
 
 function App() {
     return (
@@ -36,8 +36,15 @@ function App() {
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>
-                    <Route exact path="/Analysis" component={AnalysisPage}></Route>
-                    <Route path="/Analysis/:conc_id" component={AnalysisPage}></Route>
+                    <Route
+                        exact
+                        path="/Analysis"
+                        component={AnalysisPage}
+                    ></Route>
+                    <Route
+                        path="/Analysis/:conc_id"
+                        component={AnalysisPage}
+                    ></Route>
                     <Route
                         path="/Questionnaire"
                         component={QuestionnairePage}
@@ -67,7 +74,10 @@ function App() {
                         path="/AdminAnalysis/:user_id"
                         component={AdminAnalysisPage}
                     ></Route>
-                    <Route path="/AdminCreateQuestion" component={AdminCreateQuestionPage}></Route>
+                    <Route
+                        path="/AdminSelectQuestion"
+                        component={AdminSelectQuestionPage}
+                    ></Route>
                     {/* <Route path="/AdminCreateQuestion"></Route> */}
                 </Switch>
             </React.Fragment>
