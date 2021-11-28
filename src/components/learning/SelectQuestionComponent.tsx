@@ -15,6 +15,8 @@ import { adminGetQuestionAll } from "../../apis/backendAPI/admin/getQuestionAll"
 import { adminSaveSelectQuestion } from "../../apis/backendAPI/admin/saveSelectQuestion";
 import { TextField } from "@material-ui/core";
 import { GridSelectionModelChangeParams } from "@material-ui/data-grid";
+import Alert from "@material-ui/lab/Alert";
+
 
 interface selectQuestion {
     id: number;
@@ -32,6 +34,7 @@ const SelectQuestionComponent: React.FC = () => {
         selectQuestion[]
     >([]);
     const [questionAll, setQuestionAll] = useState();
+    const [createdCheck, setCreatedCheck] = useState<boolean>(false);
     const [selectQuestionCol, setSelectQuestionCol] = useState<GridColDef[]>([
         {
             field: "id",
@@ -50,6 +53,13 @@ const SelectQuestionComponent: React.FC = () => {
     const [selectQuestionName, setSelectQuestionName] = useState<null | string>(
         null
     );
+    useEffect(() => {
+        if (createdCheck === true) {
+            setTimeout(() => {
+                setCreatedCheck(false);
+            }, 3000);
+        }
+    }, [createdCheck]);
 
     useEffect(() => {
         adminGetQuestionAll().then((res: any) => {
@@ -143,6 +153,19 @@ const SelectQuestionComponent: React.FC = () => {
                     Create
                 </Button>
             </div>
+            {createdCheck ? (
+                
+                <Alert
+                    severity="success"
+                    onClick={() => {
+                        setCreatedCheck(false);
+                    }}
+                >
+                    登録しました
+                </Alert>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };
