@@ -59,6 +59,7 @@ const QuestionViewComponent: React.FC<{
                     type: "ansResultIDSet",
                     id: res.data["answer_result_id"],
                 });
+                refWindowNonFocusTimer.current = 0;
             });
         }
     }, [answerFinal]);
@@ -122,7 +123,7 @@ const QuestionViewComponent: React.FC<{
             question_id: questionID,
             user_id: Number(localStorage.getItem("user_id")),
             memo_log: log,
-            other_focus_second: windowNonFocusTimer,
+            other_focus_second: refWindowNonFocusTimer.current,
             user_answer: answerFinal,
             // concentration_data: concentrationData,
             start_time: startTime,

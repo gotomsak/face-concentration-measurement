@@ -10,12 +10,13 @@ import TopPage from "../TopPage";
 import { useHistory } from "react-router";
 import { send } from "process";
 
-function QuestionnairePage() {
+const QuestionnairePage: React.FC = () => {
     const [concentration, setConcentration] = useState<number>(0);
     const [whileDoing, setWhileDoing] = useState(0);
     const [cheating, setCheating] = useState(0);
     const [nonsense, setNonsense] = useState(0);
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const rangeConcentrationRadio = range(1, 10);
     const concentrationRadio: any = [];
@@ -34,8 +35,8 @@ function QuestionnairePage() {
     const setQuestionnaireData = (): SaveQuestionnairePost => {
         return {
             user_id: Number(localStorage.getItem("user_id")),
-            answer_result_section_id: store.getState()
-                .ansResultSectionIDReducer,
+            answer_result_section_id:
+                store.getState().ansResultSectionIDReducer,
             concentration: Number(concentration),
             while_doing: Number(whileDoing),
             cheating: Number(cheating),
@@ -50,10 +51,12 @@ function QuestionnairePage() {
     };
     const nextPage = () => {
         sendButton();
+
         history.push("/learning");
     };
     const topPage = () => {
         sendButton();
+
         history.push("/");
     };
 
@@ -106,6 +109,6 @@ function QuestionnairePage() {
             <button onClick={topPage}>辞める</button>
         </div>
     );
-}
+};
 
 export default QuestionnairePage;

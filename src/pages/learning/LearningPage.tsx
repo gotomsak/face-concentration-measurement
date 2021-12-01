@@ -130,6 +130,7 @@ const LearningPage: React.FC = () => {
                     dispatch({
                         type: "ansResultIDsReset",
                     });
+                    dispatch({ type: "correctNumberReset" });
                 })
                 .catch((err) => {
                     console.log(err);
