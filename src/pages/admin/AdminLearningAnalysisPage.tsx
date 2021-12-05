@@ -4,12 +4,15 @@ import { GetQuestionIdQuery } from '../../apis/backendAPI/learning/interfaces';
 import SelectQuestionViewComponent from '../../components/learning/SelectQuestionViewComponent'
 import {AdminLearningAnalysisPageStyle} from '../../Styles'
 import { adminGetSelectQuestion } from '../../apis/backendAPI/admin/getSelectQuestion';
+import { adminGetSelectAnswerResultSection } from '../../apis/backendAPI/admin/getSelectAnswerResultSection';
+import SelectQuestionAnalysisComponent from '../../components/analysis/SelectQuestionAnalysisComponent';
 
 const AdminLearningAnalysisPage:React.FC=()=>{
     const [selectedQuestion, setSelectedQuestion] =useState<GetQuestionIdQuery>({ select_question_id: "none" });
     const [selectQuestionData, setSelectQuestionData] = useState({
         select_question: null,
     });
+    
     // const [, setrender] = useState()
     const classes = AdminLearningAnalysisPageStyle()
     useEffect(() => {
@@ -23,6 +26,7 @@ const AdminLearningAnalysisPage:React.FC=()=>{
         // })
     }, []);
 
+
     // useEffect(()=>{
     //     setrender(undefined)
     //     console.log("yonda")
@@ -30,7 +34,15 @@ const AdminLearningAnalysisPage:React.FC=()=>{
 
     const renderChange=():JSX.Element=>{
         if(selectedQuestion.select_question_id != "none"){
-            return (<div>notnone</div>)
+            // interface resType {data:any}
+            // const agsarsRes:resType = {data:null}
+            
+            return (
+                <div>
+                    <SelectQuestionAnalysisComponent select_question_id={selectedQuestion.select_question_id}>
+                    </SelectQuestionAnalysisComponent>
+                </div>
+            )
         }
         return (
             <div className={classes.root}>
