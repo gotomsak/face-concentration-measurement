@@ -57,34 +57,27 @@ const AnsTextComponent: React.FC<{
 
     return (
         <div className={classes.root}>
-            {/* <Grid item xs={12}>
-                <Grid container justify="center"> */}
-                    {ansTextList?.map((i, index) => {
-                        return (
-                            // <Grid key={i}>
-                                
-                                    <Paper className={classes.paper}>
-                                        <div className={classes.ansList} key={i}>
-                                            {/* <div className={classes.ansButton}> */}
-                                            <Button
-                                                variant="contained"
-                                                onClick={choiceResult}
-                                                value={i}
-                                                key={i}
-                                                size="small"
-                                            >
-                                                <h4> {index}</h4>
-                                            </Button>
-                                            {/* </div> */}
-                                            <h4>{i}</h4>
-                                        </div>
-                                    </Paper>
-                                
-                            // </Grid>
-                        );
-                    })}
-                {/* </Grid>
-            </Grid> */}
+            
+            {ansTextList?.map((i, index) => {
+                return (                                
+                    <Paper className={classes.paper}>
+                        <div className={classes.ansList} key={i}>
+
+                            <Button
+                                variant="contained"
+                                onClick={choiceResult}
+                                value={i}
+                                key={i}
+                                size="small"
+                            >
+                                <h4> {index}</h4>
+                            </Button>
+                            <h4>{i}</h4>
+                        </div>
+                    </Paper>
+                );
+            })}
+
         </div>
     );
 };

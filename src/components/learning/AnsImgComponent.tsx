@@ -31,30 +31,27 @@ const AnsImgComponent: React.FC<{
 
     return (
         <div className={classes.root}>
-            {/* <Grid item xs={12}>
-                <Grid container justify="center" spacing={spacing}> */}
-                    {ansImgList?.map((i, index) => {
-                        return (
-                            // <Grid key={i}>
-                                <div className="AnsList" key={i}>
-                                    <Paper className={classes.paper}>
-                                        <Button
-                                            variant="contained"
-                                            onClick={choiceResult}
-                                            value={i}
-                                            key={i}
-                                            size="small"
-                                        >
-                                            <h4>{index}</h4>
-                                        </Button>
-                                        <img src={i} key={i} />
-                                    </Paper>
-                                </div>
-                            // </Grid>
-                        );
-                    })}
-                {/* </Grid>
-            </Grid> */}
+
+            {ansImgList?.map((i, index) => {
+                return (
+
+                    <div className="AnsList" key={i}>
+                        <Paper className={classes.paper}>
+                            <Button
+                                variant="contained"
+                                onClick={choiceResult}
+                                value={i}
+                                key={i}
+                                size="small"
+                            >
+                                <h4>{index}</h4>
+                            </Button>
+                            <img src={i} key={i} />
+                        </Paper>
+                    </div>
+
+                );
+            })}
         </div>
     );
 };
