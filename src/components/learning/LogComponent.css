@@ -1,6 +1,7 @@
 .LogContainer {
-    height: 50px;
-    margin: 50px;
+    height: auto;
+    margin: auto;
+    display: flex;
 }
 textarea {
     min-height: 250px;

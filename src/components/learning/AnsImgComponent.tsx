@@ -31,11 +31,11 @@ const AnsImgComponent: React.FC<{
 
     return (
         <div className={classes.root}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={spacing}>
+            {/* <Grid item xs={12}>
+                <Grid container justify="center" spacing={spacing}> */}
                     {ansImgList?.map((i, index) => {
                         return (
-                            <Grid key={i}>
+                            // <Grid key={i}>
                                 <div className="AnsList" key={i}>
                                     <Paper className={classes.paper}>
                                         <Button
@@ -45,15 +45,16 @@ const AnsImgComponent: React.FC<{
                                             key={i}
                                             size="small"
                                         >
-                                            <img src={i} key={i} />
+                                            <h4>{index}</h4>
                                         </Button>
+                                        <img src={i} key={i} />
                                     </Paper>
                                 </div>
-                            </Grid>
+                            // </Grid>
                         );
                     })}
-                </Grid>
-            </Grid>
+                {/* </Grid>
+            </Grid> */}
         </div>
     );
 };
