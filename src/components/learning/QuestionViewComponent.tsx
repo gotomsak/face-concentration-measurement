@@ -35,8 +35,21 @@ const QuestionViewComponent: React.FC<{
     const refWindowNonFocusTimer = useRef(windowNonFocusTimer);
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
-            root: {
-                flexGrow: 1,
+            root:{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems:"center",
+                width: "auto",
+                height: "100%"
+            },
+            rootGrid: {
+                // flexGrow: 1,
+                // flexDirection: "column",
+                justifyContent: "center",
+                alignItems:"center",
+                maxWidth: "80%",
+                display: "flex",
                 margin: theme.spacing(2),
             },
             paper: {
@@ -59,6 +72,7 @@ const QuestionViewComponent: React.FC<{
                     type: "ansResultIDSet",
                     id: res.data["answer_result_id"],
                 });
+                refWindowNonFocusTimer.current = 0;
             });
         }
     }, [answerFinal]);
@@ -122,7 +136,7 @@ const QuestionViewComponent: React.FC<{
             question_id: questionID,
             user_id: Number(localStorage.getItem("user_id")),
             memo_log: log,
-            other_focus_second: windowNonFocusTimer,
+            other_focus_second: refWindowNonFocusTimer.current,
             user_answer: answerFinal,
             // concentration_data: concentrationData,
             start_time: startTime,
@@ -142,7 +156,7 @@ const QuestionViewComponent: React.FC<{
         setLog(e.target.value);
     }, []);
 
-    const changeAnsType = () => {
+    const changeAnsType = ():JSX.Element|undefined => {
         console.log(answerText.length);
         console.log(answerText);
         console.log(answerImg);
@@ -165,7 +179,7 @@ const QuestionViewComponent: React.FC<{
     };
 
     return (
-        <div className="QuestionViewContainer">
+        <div className={classes.root}>
             <TitleComponent title={questionTitle}></TitleComponent>
             <QuestionComponent
                 questionText={questionText}
@@ -173,33 +187,36 @@ const QuestionViewComponent: React.FC<{
             ></QuestionComponent>
 
             {/* <div className="LogsContainer"> */}
-            <div className={classes.root}>
+            <div className={classes.rootGrid}>
                 {/* <GridLogsComponent
                     calculatorResult={calculatorResult}
                     log={log}
                     setLog={setLog}
                     setCalculatorResult={setCalculatorResult}
                 ></GridLogsComponent> */}
-                <Grid item>
-                    <Grid container spacing={spacing}>
-                        <Grid>
+                {/* <Grid item> */}
+                    {/* <Grid contzainer spacing={spacing}> */}
+                        {/* <Grid> */}
                             <LogComponent
                                 // calculatorResult={calculatorResult}
                                 log={log}
                                 changeText={changeText}
                                 // setLog={setLog}
                             ></LogComponent>
-                        </Grid>
-                        <Grid>
+                        {/* </Grid>
+                        <Grid> */}
                             <CalculatorComponent
                                 calculatorResult={setCalculatorResult}
                             ></CalculatorComponent>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                        {/* </Grid> */}
+                        {changeAnsType()}
+                    {/* </Grid> */}
+                 
+                {/* </Grid> */}
+                
             </div>
 
-            {changeAnsType()}
+           
             {answerResult !== "" && (
                 <div>
                     <AnsResultComponent

@@ -16,8 +16,9 @@ interface SelectQuestionView {
 
 const SelectQuestionViewComponent: React.FC<{
     selectQuestionData: any;
-    selectedQuestion: GetQuestionIdQuery;
-}> = ({ selectQuestionData, selectedQuestion }) => {
+    setSelectedQuestion: React.Dispatch<React.SetStateAction<GetQuestionIdQuery>>
+
+}> = (props) => {
     const [selectQuestionViewCol, setSelectQuestionViewCol] = useState<
         GridColDef[]
     >([
@@ -43,13 +44,13 @@ const SelectQuestionViewComponent: React.FC<{
     >([]);
     const history = useHistory();
     useEffect(() => {
-        if (selectQuestionData.select_question !== null) {
+        if (props.selectQuestionData.select_question !== null) {
             console.log("yonda");
             setSelectQuestionViewData(
-                getSelectQuestionFormating(selectQuestionData.select_question)
+                getSelectQuestionFormating(props.selectQuestionData.select_question)
             );
         }
-    }, [selectQuestionData]);
+    }, [props.selectQuestionData]);
 
     const getSelectQuestionFormating = (listData: GetSelectQuestionRes[]) => {
         console.log(listData);
@@ -81,8 +82,9 @@ const SelectQuestionViewComponent: React.FC<{
                     columns={selectQuestionViewCol}
                     onRowClick={(params: any) => {
                         console.log(params);
-                        selectedQuestion.select_question_id =
-                            params.row.select_question_ids;
+
+                        props.setSelectedQuestion({select_question_id: params.row.select_question_ids})
+                            
                     }}
                     // checkboxSelection
                     // onCellClick={(params: any) => {

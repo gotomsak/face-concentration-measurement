@@ -52,7 +52,7 @@ const AdminSelectQuestionPage: React.FC = () => {
                 <div className={classes.select_question}>
                     <SelectQuestionViewComponent
                         selectQuestionData={selectQuestion}
-                        selectedQuestion={selectedQuestion}
+                        setSelectedQuestion={setSelectedQuestion}
                     ></SelectQuestionViewComponent>
                     <Button
                         variant="contained"

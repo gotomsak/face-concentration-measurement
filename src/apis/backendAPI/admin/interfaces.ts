@@ -2,6 +2,7 @@ import internal from "stream";
 import { Conc } from "../../../reducers/concReducer";
 import { GetEnvironment } from "../environment/interfaces";
 import { MaxFrequency, MinFrequency } from "../frequency/interfaces";
+import { SaveQuestionnairePost } from "../learning/interfaces";
 // import { PostConcentrationSave } from "../interfaces";
 // import { GridSelectionModel } from "@material-ui/data-grid";
 export interface AdminUser {
@@ -84,4 +85,41 @@ export interface GetQuestionAllRes {
 export interface AdminSaveSelectQuestion {
     select_question_name: string;
     select_question_ids: (number | string)[];
+}
+
+export interface AnswerResultSection {
+    ID: number;
+    CreatedAt: Date;
+    DeletedAt: Date;
+    UpdatedAt: Date;
+    conc_id: string;
+    select_question_id: string;
+    correct_answer_number: number;
+    user_id: number;
+    answer_result_ids: string;
+    start_time: Date;
+    end_time: Date;
+}
+
+export interface Questionnaire {
+    ID: number;
+    CreatedAt: Date;
+    DeletedAt: Date;
+    UpdatedAt: Date;
+    user_id: number;
+    answer_result_section_id: number;
+    concentration: number;
+    while_doing: number;
+    cheating: number;
+    nonsense: number;
+}
+
+export interface GetSelectAnswerResultSection {
+    concentration: concentration;
+    questionnaire: Questionnaire;
+    answer_result_section: AnswerResultSection;
+}
+
+export interface AdminGetSelectAnswerResultSectionRes {
+    select_answer_result_section: GetSelectAnswerResultSection[];
 }

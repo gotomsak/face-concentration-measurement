@@ -12,6 +12,12 @@ export interface concViewDataType {
     // datas: any[];
 }
 
+export interface concToCorrectDataType{
+    name: string;
+    type: string;
+    data: any;
+}
+
 export interface maxFreqViewDataType {
     max_blink: number | null;
     max_face_move: number | null;

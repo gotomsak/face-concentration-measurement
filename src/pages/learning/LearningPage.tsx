@@ -130,6 +130,7 @@ const LearningPage: React.FC = () => {
                     dispatch({
                         type: "ansResultIDsReset",
                     });
+                    dispatch({ type: "correctNumberReset" });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -275,7 +276,7 @@ const LearningPage: React.FC = () => {
                     <div className={classes.select_question}>
                         <SelectQuestionViewComponent
                             selectQuestionData={selectQuestion}
-                            selectedQuestion={selectedQuestion}
+                            setSelectedQuestion={setSelectedQuestion}
                         ></SelectQuestionViewComponent>
                     </div>
                     <SetEnvironment

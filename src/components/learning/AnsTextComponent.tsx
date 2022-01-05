@@ -13,14 +13,40 @@ const AnsTextComponent: React.FC<{
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
-                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                margin: "5px",
+                alignItems: "center",
+                width: "500px"
+                // flexGrow: 1,
+                // width: "1000px",
             },
             paper: {
-                textAlign: "center",
+                // textAlign: "center",
+                display: "inline-block",
                 color: theme.palette.text.secondary,
+                width: "500px",
+                // minWidth:"500px",
+                // // maxWidth: "800px",
+                margin: "1px"
             },
+            ansList:{
+                display: "flex",
+                // justifyContent: "space-between",
+               
+                // margin: "10px"
+            },
+            ansButton: {
+                // display: "inlineBlock",
+                // fontSize: "16px",
+                width: "64px",
+                height: "64px",
+                display: "flex"
+            }
         })
     );
+ 
     const [spacing, setSpacing] = useState<GridSpacing>(2);
     const classes = useStyles();
 
@@ -31,29 +57,27 @@ const AnsTextComponent: React.FC<{
 
     return (
         <div className={classes.root}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={spacing}>
-                    {ansTextList?.map((i, index) => {
-                        return (
-                            <Grid key={i}>
-                                <div className="AnsList" key={i}>
-                                    <Paper className={classes.paper}>
-                                        <Button
-                                            variant="contained"
-                                            onClick={choiceResult}
-                                            value={i}
-                                            key={i}
-                                            size="small"
-                                        >
-                                            <h4>{i}</h4>
-                                        </Button>
-                                    </Paper>
-                                </div>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </Grid>
+            
+            {ansTextList?.map((i, index) => {
+                return (                                
+                    <Paper className={classes.paper}>
+                        <div className={classes.ansList} key={i}>
+
+                            <Button
+                                variant="contained"
+                                onClick={choiceResult}
+                                value={i}
+                                key={i}
+                                size="small"
+                            >
+                                <h4> {index}</h4>
+                            </Button>
+                            <h4>{i}</h4>
+                        </div>
+                    </Paper>
+                );
+            })}
+
         </div>
     );
 };
