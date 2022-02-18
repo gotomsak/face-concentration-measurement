@@ -18,7 +18,7 @@ const AnsTextComponent: React.FC<{
                 justifyContent: "center",
                 margin: "5px",
                 alignItems: "center",
-                width: "500px"
+                width: "500px",
                 // flexGrow: 1,
                 // width: "1000px",
             },
@@ -29,12 +29,12 @@ const AnsTextComponent: React.FC<{
                 width: "500px",
                 // minWidth:"500px",
                 // // maxWidth: "800px",
-                margin: "1px"
+                margin: "1px",
             },
-            ansList:{
+            ansList: {
                 display: "flex",
                 // justifyContent: "space-between",
-               
+
                 // margin: "10px"
             },
             ansButton: {
@@ -42,11 +42,11 @@ const AnsTextComponent: React.FC<{
                 // fontSize: "16px",
                 width: "64px",
                 height: "64px",
-                display: "flex"
-            }
+                display: "flex",
+            },
         })
     );
- 
+
     const [spacing, setSpacing] = useState<GridSpacing>(2);
     const classes = useStyles();
 
@@ -57,12 +57,10 @@ const AnsTextComponent: React.FC<{
 
     return (
         <div className={classes.root}>
-            
             {ansTextList?.map((i, index) => {
-                return (                                
+                return (
                     <Paper className={classes.paper}>
                         <div className={classes.ansList} key={i}>
-
                             <Button
                                 variant="contained"
                                 onClick={choiceResult}
@@ -77,7 +75,6 @@ const AnsTextComponent: React.FC<{
                     </Paper>
                 );
             })}
-
         </div>
     );
 };

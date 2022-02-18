@@ -35,19 +35,19 @@ const QuestionViewComponent: React.FC<{
     const refWindowNonFocusTimer = useRef(windowNonFocusTimer);
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
-            root:{
+            root: {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignItems:"center",
+                alignItems: "center",
                 width: "auto",
-                height: "100%"
+                height: "100%",
             },
             rootGrid: {
                 // flexGrow: 1,
                 // flexDirection: "column",
                 justifyContent: "center",
-                alignItems:"center",
+                alignItems: "center",
                 maxWidth: "80%",
                 display: "flex",
                 margin: theme.spacing(2),
@@ -95,14 +95,10 @@ const QuestionViewComponent: React.FC<{
     useEffect(() => {
         refWindowNonFocusTimer.current = windowNonFocusTimer;
     }, [windowNonFocusTimer]);
-    // useEffect(() => {
-    //     console.log("logChange");
-    // }, [log]);
 
     useEffect(() => {
         let windowNonFocusTimerFlag: any;
 
-        // webCameraInit();
         window.addEventListener("focus", () => {
             clearInterval(windowNonFocusTimerFlag);
         });
@@ -138,7 +134,6 @@ const QuestionViewComponent: React.FC<{
             memo_log: log,
             other_focus_second: refWindowNonFocusTimer.current,
             user_answer: answerFinal,
-            // concentration_data: concentrationData,
             start_time: startTime,
             end_time: end,
         };
@@ -156,7 +151,7 @@ const QuestionViewComponent: React.FC<{
         setLog(e.target.value);
     }, []);
 
-    const changeAnsType = ():JSX.Element|undefined => {
+    const changeAnsType = (): JSX.Element | undefined => {
         console.log(answerText.length);
         console.log(answerText);
         console.log(answerImg);
@@ -186,37 +181,15 @@ const QuestionViewComponent: React.FC<{
                 questionImg={questionImg}
             ></QuestionComponent>
 
-            {/* <div className="LogsContainer"> */}
             <div className={classes.rootGrid}>
-                {/* <GridLogsComponent
-                    calculatorResult={calculatorResult}
-                    log={log}
-                    setLog={setLog}
-                    setCalculatorResult={setCalculatorResult}
-                ></GridLogsComponent> */}
-                {/* <Grid item> */}
-                    {/* <Grid contzainer spacing={spacing}> */}
-                        {/* <Grid> */}
-                            <LogComponent
-                                // calculatorResult={calculatorResult}
-                                log={log}
-                                changeText={changeText}
-                                // setLog={setLog}
-                            ></LogComponent>
-                        {/* </Grid>
-                        <Grid> */}
-                            <CalculatorComponent
-                                calculatorResult={setCalculatorResult}
-                            ></CalculatorComponent>
-                        {/* </Grid> */}
-                        {changeAnsType()}
-                    {/* </Grid> */}
-                 
-                {/* </Grid> */}
-                
+                <LogComponent log={log} changeText={changeText}></LogComponent>
+                <CalculatorComponent
+                    calculatorResult={setCalculatorResult}
+                ></CalculatorComponent>
+
+                {changeAnsType()}
             </div>
 
-           
             {answerResult !== "" && (
                 <div>
                     <AnsResultComponent
