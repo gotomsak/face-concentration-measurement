@@ -85,7 +85,14 @@ function App() {
                         path="/AdminSelectQuestion"
                         component={AdminSelectQuestionPage}
                     ></Route>
-                    <Route path="/AdminLearningAnalysis" component={AdminLearningAnalysisPage}></Route>
+                    <Route
+                        path="/AdminLearningAnalysis"
+                        component={AdminLearningAnalysisPage}
+                    ></Route>
+                    <Route
+                        path="/AdminAddQuestion"
+                        component={AdminAddQuestionPage}
+                    ></Route>
                     {/* <Route path="/AdminCreateQuestion"></Route> */}
                 </Switch>
             </React.Fragment>

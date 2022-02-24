@@ -24,6 +24,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
+    Checkbox,
 } from "@material-ui/core";
 import { SourceCode } from "eslint";
 import { FrequencyPageStyle } from "../../Styles";
@@ -31,7 +32,7 @@ import SetEarComponent from "../../components/utils/SetEarComponent";
 import { GetEar } from "../../apis/backendAPI/ear/interfaces";
 import { getEar } from "../../apis/backendAPI/ear/getEar";
 
-function FrequencyPage() {
+const FrequencyPage: React.FC = () => {
     const [startCheck, setStartCheck] = useState(false);
     const [cameraState, setCameraState] = useState(false);
     // データが取り終わった時のステート
@@ -145,7 +146,7 @@ function FrequencyPage() {
         );
     };
 
-    const changeMethod = (e: any) => {
+    const changeCameraMethod = (e: any) => {
         if (e.target.name == "camera") {
             setCameraState(e.target.checked);
         }
@@ -176,6 +177,23 @@ function FrequencyPage() {
             setStartCheck(true);
         }
     };
+    const readyViewCheckBox = (): JSX.Element => {
+        return (
+            <div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={cameraState}
+                            onChange={changeCameraMethod}
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                            name="camera"
+                        />
+                    }
+                    label="UseCamera"
+                />
+            </div>
+        );
+    };
     const nextButton = (e: any) => {
         history.push("/");
     };
@@ -191,10 +209,11 @@ function FrequencyPage() {
             ) : (
                 <div className={classes.menu}>
                     <ReadyViewComponent
-                        cameraState={cameraState}
-                        changeMethod={changeMethod}
+                        readyViewCheckBox={readyViewCheckBox()}
                         startCheckButton={startCheckButton}
                         readyViewText={readyViewText()}
+                        readyViewSelectQuestion={<></>}
+                        readyViewEnvironment={<></>}
                     ></ReadyViewComponent>
                 </div>
             )}
@@ -207,5 +226,5 @@ function FrequencyPage() {
             ></WebCameraComponent>
         </div>
     );
-}
+};
 export default FrequencyPage;

@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import "./ReadyViewComponent.css";
+import {
+    GetQuestionIdQuery,
+    GetSelectQuestionRes,
+} from "../../apis/backendAPI/learning/interfaces";
+
 const ReadyViewComponent: React.FC<{
-    cameraState: any;
-    changeMethod: any;
     startCheckButton: any;
-    readyViewText: any;
-}> = ({ cameraState, changeMethod, startCheckButton, readyViewText }) => {
+    readyViewCheckBox: JSX.Element;
+    readyViewText: JSX.Element;
+    readyViewSelectQuestion: JSX.Element;
+    readyViewEnvironment: JSX.Element;
+}> = (props) => {
     return (
         <div className="ReadyViewContainer">
-            {readyViewText}
-
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={cameraState}
-                        onChange={changeMethod}
-                        inputProps={{ "aria-label": "primary checkbox" }}
-                        name="camera"
-                    />
-                }
-                label="UseCamera"
-            />
-            <Button onClick={startCheckButton} color="secondary" value={1}>
+            {props.readyViewText}
+            {props.readyViewCheckBox}
+            {props.readyViewSelectQuestion}
+            {props.readyViewEnvironment}
+            <Button
+                onClick={props.startCheckButton}
+                color="secondary"
+                value={1}
+            >
                 start
             </Button>
         </div>

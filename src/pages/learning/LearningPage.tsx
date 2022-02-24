@@ -69,18 +69,15 @@ const LearningPage: React.FC = () => {
     // FinishViewのボタンクリック時の判定
     // const [finishFlag, setFinishFlag] = useState(false);
     const [qCount, setQCount] = useState<number>(0);
+    const [memoState, setMemoState] = useState(false);
+    const [calculatorState, setCalculatorState] = useState(false);
 
     const classes: ClassNameMap = LearningPageStyle();
 
     useEffect(() => {
         setStartTime(getNowTimeString());
-        // getFrequency().then((res: any) => {
-        //     setFrequencys(res);
 
-        //     console.log(res);
-        // });
         getEnvironment().then((res) => {
-            // console.log(res);
             setEnvironments(res.data.environments);
         });
         getSelectQuestion().then((res) => {
@@ -201,9 +198,19 @@ const LearningPage: React.FC = () => {
         };
     };
 
-    const changeMethod = (e: any) => {
+    const changeCameraMethod = (e: any) => {
         if (e.target.name == "camera") {
             setCameraState(e.target.checked);
+        }
+    };
+    const changeMemoMethod = (e: any) => {
+        if (e.target.name == "memo") {
+            setMemoState(e.target.checked);
+        }
+    };
+    const changeCalculatorMethod = (e: any) => {
+        if (e.target.name == "calculator") {
+            setCalculatorState(e.target.checked);
         }
     };
 
@@ -225,11 +232,76 @@ const LearningPage: React.FC = () => {
     const readyViewText = () => {
         return (
             <div>
-                <h1>準備は良いですか？</h1>
-                <h2>良ければスタートボタンを押してください</h2>
-                <h3>10問おきに継続，終了を選べます</h3>
+                <h1>注意事項</h1>
+                <h3>問題を選択してください</h3>
+                <h3>集中度を図る場合はuseCameraにチェックを入れてください</h3>
+                <h3>
+                    集中度を図る場合は環境設定から環境を選択してください（環境がなければ作ってください）
+                </h3>
+                <h3>
+                    任意でメモと計算機が使えます，使う場合はUseMemo,UseCalcuratorにチェックを入れてください
+                </h3>
+                <h3>良ければスタートボタンを押してください</h3>
+
                 <h3>終了後アンケートにお答えください</h3>
             </div>
+        );
+    };
+
+    const readyViewCheckBox = (): JSX.Element => {
+        return (
+            <div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={cameraState}
+                            onChange={changeCameraMethod}
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                            name="camera"
+                        />
+                    }
+                    label="UseCamera"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={memoState}
+                            onChange={changeMemoMethod}
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                            name="memo"
+                        />
+                    }
+                    label="UseMemo"
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={calculatorState}
+                            onChange={changeCalculatorMethod}
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                            name="calcurator"
+                        />
+                    }
+                    label="UseCalcurator"
+                />
+            </div>
+        );
+    };
+
+    const readyViewSelectQuestion = (): JSX.Element => {
+        return (
+            <SelectQuestionViewComponent
+                selectQuestionData={selectQuestion}
+                setSelectedQuestion={setSelectedQuestion}
+            ></SelectQuestionViewComponent>
+        );
+    };
+    const readyViewEnvironment = (): JSX.Element => {
+        return (
+            <SetEnvironment
+                environments={environments}
+                reFreq={false}
+            ></SetEnvironment>
         );
     };
 
@@ -252,13 +324,11 @@ const LearningPage: React.FC = () => {
                 questionID > 0 && (
                     <div>
                         <QuestionViewComponent
+                            memoState={memoState}
+                            calcuratorState={calculatorState}
                             questionID={questionID}
                             setNext={setNext}
                         ></QuestionViewComponent>
-                        {/* <ConcentrationViewComponent
-                            concData1={c3}
-                            concData2={sonConc}
-                        ></ConcentrationViewComponent> */}
                     </div>
                 )
             ) : finish ? (
@@ -268,21 +338,13 @@ const LearningPage: React.FC = () => {
             ) : (
                 <div style={{ margin: "10px" }}>
                     <ReadyViewComponent
-                        cameraState={cameraState}
-                        changeMethod={changeMethod}
                         startCheckButton={startCheckButton}
+                        readyViewCheckBox={readyViewCheckBox()}
                         readyViewText={readyViewText()}
+                        readyViewSelectQuestion={readyViewSelectQuestion()}
+                        readyViewEnvironment={readyViewEnvironment()}
                     ></ReadyViewComponent>
-                    <div className={classes.select_question}>
-                        <SelectQuestionViewComponent
-                            selectQuestionData={selectQuestion}
-                            setSelectedQuestion={setSelectedQuestion}
-                        ></SelectQuestionViewComponent>
-                    </div>
-                    <SetEnvironment
-                        environments={environments}
-                        reFreq={false}
-                    ></SetEnvironment>
+                    {/* <div className={classes.select_question}></div> */}
                 </div>
             )}
 

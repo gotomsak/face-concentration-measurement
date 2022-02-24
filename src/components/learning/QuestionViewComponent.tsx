@@ -17,9 +17,11 @@ import AnsTextComponent from "./AnsTextComponent";
 import AnsImgComponent from "./AnsImgComponent";
 
 const QuestionViewComponent: React.FC<{
+    memoState: any;
+    calcuratorState: any;
     questionID: number;
     setNext: any;
-}> = ({ questionID, setNext }) => {
+}> = (props) => {
     const dispatch = useDispatch();
     const [questionText, setQuestionText] = useState("");
     const [questionImg, setQuestionImg] = useState([]);
@@ -89,8 +91,8 @@ const QuestionViewComponent: React.FC<{
     }, [calculatorResult]);
 
     useEffect(() => {
-        questionFetch(questionID);
-    }, [questionID]);
+        questionFetch(props.questionID);
+    }, [props.questionID]);
 
     useEffect(() => {
         refWindowNonFocusTimer.current = windowNonFocusTimer;
@@ -129,7 +131,7 @@ const QuestionViewComponent: React.FC<{
     const setResult = (): CheckAnswerPost => {
         const end = getNowTimeString();
         return {
-            question_id: questionID,
+            question_id: props.questionID,
             user_id: Number(localStorage.getItem("user_id")),
             memo_log: log,
             other_focus_second: refWindowNonFocusTimer.current,
@@ -141,7 +143,7 @@ const QuestionViewComponent: React.FC<{
 
     const reset = () => {
         setAnswerResult("");
-        setNext(true);
+        props.setNext(true);
         setLog("");
         window.scrollTo(0, 0);
     };
@@ -182,10 +184,21 @@ const QuestionViewComponent: React.FC<{
             ></QuestionComponent>
 
             <div className={classes.rootGrid}>
-                <LogComponent log={log} changeText={changeText}></LogComponent>
-                <CalculatorComponent
-                    calculatorResult={setCalculatorResult}
-                ></CalculatorComponent>
+                {props.memoState ? (
+                    <LogComponent
+                        log={log}
+                        changeText={changeText}
+                    ></LogComponent>
+                ) : (
+                    <></>
+                )}
+                {props.calcuratorState ? (
+                    <CalculatorComponent
+                        calculatorResult={setCalculatorResult}
+                    ></CalculatorComponent>
+                ) : (
+                    <></>
+                )}
 
                 {changeAnsType()}
             </div>

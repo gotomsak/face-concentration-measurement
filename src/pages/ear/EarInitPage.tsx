@@ -8,6 +8,7 @@ import EarInitComponent from "../../components/ear/EarInitComponent";
 import FinishViewComponent from "../../components/utils/FinishViewComponent";
 import { EarInitPageStyle } from "../../Styles";
 import { initEar } from "../../apis/backendAPI/ear/initEar";
+import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import store from "../..";
 
 const EarInitPage: React.FC = () => {
@@ -55,10 +56,27 @@ const EarInitPage: React.FC = () => {
         }
     }, [cameraStop]);
 
-    const changeMethod = (e: any) => {
+    const changeCameraMethod = (e: any) => {
         if (e.target.name == "camera") {
             setCameraState(e.target.checked);
         }
+    };
+    const readyViewCheckBox = (): JSX.Element => {
+        return (
+            <div>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={cameraState}
+                            onChange={changeCameraMethod}
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                            name="camera"
+                        />
+                    }
+                    label="UseCamera"
+                />
+            </div>
+        );
     };
     const readyViewText = () => {
         return (
@@ -96,10 +114,11 @@ const EarInitPage: React.FC = () => {
             ) : (
                 <div className={classes.menu}>
                     <ReadyViewComponent
-                        cameraState={cameraState}
-                        changeMethod={changeMethod}
                         startCheckButton={startCheckButton}
+                        readyViewCheckBox={readyViewCheckBox()}
                         readyViewText={readyViewText()}
+                        readyViewSelectQuestion={<></>}
+                        readyViewEnvironment={<></>}
                     ></ReadyViewComponent>
                 </div>
             )}

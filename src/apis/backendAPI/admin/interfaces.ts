@@ -82,6 +82,26 @@ export interface GetQuestionAllRes {
     genre: string;
 }
 
+export interface SaveAddQuestionReq {
+    // ID: number;
+    // CreatedAt: Date;
+    // DeletedAt: Date;
+    // UpdatedAt: Date;
+    question: string | null;
+    qimg_path: string | null;
+    mistake1: string | null;
+    mistake2: string | null;
+    mistake3: string | null;
+    ans: string | null;
+    mimage_path1: string | null;
+    mimage_path2: string | null;
+    mimage_path3: string | null;
+    aimg_path: string | null;
+    season: string | null;
+    question_num: string | null;
+    genre: string | null;
+}
+
 export interface AdminSaveSelectQuestion {
     select_question_name: string;
     select_question_ids: (number | string)[];

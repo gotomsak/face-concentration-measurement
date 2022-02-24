@@ -149,12 +149,12 @@ const MathWorkPage: React.FC = () => {
                 <h1>終了</h1>
             ) : (
                 <div>
-                    <ReadyViewComponent
+                    {/* <ReadyViewComponent
                         cameraState={cameraState}
                         changeMethod={changeMethod}
                         startCheckButton={startCheckButton}
                         readyViewText={readyViewText()}
-                    ></ReadyViewComponent>
+                    ></ReadyViewComponent> */}
                     {frequencys ? (
                         <SetFrequencyComponent
                             frequencys={frequencys}

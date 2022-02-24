@@ -12,9 +12,7 @@ interface UserLogView {
     conc_data_id: string;
 }
 
-const UserLogViewComponent: React.FC<{ logData: any}> = ({
-    logData,
-}) => {
+const UserLogViewComponent: React.FC<{ logData: any }> = ({ logData }) => {
     // const [userLogData, setUserLogData] = useState();
     const [userLogViewCol, setUsersViewCol] = useState<GridColDef[]>([
         {
@@ -35,11 +33,8 @@ const UserLogViewComponent: React.FC<{ logData: any}> = ({
     const history = useHistory();
     useEffect(() => {
         if (logData !== undefined) {
-            console.log("yonda")
-            setUserLogViewData(
-                getIDLogUesrFormating(logData)
-            );
-            
+            console.log("yonda");
+            setUserLogViewData(getIDLogUesrFormating(logData));
         }
     }, [logData]);
 
@@ -62,27 +57,28 @@ const UserLogViewComponent: React.FC<{ logData: any}> = ({
             {/* <DataGridNoRender></DataGridNoRender> */}
             {userLogViewData.length ? (
                 <DataGrid
-                rows={userLogViewData}
-                columns={userLogViewCol}
-                // checkboxSelection
-                onCellClick={(params: any) => {
-                    console.log(params);
-                    console.log(userLogViewData);
-                    console.log(history.location);
-                    console.log(
-                        history.location.pathname +
-                            "/" +
-                            params.row.conc_data_id
-                    );
-                    history.push(
-                        history.location.pathname +
-                            "/" +
-                            params.row.conc_data_id
-                    );
-                }}
-            />
-            ):(<div>nodata</div>)}
-            
+                    rows={userLogViewData}
+                    columns={userLogViewCol}
+                    // checkboxSelection
+                    onCellClick={(params: any) => {
+                        console.log(params);
+                        console.log(userLogViewData);
+                        console.log(history.location);
+                        console.log(
+                            history.location.pathname +
+                                "/" +
+                                params.row.conc_data_id
+                        );
+                        history.push(
+                            history.location.pathname +
+                                "/" +
+                                params.row.conc_data_id
+                        );
+                    }}
+                />
+            ) : (
+                <div>nodata</div>
+            )}
         </div>
     );
 };

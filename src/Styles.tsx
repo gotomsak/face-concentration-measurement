@@ -32,11 +32,11 @@ export const LearningPageStyle = makeStyles({
 
         alignItems: "center",
     },
-    select_question:{
+    select_question: {
         height: "500px",
         width: "80%",
         minHeight: "500px",
-        maxWidth: "1450px"
+        maxWidth: "1450px",
     },
 });
 
@@ -180,7 +180,7 @@ export const RecordingPageStyle = makeStyles((theme) => ({
     setFreqComp: {
         display: "flex",
         justifyContent: "space-evenly",
-        margin: "30px"
+        margin: "30px",
 
         // justifyContent: "space-evenly",
     },
@@ -259,6 +259,56 @@ export const AdminLearningAnalysisPageStyle = makeStyles({
     },
 });
 
+export const AdminAddQuestionPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        // justifyContent: "center",
+        // textAlign: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+    },
+    overTextFiled: {
+        height: "50px",
+        maxHeight: "50px",
+    },
+    textFiled: {
+        width: "500px",
+        // minHeight: "50px",
+
+        height: "50px",
+        // "& .MuiTextField-root": { m: 1, width: "25ch" },
+    },
+});
+
+export const LineOfSightPageStyle = makeStyles({
+    root: {
+        display: "flex",
+        justifyContent: "center",
+        padding: 0,
+        margin: 0,
+    },
+
+    left: {
+        margin: "30px",
+    },
+
+    table: {
+        borderCollapse: "collapse",
+        borderSpacing: 0,
+    },
+
+    th: {
+        padding: "10px 20px",
+        border: "1px solid #000",
+    },
+    td: {
+        padding: "10px 20px",
+        border: "1px solid #000",
+    },
+});
+
 export const AnalysisPageStyle = makeStyles({
     root: {
         display: "flex",
@@ -292,17 +342,16 @@ export const AdminSelectQuestionPageStyle = makeStyles({
         width: "100%",
         height: "100%",
     },
-    select_question:{
+    select_question: {
         height: "100%",
         width: "80%",
-        maxWidth: "1450px"
+        maxWidth: "1450px",
     },
     question: {
         height: "10%",
         width: "80%",
     },
 });
-
 
 export const EnvironmentPageStyle = makeStyles({
     root: {

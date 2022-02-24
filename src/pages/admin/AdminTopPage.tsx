@@ -53,6 +53,15 @@ const AdminTopPage: React.FC = () => {
             <p>
                 <TopPageButton
                     onClick={() => {
+                        history.push("/AdminAddQuestion");
+                    }}
+                >
+                    問題の追加
+                </TopPageButton>
+            </p>
+            <p>
+                <TopPageButton
+                    onClick={() => {
                         history.push("/AdminLearningAnalysis");
                     }}
                 >
