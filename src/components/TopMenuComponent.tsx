@@ -56,16 +56,25 @@ const TopMenuComponent: React.FC = () => {
                         history.push("/Learning");
                     }}
                 >
-                    E-learning
+                    学習
                 </TopPageButton>
             </p>
-            <p>
+            {/* <p>
                 <TopPageButton
                     onClick={() => {
                         history.push("/Mathwork");
                     }}
                 >
                     計算問題
+                </TopPageButton>
+            </p> */}
+            <p>
+                <TopPageButton
+                    onClick={() => {
+                        history.push("/LineOfSight");
+                    }}
+                >
+                    視線データ分析
                 </TopPageButton>
             </p>
 

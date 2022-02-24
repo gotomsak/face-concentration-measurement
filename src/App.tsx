@@ -16,10 +16,12 @@ import AdminSignupPage from "./pages/admin/AdminSignupPage";
 import AdminAnalysisPage from "./pages/admin/AdminAnalysisPage";
 import QuestionnairePage from "./pages/learning/QuestionnairePage";
 import EarInitPage from "./pages/ear/EarInitPage";
+import LineOfSightPage from "./pages/line_of_sight/LineOfSightPage";
 import EnvironmentPage from "./pages/EnvironmentPage";
 import ManualPage from "./pages/ManualPage";
 import AdminSelectQuestionPage from "./pages/admin/AdminSelectQuestionPage";
 import AdminLearningAnalysisPage from "./pages/admin/AdminLearningAnalysisPage";
+import AdminAddQuestionPage from "./pages/admin/AdminAddQusetionPage";
 
 function App() {
     return (
@@ -37,6 +39,10 @@ function App() {
                     <Route path="/Recording" component={RecordingPage}></Route>
                     <Route path="/Learning" component={LearningPage}></Route>
                     <Route path="/Mathwork" component={MathWorkPage}></Route>
+                    <Route
+                        path="/LineOfSight"
+                        component={LineOfSightPage}
+                    ></Route>
                     <Route
                         exact
                         path="/Analysis"
