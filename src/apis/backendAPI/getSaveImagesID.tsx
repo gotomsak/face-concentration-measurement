@@ -4,9 +4,9 @@ import { backendAxiosConfig } from ".";
 import { GetSaveImagesIDGet } from "./interfaces";
 
 export const getSaveImagesID = (getData: GetSaveImagesIDGet) => {
-    return axios
-        .get("/get_id?type=" + getData.type, backendAxiosConfig)
-        .then((res) => {
-            return res;
-        });
+  return axios
+    .get("/get_id?type=" + getData.type, backendAxiosConfig)
+    .then((res: any) => {
+      return res;
+    });
 };

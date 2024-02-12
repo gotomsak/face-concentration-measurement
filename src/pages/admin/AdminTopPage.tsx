@@ -1,82 +1,82 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Button, makeStyles, styled } from "@material-ui/core";
-import { useHistory } from "react-router";
+import { NavigateFunction, useNavigate } from "react-router";
 import { TopPageStyle, TopPageButton } from "../../Styles";
 import TopMenuComponent from "../../components/TopMenuComponent";
 import {
-    adminCheckSession,
-    adminSignout,
+  adminCheckSession,
+  adminSignout,
 } from "../../apis/backendAPI/admin/userAuth";
 
 const AdminTopPage: React.FC = () => {
-    const history = useHistory();
+  const navigate: NavigateFunction = useNavigate();
 
-    const classes = TopPageStyle();
-    const [errorMessage, setErrorMessage] = useState("");
-    useEffect(() => {
-        console.log(errorMessage);
-    }, [errorMessage]);
+  const classes = TopPageStyle();
+  const [errorMessage, setErrorMessage] = useState("");
+  useEffect(() => {
+    console.log(errorMessage);
+  }, [errorMessage]);
 
-    useLayoutEffect(() => {
-        adminCheckSession()
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-                history.push("/AdminSignin");
-            });
-    }, []);
+  useLayoutEffect(() => {
+    adminCheckSession()
+      .then((res: any) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        navigate("/AdminSignin");
+      });
+  }, []);
 
-    return (
-        <div className={classes.root}>
-            <h5>user_id: {localStorage.getItem("user_id")}</h5>
-            <h1>admin</h1>
-            <p>
-                <TopPageButton
-                    onClick={() => {
-                        history.push("/AdminAnalysis");
-                    }}
-                >
-                    分析
-                </TopPageButton>
-            </p>
-            <p>
-                <TopPageButton
-                    onClick={() => {
-                        history.push("/AdminSelectQuestion");
-                    }}
-                >
-                    問題集作成
-                </TopPageButton>
-            </p>
-            <p>
-                <TopPageButton
-                    onClick={() => {
-                        history.push("/AdminLearningAnalysis");
-                    }}
-                >
-                    learning分析
-                </TopPageButton>
-            </p>
-            <p>
-                <TopPageButton
-                    onClick={() => {
-                        adminSignout()
-                            .then((res) => {
-                                history.push("/AdminSignin");
-                                setErrorMessage("ok");
-                            })
-                            .catch((err) => {
-                                setErrorMessage(err.data);
-                            });
-                    }}
-                >
-                    サインアウト
-                </TopPageButton>
-            </p>
-        </div>
-    );
+  return (
+    <div className={classes.root}>
+      <h5>user_id: {localStorage.getItem("user_id")}</h5>
+      <h1>admin</h1>
+      <p>
+        <TopPageButton
+          onClick={() => {
+            navigate("/AdminAnalysis");
+          }}
+        >
+          分析
+        </TopPageButton>
+      </p>
+      <p>
+        <TopPageButton
+          onClick={() => {
+            navigate("/AdminSelectQuestion");
+          }}
+        >
+          問題集作成
+        </TopPageButton>
+      </p>
+      <p>
+        <TopPageButton
+          onClick={() => {
+            navigate("/AdminLearningAnalysis");
+          }}
+        >
+          learning分析
+        </TopPageButton>
+      </p>
+      <p>
+        <TopPageButton
+          onClick={() => {
+            adminSignout()
+              .then((res: any) => {
+                navigate("/AdminSignin");
+                setErrorMessage("ok");
+              })
+              .catch((err) => {
+                setErrorMessage(err.data);
+              });
+          }}
+        >
+          サインアウト
+        </TopPageButton>
+      </p>
+    </div>
+  );
 };
 
 export default AdminTopPage;

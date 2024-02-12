@@ -1,9 +1,4 @@
-import {
-    createStore as reduxCreateStore,
-    combineReducers,
-    applyMiddleware,
-} from "redux";
-import { routerMiddleware, connectRouter } from "connected-react-router";
+import { configureStore } from "@reduxjs/toolkit";
 import { concReducer } from "./reducers/concReducer";
 import { ansResultIDsReducer } from "./reducers/learning/ansResultIDsReducer";
 import { correctNumberReducer } from "./reducers/learning/correctNumberReducer";
@@ -31,38 +26,62 @@ import { minFaceAngleReducer } from "./reducers/frequency/minFaceAngleReducer";
 import { maxFaceAngleReducer } from "./reducers/frequency/maxFaceAngleReducer";
 
 // import { earIDReducer } from "./reducers/ear/earIDReducer";
-export default function createStore(histroy: any) {
-    return reduxCreateStore(
-        combineReducers({
-            concReducer,
-            ansResultIDsReducer,
-            correctNumberReducer,
-            questionIDsReducer,
-            solvedIDsReducer,
-            ansResultSectionIDReducer,
-            earLeftTReducer,
-            earRightTReducer,
-            earLeftInitReducer,
-            earRightInitReducer,
-            // earIDReducer,
-            maxBlinkReducer,
-            minBlinkReducer,
-            maxFaceMoveReducer,
-            minFaceMoveReducer,
-            maxYawReducer,
-            maxRollReducer,
-            maxPitchReducer,
-            facePointReducer,
-            faceAngleReducer,
-            facePointIDReducer,
-            concIDReducer,
-            maxFacePointReducer,
-            minFacePointReducer,
-            maxFaceAngleReducer,
-            minFaceAngleReducer,
+export default configureStore({
+  reducer: {
+    concReducer: concReducer,
+    ansResultIDsReducer: ansResultIDsReducer,
+    correctNumberReducer: correctNumberReducer,
+    questionIDsReducer: questionIDsReducer,
+    solvedIDsReducer: solvedIDsReducer,
+    ansResultSectionIDReducer: ansResultSectionIDReducer,
+    earLeftTReducer: earLeftTReducer,
+    earRightTReducer: earRightTReducer,
+    earLeftInitReducer: earLeftInitReducer,
+    earRightInitReducer: earRightInitReducer,
+    maxBlinkReducer: maxBlinkReducer,
+    minBlinkReducer: minBlinkReducer,
+    maxFaceMoveReducer: maxFaceMoveReducer,
+    minFaceMoveReducer: minFaceMoveReducer,
+    maxYawReducer: maxYawReducer,
+    maxRollReducer: maxRollReducer,
+    maxPitchReducer: maxPitchReducer,
+    facePointReducer: facePointReducer,
+    faceAngleReducer: faceAngleReducer,
+    facePointIDReducer: facePointIDReducer,
+    concIDReducer: concIDReducer,
+    maxFacePointReducer: maxFacePointReducer,
+    minFacePointReducer: minFacePointReducer,
+    maxFaceAngleReducer: maxFaceAngleReducer,
+    minFaceAngleReducer: minFaceAngleReducer,
+  },
+});
 
-            router: connectRouter(histroy),
-        }),
-        applyMiddleware(routerMiddleware(histroy))
-    );
-}
+// concReducer,
+// ansResultIDsReducer,
+// correctNumberReducer,
+// questionIDsReducer,
+// solvedIDsReducer,
+// ansResultSectionIDReducer,
+// earLeftTReducer,
+// earRightTReducer,
+// earLeftInitReducer,
+// earRightInitReducer,
+// maxBlinkReducer,
+// minBlinkReducer,
+// maxFaceMoveReducer,
+// minFaceMoveReducer,
+// maxYawReducer,
+// maxRollReducer,
+// maxPitchReducer,
+// facePointReducer,
+// faceAngleReducer,
+// facePointIDReducer,
+// concIDReducer,
+// maxFacePointReducer,
+// minFacePointReducer,
+// maxFaceAngleReducer,
+// minFaceAngleReducer,
+// router: connectRouter(histroy),
+// }),
+// // applyMiddleware(routerMiddleware(histroy))
+// );

@@ -17,119 +17,119 @@ import AnsTextComponent from "./AnsTextComponent";
 import AnsImgComponent from "./AnsImgComponent";
 
 const GymQuestionViewComponent: React.FC<{
-    questionID: number;
-    setNext: any;
-    concentrationData: any[];
+  questionID: number;
+  setNext: any;
+  concentrationData: any[];
 }> = ({ questionID, setNext, concentrationData }) => {
-    const dispatch = useDispatch();
-    const [questionText, setQuestionText] = useState("");
-    const [answerText, setAnswerText] = useState([]);
-    const [calculatorResult, setCalculatorResult] = useState("");
-    const [log, setLog] = useState("");
-    const [answerResult, setAnswerResult] = useState("");
-    const [answerFinal, setAnswerFinal] = useState("");
-    const [startTime, setStartTime] = useState("");
-    const [windowNonFocusTimer, setNonFocusTimer] = useState(0);
-    const refWindowNonFocusTimer = useRef(windowNonFocusTimer);
-    const [nowLevel, setNowLevel] = useState(5);
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            root: {
-                flexGrow: 1,
-                margin: theme.spacing(2),
-            },
-            paper: {
-                color: theme.palette.text.secondary,
-            },
-        })
-    );
-    const [spacing, setSpacing] = useState<GridSpacing>(2);
-    const classes = useStyles();
+  const dispatch = useDispatch();
+  const [questionText, setQuestionText] = useState("");
+  const [answerText, setAnswerText] = useState([]);
+  const [calculatorResult, setCalculatorResult] = useState("");
+  const [log, setLog] = useState("");
+  const [answerResult, setAnswerResult] = useState("");
+  const [answerFinal, setAnswerFinal] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [windowNonFocusTimer, setNonFocusTimer] = useState(0);
+  const refWindowNonFocusTimer = useRef(windowNonFocusTimer);
+  const [nowLevel, setNowLevel] = useState(5);
+  const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        flexGrow: 1,
+        margin: theme.spacing(2),
+      },
+      paper: {
+        color: theme.palette.text.secondary,
+      },
+    })
+  );
+  const [spacing, setSpacing] = useState<GridSpacing>(2);
+  const classes = useStyles();
 
-    useEffect(() => {
-        if (answerFinal !== "") {
-            checkAnswer(setResult()).then((res) => {
-                console.log(res.data);
-                if (res.data["result"] === "correct") {
-                    dispatch({ type: "correctNumberSet" });
-                }
-                setAnswerResult(res.data["answer"]);
-                dispatch({
-                    type: "ansResultIDSet",
-                    id: res.data["answer_result_id"],
-                });
-            });
+  useEffect(() => {
+    if (answerFinal !== "") {
+      checkAnswer(setResult()).then((res: any) => {
+        console.log(res.data);
+        if (res.data["result"] === "correct") {
+          dispatch({ type: "correctNumberSet" });
         }
-    }, [answerFinal]);
-
-    useEffect(() => {
-        questionFetch();
-    }, [questionID]);
-
-    useEffect(() => {
-        refWindowNonFocusTimer.current = windowNonFocusTimer;
-    }, [windowNonFocusTimer]);
-
-    useEffect(() => {
-        let windowNonFocusTimerFlag: any;
-
-        // webCameraInit();
-        window.addEventListener("focus", () => {
-            clearInterval(windowNonFocusTimerFlag);
+        setAnswerResult(res.data["answer"]);
+        dispatch({
+          type: "ansResultIDSet",
+          id: res.data["answer_result_id"],
         });
-        window.addEventListener("blur", () => {
-            windowNonFocusTimerFlag = setInterval(() => {
-                setNonFocusTimer(refWindowNonFocusTimer.current + 1);
-            }, 1000);
-        });
-    }, []);
+      });
+    }
+  }, [answerFinal]);
 
-    const questionFetch = () => {
-        setStartTime(getNowTimeString());
-        getQuestionGym({ now_level: nowLevel }).then((res) => {
-            setAnswerText(res.data.answer_list);
-            setQuestionText(res.data.question);
-        });
+  useEffect(() => {
+    questionFetch();
+  }, [questionID]);
+
+  useEffect(() => {
+    refWindowNonFocusTimer.current = windowNonFocusTimer;
+  }, [windowNonFocusTimer]);
+
+  useEffect(() => {
+    let windowNonFocusTimerFlag: any;
+
+    // webCameraInit();
+    window.addEventListener("focus", () => {
+      clearInterval(windowNonFocusTimerFlag);
+    });
+    window.addEventListener("blur", () => {
+      windowNonFocusTimerFlag = setInterval(() => {
+        setNonFocusTimer(refWindowNonFocusTimer.current + 1);
+      }, 1000);
+    });
+  }, []);
+
+  const questionFetch = () => {
+    setStartTime(getNowTimeString());
+    getQuestionGym({ now_level: nowLevel }).then((res: any) => {
+      setAnswerText(res.data.answer_list);
+      setQuestionText(res.data.question);
+    });
+  };
+
+  const setResult = (): CheckAnswerPost => {
+    const end = getNowTimeString();
+    return {
+      question_id: questionID,
+      user_id: Number(localStorage.getItem("user_id")),
+      memo_log: log,
+      other_focus_second: windowNonFocusTimer,
+      user_answer: answerFinal,
+      start_time: startTime,
+      end_time: end,
     };
+  };
 
-    const setResult = (): CheckAnswerPost => {
-        const end = getNowTimeString();
-        return {
-            question_id: questionID,
-            user_id: Number(localStorage.getItem("user_id")),
-            memo_log: log,
-            other_focus_second: windowNonFocusTimer,
-            user_answer: answerFinal,
-            start_time: startTime,
-            end_time: end,
-        };
-    };
+  const reset = () => {
+    setAnswerResult("");
+    setNext(true);
+    setLog("");
+    window.scrollTo(0, 0);
+  };
 
-    const reset = () => {
-        setAnswerResult("");
-        setNext(true);
-        setLog("");
-        window.scrollTo(0, 0);
-    };
+  const changeAnsType = () => {
+    console.log(answerText);
+    if (answerText[0] !== "") {
+      return (
+        <AnsTextComponent
+          ansTextList={answerText}
+          answerFinal={setAnswerFinal}
+        ></AnsTextComponent>
+      );
+    }
+  };
 
-    const changeAnsType = () => {
-        console.log(answerText);
-        if (answerText[0] !== "") {
-            return (
-                <AnsTextComponent
-                    ansTextList={answerText}
-                    answerFinal={setAnswerFinal}
-                ></AnsTextComponent>
-            );
-        }
-    };
+  return (
+    <div className="QuestionViewContainer">
+      <QuestionComponent questionText={questionText}></QuestionComponent>
 
-    return (
-        <div className="QuestionViewContainer">
-            <QuestionComponent questionText={questionText}></QuestionComponent>
-
-            {/* <div className="LogsContainer"> */}
-            {/* <div className={classes.root}>
+      {/* <div className="LogsContainer"> */}
+      {/* <div className={classes.root}>
                 <Grid item>
                     <Grid container spacing={spacing}>
                         <Grid>
@@ -148,17 +148,15 @@ const GymQuestionViewComponent: React.FC<{
                 </Grid>
             </div> */}
 
-            {changeAnsType()}
-            {answerResult !== "" && (
-                <div>
-                    <AnsResultComponent
-                        ansResult={answerResult}
-                    ></AnsResultComponent>
-                    <button onClick={reset}>next</button>
-                </div>
-            )}
+      {changeAnsType()}
+      {answerResult !== "" && (
+        <div>
+          <AnsResultComponent ansResult={answerResult}></AnsResultComponent>
+          <button onClick={reset}>next</button>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default GymQuestionViewComponent;
